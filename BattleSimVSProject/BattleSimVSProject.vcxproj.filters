@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\ANTLR">
+      <UniqueIdentifier>{e21af454-e373-4825-a446-08f02a189ee9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BattleSimVSProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimBaseListener.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimBaseVisitor.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimLexer.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimListener.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimParser.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="Antlr\Generated\BattleSimVisitor.cpp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleSimVisitorImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Antlr\BattleSim.g4">
+      <Filter>Resource Files\ANTLR</Filter>
+    </None>
+    <None Include="Antlr\Generated\BattleSim.interp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </None>
+    <None Include="Antlr\Generated\BattleSim.tokens">
+      <Filter>Resource Files\ANTLR</Filter>
+    </None>
+    <None Include="Antlr\Generated\BattleSimLexer.interp">
+      <Filter>Resource Files\ANTLR</Filter>
+    </None>
+    <None Include="Antlr\Generated\BattleSimLexer.tokens">
+      <Filter>Resource Files\ANTLR</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Antlr\Generated\BattleSimVisitor.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="Antlr\Generated\BattleSimBaseListener.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="Antlr\Generated\BattleSimBaseVisitor.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="Antlr\Generated\BattleSimLexer.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="Antlr\Generated\BattleSimListener.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="Antlr\Generated\BattleSimParser.h">
+      <Filter>Resource Files\ANTLR</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleSimVisitorImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
