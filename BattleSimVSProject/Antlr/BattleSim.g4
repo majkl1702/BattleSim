@@ -20,7 +20,7 @@ unitStats: 'health:' NUMBER ';' 'attack:' NUMBER ';';
 unitLogicSequence: '{' (logicCommand ';')* '}';
 
 // Unit logic
-logicCommand: moveCmd | turnCmd | ifCondition | whileCycle | attackCmd;
+logicCommand: moveCmd | turnCmd | ifCondition | whileCycle | attackCmd | skip;
 
 moveCmd: 'MoveForward()';
 
@@ -31,6 +31,8 @@ ifCondition: 'if (' boolexp ') then (' logicCommand ') else (' logicCommand ')';
 whileCycle: 'while (' boolexp ') do (' logicCommand ')';
 
 attackCmd: 'AttackAroundSelf()' | 'AttackInFront()' | 'RangeAttack(' exp ')';
+
+skip: 'skip';
 
 // -------------- BOOL -------------- //
 boolexp

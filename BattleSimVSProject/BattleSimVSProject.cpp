@@ -1,12 +1,12 @@
+// Created in 2025 by Michal Strièko.
 
-
-#include "Antlr/Generated/BattleSimBaseVisitor.h"
-
-
+#include "Include/Application.h"
 
 #include <iostream>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Application app;
+
+    return app.Run();
 }

@@ -63,6 +63,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitSkip(BattleSimParser::SkipContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitBoolexp(BattleSimParser::BoolexpContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -1,0 +1,20 @@
+10x10
+TeamBlue {
+    unit Alpha at (1,2) {
+        health: 100;
+        attack: 20;
+        {
+            MoveForward();
+            if (!IsFrontClear()) then (TurnLeft()) else (skip);
+        }
+    };
+}
+TeamRed {
+    unit Bravo at (8,9) {
+        health: 90;
+        attack: 15;
+        {
+            AttackAroundSelf();
+        }
+    };
+}

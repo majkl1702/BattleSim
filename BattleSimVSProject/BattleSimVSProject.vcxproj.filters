@@ -16,6 +16,15 @@
     <Filter Include="Resource Files\ANTLR">
       <UniqueIdentifier>{e21af454-e373-4825-a446-08f02a189ee9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Examples">
+      <UniqueIdentifier>{ca814887-0f48-4483-9c20-f587a1f018d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{9a8cd727-caba-427f-a6fb-63f16903fdb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{8e614d29-5744-47e1-b68f-eacb09e1e4ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleSimVSProject.cpp">
@@ -39,8 +48,11 @@
     <ClCompile Include="Antlr\Generated\BattleSimVisitor.cpp">
       <Filter>Resource Files\ANTLR</Filter>
     </ClCompile>
-    <ClCompile Include="BattleSimVisitorImpl.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Src\Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\BattleSimVisitorImpl.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,8 +91,16 @@
     <ClInclude Include="Antlr\Generated\BattleSimParser.h">
       <Filter>Resource Files\ANTLR</Filter>
     </ClInclude>
-    <ClInclude Include="BattleSimVisitorImpl.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Include\Application.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Include\BattleSimVisitorImpl.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Examples\Example1.txt">
+      <Filter>Resource Files\Examples</Filter>
+    </Text>
   </ItemGroup>
 </Project>

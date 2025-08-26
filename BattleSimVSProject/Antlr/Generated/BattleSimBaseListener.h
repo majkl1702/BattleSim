@@ -52,6 +52,9 @@ public:
   virtual void enterAttackCmd(BattleSimParser::AttackCmdContext * /*ctx*/) override { }
   virtual void exitAttackCmd(BattleSimParser::AttackCmdContext * /*ctx*/) override { }
 
+  virtual void enterSkip(BattleSimParser::SkipContext * /*ctx*/) override { }
+  virtual void exitSkip(BattleSimParser::SkipContext * /*ctx*/) override { }
+
   virtual void enterBoolexp(BattleSimParser::BoolexpContext * /*ctx*/) override { }
   virtual void exitBoolexp(BattleSimParser::BoolexpContext * /*ctx*/) override { }
 
