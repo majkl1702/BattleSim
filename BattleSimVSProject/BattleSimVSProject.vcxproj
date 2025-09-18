@@ -150,6 +150,9 @@
     <ClCompile Include="BattleSimVSProject.cpp" />
     <ClCompile Include="Src\Application.cpp" />
     <ClCompile Include="Src\BattleSimVisitorImpl.cpp" />
+    <ClCompile Include="Src\GameSimulator.cpp" />
+    <ClCompile Include="Src\Map.cpp" />
+    <ClCompile Include="Src\Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Antlr\BattleSim.g4" />
@@ -165,8 +168,12 @@
     <ClInclude Include="Antlr\Generated\BattleSimListener.h" />
     <ClInclude Include="Antlr\Generated\BattleSimParser.h" />
     <ClInclude Include="Antlr\Generated\BattleSimVisitor.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="Include\Application.h" />
     <ClInclude Include="Include\BattleSimVisitorImpl.h" />
+    <ClInclude Include="Include\GameSimulator.h" />
+    <ClInclude Include="Include\Map.h" />
+    <ClInclude Include="Include\Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Examples\Example1.txt" />

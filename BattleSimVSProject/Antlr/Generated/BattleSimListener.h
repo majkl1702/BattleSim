@@ -50,8 +50,8 @@ public:
   virtual void enterAttackCmd(BattleSimParser::AttackCmdContext *ctx) = 0;
   virtual void exitAttackCmd(BattleSimParser::AttackCmdContext *ctx) = 0;
 
-  virtual void enterSkip(BattleSimParser::SkipContext *ctx) = 0;
-  virtual void exitSkip(BattleSimParser::SkipContext *ctx) = 0;
+  virtual void enterSkipCmd(BattleSimParser::SkipCmdContext *ctx) = 0;
+  virtual void exitSkipCmd(BattleSimParser::SkipCmdContext *ctx) = 0;
 
   virtual void enterBoolexp(BattleSimParser::BoolexpContext *ctx) = 0;
   virtual void exitBoolexp(BattleSimParser::BoolexpContext *ctx) = 0;

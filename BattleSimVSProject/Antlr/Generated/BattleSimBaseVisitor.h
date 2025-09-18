@@ -63,7 +63,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitSkip(BattleSimParser::SkipContext *ctx) override {
+  virtual std::any visitSkipCmd(BattleSimParser::SkipCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 

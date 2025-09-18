@@ -2,15 +2,15 @@
 grammar BattleSim;
 
 // Parser rules
-battleSim: map 'TeamBlue {' teamDef '} TeamRed {' teamDef '}';
+battleSim: map 'TeamBlue' '{' teamDef '}' 'TeamRed' '{' teamDef '}';
 
 // Todo extend to add walls, traps, etc...
 map: NUMBER 'x' NUMBER;
 
-teamDef: unitDef';' | (unitDef ';')*;
+teamDef: (unitDef ';')+;
 
 // Units - name, position, config
-unitDef: 'unit' NAME 'at (' NUMBER ',' NUMBER ') {' unitStats unitLogicSequence '}';
+unitDef: 'unit' NAME 'at' '(' NUMBER ',' NUMBER ')' '{' unitStats unitLogicSequence '}';
 
 // Todo add more stats
 unitStats: 'health:' NUMBER ';' 'attack:' NUMBER ';';
@@ -20,19 +20,19 @@ unitStats: 'health:' NUMBER ';' 'attack:' NUMBER ';';
 unitLogicSequence: '{' (logicCommand ';')* '}';
 
 // Unit logic
-logicCommand: moveCmd | turnCmd | ifCondition | whileCycle | attackCmd | skip;
+logicCommand: moveCmd | turnCmd | ifCondition | whileCycle | attackCmd | skipCmd;
 
 moveCmd: 'MoveForward()';
 
 turnCmd: 'TurnLeft()' | 'TurnRight()' | 'Turn(' orientation ')';
 
-ifCondition: 'if (' boolexp ') then (' logicCommand ') else (' logicCommand ')';
+ifCondition: 'if' '(' boolexp ')' 'then' '(' logicCommand ')' 'else' '(' logicCommand ')';
 
-whileCycle: 'while (' boolexp ') do (' logicCommand ')';
+whileCycle: 'while' '(' boolexp ')' 'do' '(' logicCommand ')';
 
 attackCmd: 'AttackAroundSelf()' | 'AttackInFront()' | 'RangeAttack(' exp ')';
 
-skip: 'skip';
+skipCmd: 'skip';
 
 // -------------- BOOL -------------- //
 boolexp
@@ -82,7 +82,7 @@ COMPSYMBOL : '<=' | '<' | '>' | '==' | '>=' | '!=';
 
 ORIENTATION : 'N' | 'W' | 'E' | 'S' | 'SW' | 'SE' | 'NW' | 'NE';
 
-NAME: [a-zA-Z][a-zA-Z]*;
+NAME: [a-zA-Z]+;
 
 NUMBER: [0-9]+ ('.' [0-9]+)?;
 

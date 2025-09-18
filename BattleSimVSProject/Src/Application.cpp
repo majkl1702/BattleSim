@@ -13,6 +13,7 @@ int32_t Application::Run()
 {
   std::cout << "Application::Run()" << std::endl;
 
+  // Read the game configuration from file.
   std::ifstream stream;
   stream.open("Examples/Example1.txt");
   if (!stream.good())
@@ -21,14 +22,25 @@ int32_t Application::Run()
     return 1;
   }
 
+  // ANTL parsing.
   antlr4::ANTLRInputStream input(stream);
   BattleSimLexer lexer(&input);
   antlr4::CommonTokenStream tokens(&lexer);
   BattleSimParser parser(&tokens);
 
-  antlr4::tree::ParseTree* tree = parser.battleSim();
+  BattleSimParser::BattleSimContext* tree = parser.battleSim();
+
+  if (!tree)
+  {
+    std::cerr << "Error parsing given game configuration." << std::endl;
+    return 1;
+  }
 
   std::cout << "\nParsed successfully: " << tree->toStringTree(&parser) << std::endl;
 
-  return 0;
+  // Instantiate game simulator with the parse tree.
+  GameSimulator gameSimulator(tree);
+
+  // Run the game simulation.
+  return gameSimulator.SimulateGame();
 }

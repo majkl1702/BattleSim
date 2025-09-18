@@ -2,16 +2,12 @@
 #pragma once
 
 #include "../Include/BattleSimVisitorImpl.h";
+#include "../Include/GameSimulator.h"
 
 class Application
 {
 public:
-
   int32_t Run();
 
-
 private:
-
-
-  BattleSimVisitorImpl _visitor = {};
 };

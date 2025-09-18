@@ -55,90 +55,92 @@ void battlesimParserInitialize() {
     std::vector<std::string>{
       "battleSim", "map", "teamDef", "unitDef", "unitStats", "unitLogicSequence", 
       "logicCommand", "moveCmd", "turnCmd", "ifCondition", "whileCycle", 
-      "attackCmd", "skip", "boolexp", "orExpr", "andExpr", "notExpr", "primaryBool", 
-      "blockCheck", "orientationCheck", "orientation", "exp"
+      "attackCmd", "skipCmd", "boolexp", "orExpr", "andExpr", "notExpr", 
+      "primaryBool", "blockCheck", "orientationCheck", "orientation", "exp"
     },
     std::vector<std::string>{
-      "", "'TeamBlue {'", "'} TeamRed {'", "'}'", "'x'", "';'", "'unit'", 
-      "'at ('", "','", "') {'", "'health:'", "'attack:'", "'{'", "'MoveForward()'", 
-      "'TurnLeft()'", "'TurnRight()'", "'Turn('", "')'", "'if ('", "') then ('", 
-      "') else ('", "'while ('", "') do ('", "'AttackAroundSelf()'", "'AttackInFront()'", 
-      "'RangeAttack('", "'skip'", "'||'", "'&&'", "'!'", "'true'", "'false'", 
-      "'('", "'=='", "'!='", "'IsEnemyNearby()'", "'IsFrontClear()'", "'IsFrontBlocked()'", 
-      "'FacingNorth()'", "'FacingWest()'", "'FacingEast()'", "'FacingSouth()'", 
-      "'GetNearbyEnemyOrientation()'", "'GetMyOrientation'"
+      "", "'TeamBlue'", "'{'", "'}'", "'TeamRed'", "'x'", "';'", "'unit'", 
+      "'at'", "'('", "','", "')'", "'health:'", "'attack:'", "'MoveForward()'", 
+      "'TurnLeft()'", "'TurnRight()'", "'Turn('", "'if'", "'then'", "'else'", 
+      "'while'", "'do'", "'AttackAroundSelf()'", "'AttackInFront()'", "'RangeAttack('", 
+      "'skip'", "'||'", "'&&'", "'!'", "'true'", "'false'", "'=='", "'!='", 
+      "'IsEnemyNearby()'", "'IsFrontClear()'", "'IsFrontBlocked()'", "'FacingNorth()'", 
+      "'FacingWest()'", "'FacingEast()'", "'FacingSouth()'", "'GetNearbyEnemyOrientation()'", 
+      "'GetMyOrientation'"
     },
     std::vector<std::string>{
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
-      "", "", "", "", "", "", "", "", "", "", "MATHSYMBOL", "COMPSYMBOL", 
-      "ORIENTATION", "NAME", "NUMBER", "WS"
+      "", "", "", "", "", "", "", "", "", "MATHSYMBOL", "COMPSYMBOL", "ORIENTATION", 
+      "NAME", "NUMBER", "WS"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,49,204,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,48,211,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
-  	21,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,
-  	2,5,2,62,8,2,10,2,12,2,65,9,2,3,2,67,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
-  	1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,5,5,91,8,
-  	5,10,5,12,5,94,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,104,8,6,1,7,1,
-  	7,1,8,1,8,1,8,1,8,1,8,1,8,3,8,114,8,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,
-  	1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,11,3,11,136,
-  	8,11,1,12,1,12,1,13,1,13,1,14,1,14,1,14,5,14,145,8,14,10,14,12,14,148,
-  	9,14,1,15,1,15,1,15,5,15,153,8,15,10,15,12,15,156,9,15,1,16,1,16,1,16,
-  	3,16,161,8,16,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,
-  	1,17,1,17,1,17,1,17,1,17,1,17,3,17,180,8,17,1,18,1,18,1,19,1,19,1,20,
-  	1,20,1,21,1,21,1,21,1,21,1,21,1,21,3,21,194,8,21,1,21,1,21,1,21,5,21,
-  	199,8,21,10,21,12,21,202,9,21,1,21,0,1,42,22,0,2,4,6,8,10,12,14,16,18,
-  	20,22,24,26,28,30,32,34,36,38,40,42,0,4,1,0,33,34,1,0,36,37,1,0,38,41,
-  	2,0,42,43,46,46,205,0,44,1,0,0,0,2,51,1,0,0,0,4,66,1,0,0,0,6,68,1,0,0,
-  	0,8,79,1,0,0,0,10,86,1,0,0,0,12,103,1,0,0,0,14,105,1,0,0,0,16,113,1,0,
-  	0,0,18,115,1,0,0,0,20,123,1,0,0,0,22,135,1,0,0,0,24,137,1,0,0,0,26,139,
-  	1,0,0,0,28,141,1,0,0,0,30,149,1,0,0,0,32,160,1,0,0,0,34,179,1,0,0,0,36,
-  	181,1,0,0,0,38,183,1,0,0,0,40,185,1,0,0,0,42,193,1,0,0,0,44,45,3,2,1,
-  	0,45,46,5,1,0,0,46,47,3,4,2,0,47,48,5,2,0,0,48,49,3,4,2,0,49,50,5,3,0,
-  	0,50,1,1,0,0,0,51,52,5,48,0,0,52,53,5,4,0,0,53,54,5,48,0,0,54,3,1,0,0,
-  	0,55,56,3,6,3,0,56,57,5,5,0,0,57,67,1,0,0,0,58,59,3,6,3,0,59,60,5,5,0,
-  	0,60,62,1,0,0,0,61,58,1,0,0,0,62,65,1,0,0,0,63,61,1,0,0,0,63,64,1,0,0,
-  	0,64,67,1,0,0,0,65,63,1,0,0,0,66,55,1,0,0,0,66,63,1,0,0,0,67,5,1,0,0,
-  	0,68,69,5,6,0,0,69,70,5,47,0,0,70,71,5,7,0,0,71,72,5,48,0,0,72,73,5,8,
-  	0,0,73,74,5,48,0,0,74,75,5,9,0,0,75,76,3,8,4,0,76,77,3,10,5,0,77,78,5,
-  	3,0,0,78,7,1,0,0,0,79,80,5,10,0,0,80,81,5,48,0,0,81,82,5,5,0,0,82,83,
-  	5,11,0,0,83,84,5,48,0,0,84,85,5,5,0,0,85,9,1,0,0,0,86,92,5,12,0,0,87,
-  	88,3,12,6,0,88,89,5,5,0,0,89,91,1,0,0,0,90,87,1,0,0,0,91,94,1,0,0,0,92,
-  	90,1,0,0,0,92,93,1,0,0,0,93,95,1,0,0,0,94,92,1,0,0,0,95,96,5,3,0,0,96,
-  	11,1,0,0,0,97,104,3,14,7,0,98,104,3,16,8,0,99,104,3,18,9,0,100,104,3,
-  	20,10,0,101,104,3,22,11,0,102,104,3,24,12,0,103,97,1,0,0,0,103,98,1,0,
-  	0,0,103,99,1,0,0,0,103,100,1,0,0,0,103,101,1,0,0,0,103,102,1,0,0,0,104,
-  	13,1,0,0,0,105,106,5,13,0,0,106,15,1,0,0,0,107,114,5,14,0,0,108,114,5,
-  	15,0,0,109,110,5,16,0,0,110,111,3,40,20,0,111,112,5,17,0,0,112,114,1,
-  	0,0,0,113,107,1,0,0,0,113,108,1,0,0,0,113,109,1,0,0,0,114,17,1,0,0,0,
-  	115,116,5,18,0,0,116,117,3,26,13,0,117,118,5,19,0,0,118,119,3,12,6,0,
-  	119,120,5,20,0,0,120,121,3,12,6,0,121,122,5,17,0,0,122,19,1,0,0,0,123,
-  	124,5,21,0,0,124,125,3,26,13,0,125,126,5,22,0,0,126,127,3,12,6,0,127,
-  	128,5,17,0,0,128,21,1,0,0,0,129,136,5,23,0,0,130,136,5,24,0,0,131,132,
-  	5,25,0,0,132,133,3,42,21,0,133,134,5,17,0,0,134,136,1,0,0,0,135,129,1,
-  	0,0,0,135,130,1,0,0,0,135,131,1,0,0,0,136,23,1,0,0,0,137,138,5,26,0,0,
-  	138,25,1,0,0,0,139,140,3,28,14,0,140,27,1,0,0,0,141,146,3,30,15,0,142,
-  	143,5,27,0,0,143,145,3,30,15,0,144,142,1,0,0,0,145,148,1,0,0,0,146,144,
-  	1,0,0,0,146,147,1,0,0,0,147,29,1,0,0,0,148,146,1,0,0,0,149,154,3,32,16,
-  	0,150,151,5,28,0,0,151,153,3,32,16,0,152,150,1,0,0,0,153,156,1,0,0,0,
-  	154,152,1,0,0,0,154,155,1,0,0,0,155,31,1,0,0,0,156,154,1,0,0,0,157,158,
-  	5,29,0,0,158,161,3,32,16,0,159,161,3,34,17,0,160,157,1,0,0,0,160,159,
-  	1,0,0,0,161,33,1,0,0,0,162,180,5,30,0,0,163,180,5,31,0,0,164,165,5,32,
-  	0,0,165,166,3,26,13,0,166,167,5,17,0,0,167,180,1,0,0,0,168,169,3,42,21,
-  	0,169,170,5,45,0,0,170,171,3,42,21,0,171,180,1,0,0,0,172,173,3,40,20,
-  	0,173,174,7,0,0,0,174,175,3,40,20,0,175,180,1,0,0,0,176,180,3,36,18,0,
-  	177,180,3,38,19,0,178,180,5,35,0,0,179,162,1,0,0,0,179,163,1,0,0,0,179,
-  	164,1,0,0,0,179,168,1,0,0,0,179,172,1,0,0,0,179,176,1,0,0,0,179,177,1,
-  	0,0,0,179,178,1,0,0,0,180,35,1,0,0,0,181,182,7,1,0,0,182,37,1,0,0,0,183,
-  	184,7,2,0,0,184,39,1,0,0,0,185,186,7,3,0,0,186,41,1,0,0,0,187,188,6,21,
-  	-1,0,188,194,5,48,0,0,189,190,5,32,0,0,190,191,3,42,21,0,191,192,5,17,
-  	0,0,192,194,1,0,0,0,193,187,1,0,0,0,193,189,1,0,0,0,194,200,1,0,0,0,195,
-  	196,10,2,0,0,196,197,5,44,0,0,197,199,3,42,21,3,198,195,1,0,0,0,199,202,
-  	1,0,0,0,200,198,1,0,0,0,200,201,1,0,0,0,201,43,1,0,0,0,202,200,1,0,0,
-  	0,12,63,66,92,103,113,135,146,154,160,179,193,200
+  	21,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,2,1,2,1,
+  	2,4,2,62,8,2,11,2,12,2,63,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
+  	1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,5,5,90,8,5,10,5,12,
+  	5,93,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,103,8,6,1,7,1,7,1,8,1,8,
+  	1,8,1,8,1,8,1,8,3,8,113,8,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,
+  	9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,
+  	1,11,1,11,1,11,3,11,143,8,11,1,12,1,12,1,13,1,13,1,14,1,14,1,14,5,14,
+  	152,8,14,10,14,12,14,155,9,14,1,15,1,15,1,15,5,15,160,8,15,10,15,12,15,
+  	163,9,15,1,16,1,16,1,16,3,16,168,8,16,1,17,1,17,1,17,1,17,1,17,1,17,1,
+  	17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,3,17,187,8,17,1,
+  	18,1,18,1,19,1,19,1,20,1,20,1,21,1,21,1,21,1,21,1,21,1,21,3,21,201,8,
+  	21,1,21,1,21,1,21,5,21,206,8,21,10,21,12,21,209,9,21,1,21,0,1,42,22,0,
+  	2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,0,4,1,0,32,
+  	33,1,0,35,36,1,0,37,40,2,0,41,42,45,45,211,0,44,1,0,0,0,2,54,1,0,0,0,
+  	4,61,1,0,0,0,6,65,1,0,0,0,8,78,1,0,0,0,10,85,1,0,0,0,12,102,1,0,0,0,14,
+  	104,1,0,0,0,16,112,1,0,0,0,18,114,1,0,0,0,20,127,1,0,0,0,22,142,1,0,0,
+  	0,24,144,1,0,0,0,26,146,1,0,0,0,28,148,1,0,0,0,30,156,1,0,0,0,32,167,
+  	1,0,0,0,34,186,1,0,0,0,36,188,1,0,0,0,38,190,1,0,0,0,40,192,1,0,0,0,42,
+  	200,1,0,0,0,44,45,3,2,1,0,45,46,5,1,0,0,46,47,5,2,0,0,47,48,3,4,2,0,48,
+  	49,5,3,0,0,49,50,5,4,0,0,50,51,5,2,0,0,51,52,3,4,2,0,52,53,5,3,0,0,53,
+  	1,1,0,0,0,54,55,5,47,0,0,55,56,5,5,0,0,56,57,5,47,0,0,57,3,1,0,0,0,58,
+  	59,3,6,3,0,59,60,5,6,0,0,60,62,1,0,0,0,61,58,1,0,0,0,62,63,1,0,0,0,63,
+  	61,1,0,0,0,63,64,1,0,0,0,64,5,1,0,0,0,65,66,5,7,0,0,66,67,5,46,0,0,67,
+  	68,5,8,0,0,68,69,5,9,0,0,69,70,5,47,0,0,70,71,5,10,0,0,71,72,5,47,0,0,
+  	72,73,5,11,0,0,73,74,5,2,0,0,74,75,3,8,4,0,75,76,3,10,5,0,76,77,5,3,0,
+  	0,77,7,1,0,0,0,78,79,5,12,0,0,79,80,5,47,0,0,80,81,5,6,0,0,81,82,5,13,
+  	0,0,82,83,5,47,0,0,83,84,5,6,0,0,84,9,1,0,0,0,85,91,5,2,0,0,86,87,3,12,
+  	6,0,87,88,5,6,0,0,88,90,1,0,0,0,89,86,1,0,0,0,90,93,1,0,0,0,91,89,1,0,
+  	0,0,91,92,1,0,0,0,92,94,1,0,0,0,93,91,1,0,0,0,94,95,5,3,0,0,95,11,1,0,
+  	0,0,96,103,3,14,7,0,97,103,3,16,8,0,98,103,3,18,9,0,99,103,3,20,10,0,
+  	100,103,3,22,11,0,101,103,3,24,12,0,102,96,1,0,0,0,102,97,1,0,0,0,102,
+  	98,1,0,0,0,102,99,1,0,0,0,102,100,1,0,0,0,102,101,1,0,0,0,103,13,1,0,
+  	0,0,104,105,5,14,0,0,105,15,1,0,0,0,106,113,5,15,0,0,107,113,5,16,0,0,
+  	108,109,5,17,0,0,109,110,3,40,20,0,110,111,5,11,0,0,111,113,1,0,0,0,112,
+  	106,1,0,0,0,112,107,1,0,0,0,112,108,1,0,0,0,113,17,1,0,0,0,114,115,5,
+  	18,0,0,115,116,5,9,0,0,116,117,3,26,13,0,117,118,5,11,0,0,118,119,5,19,
+  	0,0,119,120,5,9,0,0,120,121,3,12,6,0,121,122,5,11,0,0,122,123,5,20,0,
+  	0,123,124,5,9,0,0,124,125,3,12,6,0,125,126,5,11,0,0,126,19,1,0,0,0,127,
+  	128,5,21,0,0,128,129,5,9,0,0,129,130,3,26,13,0,130,131,5,11,0,0,131,132,
+  	5,22,0,0,132,133,5,9,0,0,133,134,3,12,6,0,134,135,5,11,0,0,135,21,1,0,
+  	0,0,136,143,5,23,0,0,137,143,5,24,0,0,138,139,5,25,0,0,139,140,3,42,21,
+  	0,140,141,5,11,0,0,141,143,1,0,0,0,142,136,1,0,0,0,142,137,1,0,0,0,142,
+  	138,1,0,0,0,143,23,1,0,0,0,144,145,5,26,0,0,145,25,1,0,0,0,146,147,3,
+  	28,14,0,147,27,1,0,0,0,148,153,3,30,15,0,149,150,5,27,0,0,150,152,3,30,
+  	15,0,151,149,1,0,0,0,152,155,1,0,0,0,153,151,1,0,0,0,153,154,1,0,0,0,
+  	154,29,1,0,0,0,155,153,1,0,0,0,156,161,3,32,16,0,157,158,5,28,0,0,158,
+  	160,3,32,16,0,159,157,1,0,0,0,160,163,1,0,0,0,161,159,1,0,0,0,161,162,
+  	1,0,0,0,162,31,1,0,0,0,163,161,1,0,0,0,164,165,5,29,0,0,165,168,3,32,
+  	16,0,166,168,3,34,17,0,167,164,1,0,0,0,167,166,1,0,0,0,168,33,1,0,0,0,
+  	169,187,5,30,0,0,170,187,5,31,0,0,171,172,5,9,0,0,172,173,3,26,13,0,173,
+  	174,5,11,0,0,174,187,1,0,0,0,175,176,3,42,21,0,176,177,5,44,0,0,177,178,
+  	3,42,21,0,178,187,1,0,0,0,179,180,3,40,20,0,180,181,7,0,0,0,181,182,3,
+  	40,20,0,182,187,1,0,0,0,183,187,3,36,18,0,184,187,3,38,19,0,185,187,5,
+  	34,0,0,186,169,1,0,0,0,186,170,1,0,0,0,186,171,1,0,0,0,186,175,1,0,0,
+  	0,186,179,1,0,0,0,186,183,1,0,0,0,186,184,1,0,0,0,186,185,1,0,0,0,187,
+  	35,1,0,0,0,188,189,7,1,0,0,189,37,1,0,0,0,190,191,7,2,0,0,191,39,1,0,
+  	0,0,192,193,7,3,0,0,193,41,1,0,0,0,194,195,6,21,-1,0,195,201,5,47,0,0,
+  	196,197,5,9,0,0,197,198,3,42,21,0,198,199,5,11,0,0,199,201,1,0,0,0,200,
+  	194,1,0,0,0,200,196,1,0,0,0,201,207,1,0,0,0,202,203,10,2,0,0,203,204,
+  	5,43,0,0,204,206,3,42,21,3,205,202,1,0,0,0,206,209,1,0,0,0,207,205,1,
+  	0,0,0,207,208,1,0,0,0,208,43,1,0,0,0,209,207,1,0,0,0,11,63,91,102,112,
+  	142,153,161,167,186,200,207
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -248,12 +250,18 @@ BattleSimParser::BattleSimContext* BattleSimParser::battleSim() {
     setState(45);
     match(BattleSimParser::T__0);
     setState(46);
-    teamDef();
-    setState(47);
     match(BattleSimParser::T__1);
-    setState(48);
+    setState(47);
     teamDef();
+    setState(48);
+    match(BattleSimParser::T__2);
     setState(49);
+    match(BattleSimParser::T__3);
+    setState(50);
+    match(BattleSimParser::T__1);
+    setState(51);
+    teamDef();
+    setState(52);
     match(BattleSimParser::T__2);
    
   }
@@ -318,11 +326,11 @@ BattleSimParser::MapContext* BattleSimParser::map() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(51);
+    setState(54);
     match(BattleSimParser::NUMBER);
-    setState(52);
-    match(BattleSimParser::T__3);
-    setState(53);
+    setState(55);
+    match(BattleSimParser::T__4);
+    setState(56);
     match(BattleSimParser::NUMBER);
    
   }
@@ -387,38 +395,19 @@ BattleSimParser::TeamDefContext* BattleSimParser::teamDef() {
     exitRule();
   });
   try {
-    setState(66);
+    enterOuterAlt(_localctx, 1);
+    setState(61); 
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
-    case 1: {
-      enterOuterAlt(_localctx, 1);
-      setState(55);
+    _la = _input->LA(1);
+    do {
+      setState(58);
       unitDef();
-      setState(56);
-      match(BattleSimParser::T__4);
-      break;
-    }
-
-    case 2: {
-      enterOuterAlt(_localctx, 2);
-      setState(63);
+      setState(59);
+      match(BattleSimParser::T__5);
+      setState(63); 
       _errHandler->sync(this);
       _la = _input->LA(1);
-      while (_la == BattleSimParser::T__5) {
-        setState(58);
-        unitDef();
-        setState(59);
-        match(BattleSimParser::T__4);
-        setState(65);
-        _errHandler->sync(this);
-        _la = _input->LA(1);
-      }
-      break;
-    }
-
-    default:
-      break;
-    }
+    } while (_la == BattleSimParser::T__6);
    
   }
   catch (RecognitionException &e) {
@@ -494,25 +483,29 @@ BattleSimParser::UnitDefContext* BattleSimParser::unitDef() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(68);
-    match(BattleSimParser::T__5);
-    setState(69);
-    match(BattleSimParser::NAME);
-    setState(70);
+    setState(65);
     match(BattleSimParser::T__6);
+    setState(66);
+    match(BattleSimParser::NAME);
+    setState(67);
+    match(BattleSimParser::T__7);
+    setState(68);
+    match(BattleSimParser::T__8);
+    setState(69);
+    match(BattleSimParser::NUMBER);
+    setState(70);
+    match(BattleSimParser::T__9);
     setState(71);
     match(BattleSimParser::NUMBER);
     setState(72);
-    match(BattleSimParser::T__7);
+    match(BattleSimParser::T__10);
     setState(73);
-    match(BattleSimParser::NUMBER);
+    match(BattleSimParser::T__1);
     setState(74);
-    match(BattleSimParser::T__8);
-    setState(75);
     unitStats();
-    setState(76);
+    setState(75);
     unitLogicSequence();
-    setState(77);
+    setState(76);
     match(BattleSimParser::T__2);
    
   }
@@ -577,18 +570,18 @@ BattleSimParser::UnitStatsContext* BattleSimParser::unitStats() {
   });
   try {
     enterOuterAlt(_localctx, 1);
+    setState(78);
+    match(BattleSimParser::T__11);
     setState(79);
-    match(BattleSimParser::T__9);
+    match(BattleSimParser::NUMBER);
     setState(80);
-    match(BattleSimParser::NUMBER);
+    match(BattleSimParser::T__5);
     setState(81);
-    match(BattleSimParser::T__4);
+    match(BattleSimParser::T__12);
     setState(82);
-    match(BattleSimParser::T__10);
-    setState(83);
     match(BattleSimParser::NUMBER);
-    setState(84);
-    match(BattleSimParser::T__4);
+    setState(83);
+    match(BattleSimParser::T__5);
    
   }
   catch (RecognitionException &e) {
@@ -653,22 +646,22 @@ BattleSimParser::UnitLogicSequenceContext* BattleSimParser::unitLogicSequence() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(86);
-    match(BattleSimParser::T__11);
-    setState(92);
+    setState(85);
+    match(BattleSimParser::T__1);
+    setState(91);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 128311296) != 0)) {
-      setState(87);
+      ((1ULL << _la) & 128434176) != 0)) {
+      setState(86);
       logicCommand();
-      setState(88);
-      match(BattleSimParser::T__4);
-      setState(94);
+      setState(87);
+      match(BattleSimParser::T__5);
+      setState(93);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(95);
+    setState(94);
     match(BattleSimParser::T__2);
    
   }
@@ -707,8 +700,8 @@ BattleSimParser::AttackCmdContext* BattleSimParser::LogicCommandContext::attackC
   return getRuleContext<BattleSimParser::AttackCmdContext>(0);
 }
 
-BattleSimParser::SkipContext* BattleSimParser::LogicCommandContext::skip() {
-  return getRuleContext<BattleSimParser::SkipContext>(0);
+BattleSimParser::SkipCmdContext* BattleSimParser::LogicCommandContext::skipCmd() {
+  return getRuleContext<BattleSimParser::SkipCmdContext>(0);
 }
 
 
@@ -748,35 +741,35 @@ BattleSimParser::LogicCommandContext* BattleSimParser::logicCommand() {
     exitRule();
   });
   try {
-    setState(103);
+    setState(102);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case BattleSimParser::T__12: {
+      case BattleSimParser::T__13: {
         enterOuterAlt(_localctx, 1);
-        setState(97);
+        setState(96);
         moveCmd();
         break;
       }
 
-      case BattleSimParser::T__13:
       case BattleSimParser::T__14:
-      case BattleSimParser::T__15: {
+      case BattleSimParser::T__15:
+      case BattleSimParser::T__16: {
         enterOuterAlt(_localctx, 2);
-        setState(98);
+        setState(97);
         turnCmd();
         break;
       }
 
       case BattleSimParser::T__17: {
         enterOuterAlt(_localctx, 3);
-        setState(99);
+        setState(98);
         ifCondition();
         break;
       }
 
       case BattleSimParser::T__20: {
         enterOuterAlt(_localctx, 4);
-        setState(100);
+        setState(99);
         whileCycle();
         break;
       }
@@ -785,15 +778,15 @@ BattleSimParser::LogicCommandContext* BattleSimParser::logicCommand() {
       case BattleSimParser::T__23:
       case BattleSimParser::T__24: {
         enterOuterAlt(_localctx, 5);
-        setState(101);
+        setState(100);
         attackCmd();
         break;
       }
 
       case BattleSimParser::T__25: {
         enterOuterAlt(_localctx, 6);
-        setState(102);
-        skip();
+        setState(101);
+        skipCmd();
         break;
       }
 
@@ -855,8 +848,8 @@ BattleSimParser::MoveCmdContext* BattleSimParser::moveCmd() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(105);
-    match(BattleSimParser::T__12);
+    setState(104);
+    match(BattleSimParser::T__13);
    
   }
   catch (RecognitionException &e) {
@@ -915,31 +908,31 @@ BattleSimParser::TurnCmdContext* BattleSimParser::turnCmd() {
     exitRule();
   });
   try {
-    setState(113);
+    setState(112);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case BattleSimParser::T__13: {
-        enterOuterAlt(_localctx, 1);
-        setState(107);
-        match(BattleSimParser::T__13);
-        break;
-      }
-
       case BattleSimParser::T__14: {
-        enterOuterAlt(_localctx, 2);
-        setState(108);
+        enterOuterAlt(_localctx, 1);
+        setState(106);
         match(BattleSimParser::T__14);
         break;
       }
 
       case BattleSimParser::T__15: {
-        enterOuterAlt(_localctx, 3);
-        setState(109);
+        enterOuterAlt(_localctx, 2);
+        setState(107);
         match(BattleSimParser::T__15);
-        setState(110);
-        orientation();
-        setState(111);
+        break;
+      }
+
+      case BattleSimParser::T__16: {
+        enterOuterAlt(_localctx, 3);
+        setState(108);
         match(BattleSimParser::T__16);
+        setState(109);
+        orientation();
+        setState(110);
+        match(BattleSimParser::T__10);
         break;
       }
 
@@ -1013,20 +1006,30 @@ BattleSimParser::IfConditionContext* BattleSimParser::ifCondition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(115);
+    setState(114);
     match(BattleSimParser::T__17);
+    setState(115);
+    match(BattleSimParser::T__8);
     setState(116);
     boolexp();
     setState(117);
-    match(BattleSimParser::T__18);
+    match(BattleSimParser::T__10);
     setState(118);
-    logicCommand();
+    match(BattleSimParser::T__18);
     setState(119);
-    match(BattleSimParser::T__19);
+    match(BattleSimParser::T__8);
     setState(120);
     logicCommand();
     setState(121);
-    match(BattleSimParser::T__16);
+    match(BattleSimParser::T__10);
+    setState(122);
+    match(BattleSimParser::T__19);
+    setState(123);
+    match(BattleSimParser::T__8);
+    setState(124);
+    logicCommand();
+    setState(125);
+    match(BattleSimParser::T__10);
    
   }
   catch (RecognitionException &e) {
@@ -1090,16 +1093,22 @@ BattleSimParser::WhileCycleContext* BattleSimParser::whileCycle() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(123);
-    match(BattleSimParser::T__20);
-    setState(124);
-    boolexp();
-    setState(125);
-    match(BattleSimParser::T__21);
-    setState(126);
-    logicCommand();
     setState(127);
-    match(BattleSimParser::T__16);
+    match(BattleSimParser::T__20);
+    setState(128);
+    match(BattleSimParser::T__8);
+    setState(129);
+    boolexp();
+    setState(130);
+    match(BattleSimParser::T__10);
+    setState(131);
+    match(BattleSimParser::T__21);
+    setState(132);
+    match(BattleSimParser::T__8);
+    setState(133);
+    logicCommand();
+    setState(134);
+    match(BattleSimParser::T__10);
    
   }
   catch (RecognitionException &e) {
@@ -1158,31 +1167,31 @@ BattleSimParser::AttackCmdContext* BattleSimParser::attackCmd() {
     exitRule();
   });
   try {
-    setState(135);
+    setState(142);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__22: {
         enterOuterAlt(_localctx, 1);
-        setState(129);
+        setState(136);
         match(BattleSimParser::T__22);
         break;
       }
 
       case BattleSimParser::T__23: {
         enterOuterAlt(_localctx, 2);
-        setState(130);
+        setState(137);
         match(BattleSimParser::T__23);
         break;
       }
 
       case BattleSimParser::T__24: {
         enterOuterAlt(_localctx, 3);
-        setState(131);
+        setState(138);
         match(BattleSimParser::T__24);
-        setState(132);
+        setState(139);
         exp(0);
-        setState(133);
-        match(BattleSimParser::T__16);
+        setState(140);
+        match(BattleSimParser::T__10);
         break;
       }
 
@@ -1200,40 +1209,40 @@ BattleSimParser::AttackCmdContext* BattleSimParser::attackCmd() {
   return _localctx;
 }
 
-//----------------- SkipContext ------------------------------------------------------------------
+//----------------- SkipCmdContext ------------------------------------------------------------------
 
-BattleSimParser::SkipContext::SkipContext(ParserRuleContext *parent, size_t invokingState)
+BattleSimParser::SkipCmdContext::SkipCmdContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
 
-size_t BattleSimParser::SkipContext::getRuleIndex() const {
-  return BattleSimParser::RuleSkip;
+size_t BattleSimParser::SkipCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleSkipCmd;
 }
 
-void BattleSimParser::SkipContext::enterRule(tree::ParseTreeListener *listener) {
+void BattleSimParser::SkipCmdContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<BattleSimListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterSkip(this);
+    parserListener->enterSkipCmd(this);
 }
 
-void BattleSimParser::SkipContext::exitRule(tree::ParseTreeListener *listener) {
+void BattleSimParser::SkipCmdContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<BattleSimListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitSkip(this);
+    parserListener->exitSkipCmd(this);
 }
 
 
-std::any BattleSimParser::SkipContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any BattleSimParser::SkipCmdContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
-    return parserVisitor->visitSkip(this);
+    return parserVisitor->visitSkipCmd(this);
   else
     return visitor->visitChildren(this);
 }
 
-BattleSimParser::SkipContext* BattleSimParser::skip() {
-  SkipContext *_localctx = _tracker.createInstance<SkipContext>(_ctx, getState());
-  enterRule(_localctx, 24, BattleSimParser::RuleSkip);
+BattleSimParser::SkipCmdContext* BattleSimParser::skipCmd() {
+  SkipCmdContext *_localctx = _tracker.createInstance<SkipCmdContext>(_ctx, getState());
+  enterRule(_localctx, 24, BattleSimParser::RuleSkipCmd);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1244,7 +1253,7 @@ BattleSimParser::SkipContext* BattleSimParser::skip() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(137);
+    setState(144);
     match(BattleSimParser::T__25);
    
   }
@@ -1305,7 +1314,7 @@ BattleSimParser::BoolexpContext* BattleSimParser::boolexp() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(139);
+    setState(146);
     orExpr();
    
   }
@@ -1371,17 +1380,17 @@ BattleSimParser::OrExprContext* BattleSimParser::orExpr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(141);
+    setState(148);
     andExpr();
-    setState(146);
+    setState(153);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == BattleSimParser::T__26) {
-      setState(142);
+      setState(149);
       match(BattleSimParser::T__26);
-      setState(143);
+      setState(150);
       andExpr();
-      setState(148);
+      setState(155);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1449,17 +1458,17 @@ BattleSimParser::AndExprContext* BattleSimParser::andExpr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(149);
+    setState(156);
     notExpr();
-    setState(154);
+    setState(161);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == BattleSimParser::T__27) {
-      setState(150);
+      setState(157);
       match(BattleSimParser::T__27);
-      setState(151);
+      setState(158);
       notExpr();
-      setState(156);
+      setState(163);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1525,21 +1534,22 @@ BattleSimParser::NotExprContext* BattleSimParser::notExpr() {
     exitRule();
   });
   try {
-    setState(160);
+    setState(167);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__28: {
         enterOuterAlt(_localctx, 1);
-        setState(157);
+        setState(164);
         match(BattleSimParser::T__28);
-        setState(158);
+        setState(165);
         notExpr();
         break;
       }
 
+      case BattleSimParser::T__8:
       case BattleSimParser::T__29:
       case BattleSimParser::T__30:
-      case BattleSimParser::T__31:
+      case BattleSimParser::T__33:
       case BattleSimParser::T__34:
       case BattleSimParser::T__35:
       case BattleSimParser::T__36:
@@ -1548,11 +1558,10 @@ BattleSimParser::NotExprContext* BattleSimParser::notExpr() {
       case BattleSimParser::T__39:
       case BattleSimParser::T__40:
       case BattleSimParser::T__41:
-      case BattleSimParser::T__42:
       case BattleSimParser::ORIENTATION:
       case BattleSimParser::NUMBER: {
         enterOuterAlt(_localctx, 2);
-        setState(159);
+        setState(166);
         primaryBool();
         break;
       }
@@ -1647,83 +1656,83 @@ BattleSimParser::PrimaryBoolContext* BattleSimParser::primaryBool() {
     exitRule();
   });
   try {
-    setState(179);
+    setState(186);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 9, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 8, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(162);
+      setState(169);
       match(BattleSimParser::T__29);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(163);
+      setState(170);
       match(BattleSimParser::T__30);
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(164);
-      match(BattleSimParser::T__31);
-      setState(165);
+      setState(171);
+      match(BattleSimParser::T__8);
+      setState(172);
       boolexp();
-      setState(166);
-      match(BattleSimParser::T__16);
+      setState(173);
+      match(BattleSimParser::T__10);
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(168);
+      setState(175);
       exp(0);
-      setState(169);
+      setState(176);
       match(BattleSimParser::COMPSYMBOL);
-      setState(170);
+      setState(177);
       exp(0);
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(172);
+      setState(179);
       orientation();
-      setState(173);
+      setState(180);
       _la = _input->LA(1);
-      if (!(_la == BattleSimParser::T__32
+      if (!(_la == BattleSimParser::T__31
 
-      || _la == BattleSimParser::T__33)) {
+      || _la == BattleSimParser::T__32)) {
       _errHandler->recoverInline(this);
       }
       else {
         _errHandler->reportMatch(this);
         consume();
       }
-      setState(174);
+      setState(181);
       orientation();
       break;
     }
 
     case 6: {
       enterOuterAlt(_localctx, 6);
-      setState(176);
+      setState(183);
       blockCheck();
       break;
     }
 
     case 7: {
       enterOuterAlt(_localctx, 7);
-      setState(177);
+      setState(184);
       orientationCheck();
       break;
     }
 
     case 8: {
       enterOuterAlt(_localctx, 8);
-      setState(178);
-      match(BattleSimParser::T__34);
+      setState(185);
+      match(BattleSimParser::T__33);
       break;
     }
 
@@ -1786,11 +1795,11 @@ BattleSimParser::BlockCheckContext* BattleSimParser::blockCheck() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(181);
+    setState(188);
     _la = _input->LA(1);
-    if (!(_la == BattleSimParser::T__35
+    if (!(_la == BattleSimParser::T__34
 
-    || _la == BattleSimParser::T__36)) {
+    || _la == BattleSimParser::T__35)) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1853,10 +1862,10 @@ BattleSimParser::OrientationCheckContext* BattleSimParser::orientationCheck() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(183);
+    setState(190);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 4123168604160) != 0))) {
+      ((1ULL << _la) & 2061584302080) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1923,10 +1932,10 @@ BattleSimParser::OrientationContext* BattleSimParser::orientation() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(185);
+    setState(192);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 83562883710976) != 0))) {
+      ((1ULL << _la) & 41781441855488) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -2017,22 +2026,22 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(193);
+    setState(200);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::NUMBER: {
-        setState(188);
+        setState(195);
         match(BattleSimParser::NUMBER);
         break;
       }
 
-      case BattleSimParser::T__31: {
-        setState(189);
-        match(BattleSimParser::T__31);
-        setState(190);
+      case BattleSimParser::T__8: {
+        setState(196);
+        match(BattleSimParser::T__8);
+        setState(197);
         exp(0);
-        setState(191);
-        match(BattleSimParser::T__16);
+        setState(198);
+        match(BattleSimParser::T__10);
         break;
       }
 
@@ -2040,9 +2049,9 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(200);
+    setState(207);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 11, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
@@ -2050,17 +2059,17 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
         previousContext = _localctx;
         _localctx = _tracker.createInstance<ExpContext>(parentContext, parentState);
         pushNewRecursionContext(_localctx, startState, RuleExp);
-        setState(195);
+        setState(202);
 
         if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
-        setState(196);
+        setState(203);
         match(BattleSimParser::MATHSYMBOL);
-        setState(197);
+        setState(204);
         exp(3); 
       }
-      setState(202);
+      setState(209);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 11, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx);
     }
   }
   catch (RecognitionException &e) {

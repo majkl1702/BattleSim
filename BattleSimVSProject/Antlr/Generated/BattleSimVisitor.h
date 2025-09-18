@@ -43,7 +43,7 @@ public:
 
     virtual std::any visitAttackCmd(BattleSimParser::AttackCmdContext *context) = 0;
 
-    virtual std::any visitSkip(BattleSimParser::SkipContext *context) = 0;
+    virtual std::any visitSkipCmd(BattleSimParser::SkipCmdContext *context) = 0;
 
     virtual std::any visitBoolexp(BattleSimParser::BoolexpContext *context) = 0;
 

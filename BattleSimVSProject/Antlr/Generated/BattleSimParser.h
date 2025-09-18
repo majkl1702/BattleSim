@@ -18,14 +18,14 @@ public:
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
     T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
-    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, MATHSYMBOL = 44, 
-    COMPSYMBOL = 45, ORIENTATION = 46, NAME = 47, NUMBER = 48, WS = 49
+    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, MATHSYMBOL = 43, COMPSYMBOL = 44, 
+    ORIENTATION = 45, NAME = 46, NUMBER = 47, WS = 48
   };
 
   enum {
     RuleBattleSim = 0, RuleMap = 1, RuleTeamDef = 2, RuleUnitDef = 3, RuleUnitStats = 4, 
     RuleUnitLogicSequence = 5, RuleLogicCommand = 6, RuleMoveCmd = 7, RuleTurnCmd = 8, 
-    RuleIfCondition = 9, RuleWhileCycle = 10, RuleAttackCmd = 11, RuleSkip = 12, 
+    RuleIfCondition = 9, RuleWhileCycle = 10, RuleAttackCmd = 11, RuleSkipCmd = 12, 
     RuleBoolexp = 13, RuleOrExpr = 14, RuleAndExpr = 15, RuleNotExpr = 16, 
     RulePrimaryBool = 17, RuleBlockCheck = 18, RuleOrientationCheck = 19, 
     RuleOrientation = 20, RuleExp = 21
@@ -60,7 +60,7 @@ public:
   class IfConditionContext;
   class WhileCycleContext;
   class AttackCmdContext;
-  class SkipContext;
+  class SkipCmdContext;
   class BoolexpContext;
   class OrExprContext;
   class AndExprContext;
@@ -180,7 +180,7 @@ public:
     IfConditionContext *ifCondition();
     WhileCycleContext *whileCycle();
     AttackCmdContext *attackCmd();
-    SkipContext *skip();
+    SkipCmdContext *skipCmd();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -268,9 +268,9 @@ public:
 
   AttackCmdContext* attackCmd();
 
-  class  SkipContext : public antlr4::ParserRuleContext {
+  class  SkipCmdContext : public antlr4::ParserRuleContext {
   public:
-    SkipContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    SkipCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -280,7 +280,7 @@ public:
    
   };
 
-  SkipContext* skip();
+  SkipCmdContext* skipCmd();
 
   class  BoolexpContext : public antlr4::ParserRuleContext {
   public:

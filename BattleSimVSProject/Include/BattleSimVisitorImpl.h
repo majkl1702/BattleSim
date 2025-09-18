@@ -2,6 +2,9 @@
 
 #include "../Antlr/Generated/BattleSimBaseVisitor.h"
 
+class Map;
+class Unit;
+
 class BattleSimVisitorImpl : public BattleSimBaseVisitor
 {
 public:
@@ -30,7 +33,7 @@ public:
 
   virtual std::any visitAttackCmd(BattleSimParser::AttackCmdContext* ctx) override;
 
-  virtual std::any visitSkip(BattleSimParser::SkipContext* ctx) override;
+  virtual std::any visitSkipCmd(BattleSimParser::SkipCmdContext* ctx) override;
 
   virtual std::any visitBoolexp(BattleSimParser::BoolexpContext* ctx) override;
 
@@ -49,6 +52,17 @@ public:
   virtual std::any visitOrientation(BattleSimParser::OrientationContext* ctx) override;
 
   virtual std::any visitExp(BattleSimParser::ExpContext* ctx) override;
+
+  //! Game functions.
+  //! Creates a game map from the parse tree.
+  Map CreateGameMap(BattleSimParser::BattleSimContext* context);
+
+  //! Creates units from the parse tree.
+  //! Returns a pair of vectors, each containing the units for one team.
+  std::pair<std::vector<Unit>, std::vector<Unit>> CreateUnits(BattleSimParser::BattleSimContext* context);
+
+  //! Creates a single unit from its definition in the parse tree.
+  Unit CreateUnit(BattleSimParser::UnitDefContext* context);
 
 private:
 
