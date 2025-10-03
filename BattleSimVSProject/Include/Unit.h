@@ -29,9 +29,9 @@ public:
   //! Get unit logic parse tree context.
   [[nodiscard]] auto GetUnitLogic() { return _unitLogic; }
 
-  void SetPosition(int x, int y) { _x = x; _y = y; }
-  [[nodiscard]] int GetX() const { return _x; }
-  [[nodiscard]] int GetY() const { return _y; }
+  void SetPosition(uint32_t x, uint32_t y) { _x = x; _y = y; }
+  [[nodiscard]] uint32_t GetX() const { return _x; }
+  [[nodiscard]] uint32_t GetY() const { return _y; }
 
 private:
 
@@ -42,8 +42,8 @@ private:
   BattleSimParser::UnitLogicSequenceContext* _unitLogic;
 
   //! Unit coordinates on the map.
-  int _x = 0;
-  int _y = 0;
+  uint32_t _x = 0;
+  uint32_t _y = 0;
 
   // ! Reference to the game map for unit interactions.
   Map& _map; //todo remove?

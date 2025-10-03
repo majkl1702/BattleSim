@@ -45,7 +45,14 @@ void Map::PrintMap() const
     std::cout << '|';
     for (const auto& point : row)
     {
-      std::cout << (point.content ? point.content : ' ') << ' ';
+      if (point.unit)
+      {
+        std::cout << point.unit->GetName()[0] << ' '; // Print unit.
+      }
+      else
+      {
+        std::cout << "  "; // Empty space.
+      }
     }
     std::cout << '|';
     std::cout << std::endl;

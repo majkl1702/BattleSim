@@ -212,7 +212,8 @@ std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::s
   {
     if (command->moveCmd())
     {
-      // Handle move command.
+      ExecuteMoveCommand(unit, command->moveCmd(), map);
+      continue;
     }
     else if (command->turnCmd())
     {
@@ -241,4 +242,12 @@ std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::s
   }
   
   return deadUnits;
+}
+
+void BattleSimVisitorImpl::ExecuteMoveCommand(
+  std::shared_ptr<Unit> unit, 
+  BattleSimParser::MoveCmdContext* ctx, 
+  Map& map) const
+{
+  //todo implement get orientation in unit and execute move forward if possible
 }

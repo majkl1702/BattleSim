@@ -71,6 +71,10 @@ public:
   //! Moves the unit according to its logic and updates the map state.
   std::vector<std::shared_ptr<Unit>> SimulateUnitTurn(std::shared_ptr<Unit> unit, Map& map);
 
+
+  // Commands
+  void ExecuteMoveCommand(std::shared_ptr<Unit> unit, BattleSimParser::MoveCmdContext* ctx, Map& map) const;
+
 private:
 };
 
