@@ -2,7 +2,11 @@
 #pragma once
 #include "../Include/Application.h"
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "antlr4-runtime.h"
+#pragma warning(pop)
+
 #include "../Antlr/Generated/BattleSimLexer.h";
 #include "../Antlr/Generated/BattleSimParser.h";
 

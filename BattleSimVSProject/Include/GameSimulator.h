@@ -1,6 +1,9 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "antlr4-runtime.h"
+#pragma warning(pop)
 
 #include "../Include/BattleSimVisitorImpl.h";
 #include "../Include/Map.h"
@@ -42,8 +45,8 @@ private:
   Map _map{0, 0};
 
   //! Units in the game.
-  std::vector<Unit> _blueUnits;
-  std::vector<Unit> _redUnits;
-  std::list<Unit*> _allUnits;
+  std::vector<std::shared_ptr<Unit>> _blueUnits;
+  std::vector<std::shared_ptr<Unit>> _redUnits;
+  std::list<std::shared_ptr<Unit>> _allUnits;
 };
 

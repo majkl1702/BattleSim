@@ -1,4 +1,7 @@
+#pragma once
 #include "../Include/Map.h"
+
+#include <iostream>
 
 Map::Map(uint32_t width, uint32_t height)
   : _width(width)
@@ -19,4 +22,64 @@ bool Map::IsValid() const
 
   //! Check if dimensions are positive and match the map size.
   return _width > 0 && _height > 0 && _map.size() == _height;
+}
+
+void Map::PrintMap() const
+{
+  std::cout << "Map state:" << std::endl;
+
+  const auto printHorizontalBorder = [this]() {
+    std::cout << '+';
+    for (uint32_t i = 0; i < _width; ++i)
+    {
+      std::cout << "--";
+    }
+    std::cout << '+' << std::endl;
+    };
+
+  // Print top border.
+  printHorizontalBorder();
+
+  for (const auto& row : _map)
+  {
+    std::cout << '|';
+    for (const auto& point : row)
+    {
+      std::cout << (point.content ? point.content : ' ') << ' ';
+    }
+    std::cout << '|';
+    std::cout << std::endl;
+  }
+
+  // Print bottom border.
+  printHorizontalBorder();
+}
+
+bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
+{
+  if (!unit || x < 0 || x >= _width || y < 0 || y >= _height)
+  {
+    return false;
+  }
+
+  const auto previousX = unit->GetX();
+  const auto previousY = unit->GetY();
+  if (previousX >= 0 && previousX < _width && previousY >= 0 && previousY < _height)
+  {
+    // Clear previous position.
+    auto& previousMapPoint = _map[previousY][previousX];
+    previousMapPoint.content = ' ';
+    previousMapPoint.unit = nullptr;
+  }
+
+  // Place unit at new position.
+  auto& mapPoint = _map[y][x];
+  mapPoint.content = unit->GetName().empty() ? 'U' : unit->GetName()[0]; // Use first letter of unit name or 'U' if name is empty.
+  mapPoint.unit = unit;
+
+  // Cache position.
+  _unitPositions[&*unit] = {x, y};
+
+  unit->SetPosition(x, y);
+  return true;
 }

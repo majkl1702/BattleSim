@@ -1,11 +1,12 @@
 #pragma once
 
 #include "../Common.h"
+#include "Unit.h"
 
 #include <vector>
 
 //! Content of a single map point.
-class MapPoint
+struct MapPoint
 {
 public:
   MapPoint() = default;
@@ -15,9 +16,10 @@ public:
   MapPoint(MapPoint&&) = default;
   MapPoint& operator=(MapPoint&&) = default;
 
-private:
+  //! Content of the point.
+  char content = ' ';
 
-  // Content of the map point.
+  std::shared_ptr<Unit> unit = nullptr;
 };
 
 //! Map class representing the game area.
@@ -36,6 +38,12 @@ public:
   //! Returns true if the map is valid.
   [[nodiscard]] bool IsValid() const;
 
+  //! Prints the current state of the map to the console.
+  void PrintMap() const;
+
+  //! Places a unit on the map at the specified coordinates.
+  bool PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit);
+
 private:
   //! Map dimensions.
   uint32_t _width = 0;
@@ -43,4 +51,7 @@ private:
 
   //! 2D map representation.
   std::vector<std::vector<MapPoint>> _map;
+
+  //! Track unit positions for quick access.
+  std::unordered_map<Unit*, std::pair<int, int>> _unitPositions;
 };

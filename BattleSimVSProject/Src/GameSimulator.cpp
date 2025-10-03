@@ -16,13 +16,13 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   // Prepare map from config.
   _map = _visitor.CreateGameMap(context);
 
-  if (_map.IsValid())
+  if (!_map.IsValid())
   {
     return -1;
   }
 
   // Create units from config.
-  auto unitsPair = _visitor.CreateUnits(context);
+  auto unitsPair = _visitor.CreateUnits(context, _map);
   _blueUnits = std::move(unitsPair.first);
   _redUnits = std::move(unitsPair.second);
 
@@ -34,11 +34,11 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   // Prepare all units list for simulation queue by alternating units from both teams.
   for (auto i = 0 ; i < _blueUnits.size(); ++i)
   {
-    _allUnits.push_back(&_redUnits[i]);
+    _allUnits.push_back(_blueUnits[i]);
 
     if (i < _redUnits.size())
     {
-      _allUnits.push_back(&_redUnits[i]);
+      _allUnits.push_back(_redUnits[i]);
     }
   }
 
@@ -64,16 +64,20 @@ int GameSimulator::SimulateGame()
 int GameSimulator::SimulateTurn()
 {
   // Simulate a turn for all units.
-  for (auto* unit : _allUnits)
+  for (auto unitIter = _allUnits.begin(); unitIter != _allUnits.end();)
   {
     // Locked FPS for better visibility.
     std::chrono::milliseconds timespan(DELAY);
     std::this_thread::sleep_for(timespan);
     
-    // Todo simulate unit turn.
+    // Simulate unit turn.
+    _visitor.SimulateUnitTurn(*unitIter, _map);
+
+    ++unitIter;
   }
 
-  // Todo show map state.
+  // Show map state.
+  _map.PrintMap();
 
   return 0;
 }

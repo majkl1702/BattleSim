@@ -59,12 +59,18 @@ public:
 
   //! Creates units from the parse tree.
   //! Returns a pair of vectors, each containing the units for one team.
-  std::pair<std::vector<Unit>, std::vector<Unit>> CreateUnits(BattleSimParser::BattleSimContext* context);
+  std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> CreateUnits(
+    BattleSimParser::BattleSimContext* context,
+    Map& map);
 
   //! Creates a single unit from its definition in the parse tree.
-  Unit CreateUnit(BattleSimParser::UnitDefContext* context);
+  std::shared_ptr<Unit> CreateUnit(BattleSimParser::UnitDefContext* context, Map& map);
+
+  //! Simulates a single turn for a unit on the map.
+  //! Returns a vector unit pointers that were eliminated in this turn.
+  //! Moves the unit according to its logic and updates the map state.
+  std::vector<std::shared_ptr<Unit>> SimulateUnitTurn(std::shared_ptr<Unit> unit, Map& map);
 
 private:
-
 };
 

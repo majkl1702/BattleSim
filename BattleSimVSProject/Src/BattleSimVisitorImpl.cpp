@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include "../Include/BattleSimVisitorImpl.h"
 
 #include "../Include/Map.h"
@@ -135,42 +135,43 @@ Map BattleSimVisitorImpl::CreateGameMap(BattleSimParser::BattleSimContext* conte
   return Map(width, height);
 }
 
-std::pair<std::vector<Unit>, std::vector<Unit>> BattleSimVisitorImpl::CreateUnits(
-  BattleSimParser::BattleSimContext* context)
+std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> 
+BattleSimVisitorImpl::CreateUnits(
+  BattleSimParser::BattleSimContext* context,
+  Map& map)
 {
   auto teamDefs = context->teamDef();
 
   if (teamDefs.size() != 2)
     throw std::runtime_error("There must be exactly two teams defined.");
 
-  std::pair<std::vector<Unit>, std::vector<Unit>> teams;
+  std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> teams;
 
-  for (auto* teamDef : teamDefs)
-  {
-    if (!teamDef)
-      throw std::runtime_error("Invalid team definition.");
-
-    auto unitDefs = teamDef->unitDef();
-
-    if (unitDefs.empty())
-      throw std::runtime_error("Each team must have at least one unit defined.");
-
-    // Determine which team we are processing.
-    auto teamIndex = (teamDef == teamDefs[0]) ? 0 : 1;
-    auto& teamUnits = (teamIndex == 0) ? teams.first : teams.second;
-
-    for (auto* unitDef : unitDefs)
+  const auto prepareTeam = [this, &map](BattleSimParser::TeamDefContext* teamDefContext, std::vector<std::shared_ptr<Unit>>& team)
     {
-      teamUnits.push_back(CreateUnit(unitDef));
-    }
-  }
+      if (!teamDefContext)
+        throw std::runtime_error("Invalid team definition.");
 
-  teams.first.shrink_to_fit();
-  teams.second.shrink_to_fit();
+      auto unitDefs = teamDefContext->unitDef();
+
+      if (unitDefs.empty())
+        throw std::runtime_error("Each team must have at least one unit defined.");
+
+      for (auto* unitDef : unitDefs)
+      {
+        team.push_back(CreateUnit(unitDef, map));
+      }
+
+      team.shrink_to_fit();
+    };
+
+  // Prepare both teams.
+  prepareTeam(teamDefs[0], teams.first);
+  prepareTeam(teamDefs[1], teams.second);
   return teams;
 }
 
-Unit BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context)
+std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context, Map& map)
 {
   if (!context)
     throw std::runtime_error("Invalid unit definition context.");
@@ -180,12 +181,64 @@ Unit BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context)
     throw std::runtime_error("Unit stats are not properly defined.");
 
   int health = std::stoi(statsCtx->NUMBER(0u)->getText());
-  int attack = std::stoi(statsCtx->NUMBER(0u)->getText());
+  int attack = std::stoi(statsCtx->NUMBER(1u)->getText());
 
-  return Unit{
+  auto unit = std::make_shared<Unit>(
     context->NAME()->getText(),
     health,
     attack,
-    context->unitLogicSequence() ? context->unitLogicSequence()->getText() : ""
-  };
+    context->unitLogicSequence(),
+    map
+  );
+
+  uint32_t x = static_cast<uint32_t>(std::stoi(context->NUMBER(0u)->getText()));
+  uint32_t y = static_cast<uint32_t>(std::stoi(context->NUMBER(1u)->getText()));
+  unit->SetPosition(x, y);
+
+  if (!map.PlaceUnit(x, y, unit))
+    throw std::runtime_error("Failed to place unit on the map at the specified coordinates.");
+
+  return unit;
+}
+
+std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit, Map& map)
+{
+  std::vector<std::shared_ptr<Unit>> deadUnits;
+
+  const auto commands = unit->GetUnitLogic()->logicCommand();
+
+  // Evaluate each command.
+  for (auto* command : commands)
+  {
+    if (command->moveCmd())
+    {
+      // Handle move command.
+    }
+    else if (command->turnCmd())
+    {
+      // Handle turn command.
+    }
+    else if (command->ifCondition())
+    {
+      // Handle if condition.
+    }
+    else if (command->whileCycle())
+    {
+      // Handle while cycle.
+    }
+    else if (command->attackCmd())
+    {
+      // Handle attack command.
+    }
+    else if (command->skipCmd())
+    {
+
+    }
+    else
+    {
+      throw std::runtime_error("Unknown command in unit logic.");
+    }
+  }
+  
+  return deadUnits;
 }
