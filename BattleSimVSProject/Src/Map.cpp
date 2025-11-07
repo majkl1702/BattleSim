@@ -69,6 +69,12 @@ bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
     return false;
   }
 
+  auto& mapPoint = _map[y][x];
+  if (mapPoint.unit != nullptr)
+  {
+    return false; // Position already occupied.
+  }
+
   const auto previousX = unit->GetX();
   const auto previousY = unit->GetY();
   if (previousX >= 0 && previousX < _width && previousY >= 0 && previousY < _height)
@@ -80,13 +86,10 @@ bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
   }
 
   // Place unit at new position.
-  auto& mapPoint = _map[y][x];
   mapPoint.content = unit->GetName().empty() ? 'U' : unit->GetName()[0]; // Use first letter of unit name or 'U' if name is empty.
   mapPoint.unit = unit;
 
   // Cache position.
   _unitPositions[&*unit] = {x, y};
-
-  unit->SetPosition(x, y);
   return true;
 }

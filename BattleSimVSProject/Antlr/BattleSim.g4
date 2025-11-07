@@ -26,7 +26,7 @@ moveCmd: 'MoveForward()';
 
 turnCmd: 'TurnLeft()' | 'TurnRight()' | 'Turn(' orientation ')';
 
-ifCondition: 'if' '(' boolexp ')' 'then' '(' logicCommand ')' 'else' '(' logicCommand ')';
+ifCondition: 'if' '(' boolexp ')' 'then' '(' unitLogicSequence ')' 'else' '(' unitLogicSequence ')';
 
 whileCycle: 'while' '(' boolexp ')' 'do' '(' logicCommand ')';
 

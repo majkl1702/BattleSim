@@ -225,8 +225,8 @@ public:
     IfConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     BoolexpContext *boolexp();
-    std::vector<LogicCommandContext *> logicCommand();
-    LogicCommandContext* logicCommand(size_t i);
+    std::vector<UnitLogicSequenceContext *> unitLogicSequence();
+    UnitLogicSequenceContext* unitLogicSequence(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

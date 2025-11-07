@@ -44,6 +44,9 @@ public:
   //! Places a unit on the map at the specified coordinates.
   bool PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit);
 
+  int GetWidth() const { return _width; }
+  int GetHeight() const { return _height; }
+
 private:
   //! Map dimensions.
   uint32_t _width = 0;

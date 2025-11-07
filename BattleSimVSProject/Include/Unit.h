@@ -1,6 +1,8 @@
 #pragma once
-#include <string>
+#include "../Common.h"
 #include "../Antlr/Generated/BattleSimParser.h"
+
+#include <string>
 
 class Map;
 
@@ -33,6 +35,9 @@ public:
   [[nodiscard]] uint32_t GetX() const { return _x; }
   [[nodiscard]] uint32_t GetY() const { return _y; }
 
+  void SetOrientation(Orientation orientation) { _orientation = orientation; }
+  [[nodiscard]] Orientation GetOrientation() const { return _orientation; }
+
 private:
 
   //! Unit properties.
@@ -44,6 +49,7 @@ private:
   //! Unit coordinates on the map.
   uint32_t _x = 0;
   uint32_t _y = 0;
+  Orientation _orientation = Orientation::N;
 
   // ! Reference to the game map for unit interactions.
   Map& _map; //todo remove?

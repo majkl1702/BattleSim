@@ -115,8 +115,8 @@ void battlesimParserInitialize() {
   	108,109,5,17,0,0,109,110,3,40,20,0,110,111,5,11,0,0,111,113,1,0,0,0,112,
   	106,1,0,0,0,112,107,1,0,0,0,112,108,1,0,0,0,113,17,1,0,0,0,114,115,5,
   	18,0,0,115,116,5,9,0,0,116,117,3,26,13,0,117,118,5,11,0,0,118,119,5,19,
-  	0,0,119,120,5,9,0,0,120,121,3,12,6,0,121,122,5,11,0,0,122,123,5,20,0,
-  	0,123,124,5,9,0,0,124,125,3,12,6,0,125,126,5,11,0,0,126,19,1,0,0,0,127,
+  	0,0,119,120,5,9,0,0,120,121,3,10,5,0,121,122,5,11,0,0,122,123,5,20,0,
+  	0,123,124,5,9,0,0,124,125,3,10,5,0,125,126,5,11,0,0,126,19,1,0,0,0,127,
   	128,5,21,0,0,128,129,5,9,0,0,129,130,3,26,13,0,130,131,5,11,0,0,131,132,
   	5,22,0,0,132,133,5,9,0,0,133,134,3,12,6,0,134,135,5,11,0,0,135,21,1,0,
   	0,0,136,143,5,23,0,0,137,143,5,24,0,0,138,139,5,25,0,0,139,140,3,42,21,
@@ -960,12 +960,12 @@ BattleSimParser::BoolexpContext* BattleSimParser::IfConditionContext::boolexp() 
   return getRuleContext<BattleSimParser::BoolexpContext>(0);
 }
 
-std::vector<BattleSimParser::LogicCommandContext *> BattleSimParser::IfConditionContext::logicCommand() {
-  return getRuleContexts<BattleSimParser::LogicCommandContext>();
+std::vector<BattleSimParser::UnitLogicSequenceContext *> BattleSimParser::IfConditionContext::unitLogicSequence() {
+  return getRuleContexts<BattleSimParser::UnitLogicSequenceContext>();
 }
 
-BattleSimParser::LogicCommandContext* BattleSimParser::IfConditionContext::logicCommand(size_t i) {
-  return getRuleContext<BattleSimParser::LogicCommandContext>(i);
+BattleSimParser::UnitLogicSequenceContext* BattleSimParser::IfConditionContext::unitLogicSequence(size_t i) {
+  return getRuleContext<BattleSimParser::UnitLogicSequenceContext>(i);
 }
 
 
@@ -1019,7 +1019,7 @@ BattleSimParser::IfConditionContext* BattleSimParser::ifCondition() {
     setState(119);
     match(BattleSimParser::T__8);
     setState(120);
-    logicCommand();
+    unitLogicSequence();
     setState(121);
     match(BattleSimParser::T__10);
     setState(122);
@@ -1027,7 +1027,7 @@ BattleSimParser::IfConditionContext* BattleSimParser::ifCondition() {
     setState(123);
     match(BattleSimParser::T__8);
     setState(124);
-    logicCommand();
+    unitLogicSequence();
     setState(125);
     match(BattleSimParser::T__10);
    

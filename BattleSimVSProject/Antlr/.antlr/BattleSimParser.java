@@ -599,11 +599,11 @@ public class BattleSimParser extends Parser {
 		public BoolexpContext boolexp() {
 			return getRuleContext(BoolexpContext.class,0);
 		}
-		public List<LogicCommandContext> logicCommand() {
-			return getRuleContexts(LogicCommandContext.class);
+		public List<UnitLogicSequenceContext> unitLogicSequence() {
+			return getRuleContexts(UnitLogicSequenceContext.class);
 		}
-		public LogicCommandContext logicCommand(int i) {
-			return getRuleContext(LogicCommandContext.class,i);
+		public UnitLogicSequenceContext unitLogicSequence(int i) {
+			return getRuleContext(UnitLogicSequenceContext.class,i);
 		}
 		public IfConditionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -630,7 +630,7 @@ public class BattleSimParser extends Parser {
 			setState(119);
 			match(T__8);
 			setState(120);
-			logicCommand();
+			unitLogicSequence();
 			setState(121);
 			match(T__10);
 			setState(122);
@@ -638,7 +638,7 @@ public class BattleSimParser extends Parser {
 			setState(123);
 			match(T__8);
 			setState(124);
-			logicCommand();
+			unitLogicSequence();
 			setState(125);
 			match(T__10);
 			}
@@ -1415,8 +1415,8 @@ public class BattleSimParser extends Parser {
 		"\u0000\u0000\u0000pl\u0001\u0000\u0000\u0000q\u0011\u0001\u0000\u0000"+
 		"\u0000rs\u0005\u0012\u0000\u0000st\u0005\t\u0000\u0000tu\u0003\u001a\r"+
 		"\u0000uv\u0005\u000b\u0000\u0000vw\u0005\u0013\u0000\u0000wx\u0005\t\u0000"+
-		"\u0000xy\u0003\f\u0006\u0000yz\u0005\u000b\u0000\u0000z{\u0005\u0014\u0000"+
-		"\u0000{|\u0005\t\u0000\u0000|}\u0003\f\u0006\u0000}~\u0005\u000b\u0000"+
+		"\u0000xy\u0003\n\u0005\u0000yz\u0005\u000b\u0000\u0000z{\u0005\u0014\u0000"+
+		"\u0000{|\u0005\t\u0000\u0000|}\u0003\n\u0005\u0000}~\u0005\u000b\u0000"+
 		"\u0000~\u0013\u0001\u0000\u0000\u0000\u007f\u0080\u0005\u0015\u0000\u0000"+
 		"\u0080\u0081\u0005\t\u0000\u0000\u0081\u0082\u0003\u001a\r\u0000\u0082"+
 		"\u0083\u0005\u000b\u0000\u0000\u0083\u0084\u0005\u0016\u0000\u0000\u0084"+

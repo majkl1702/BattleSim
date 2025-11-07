@@ -73,7 +73,30 @@ public:
 
 
   // Commands
-  void ExecuteMoveCommand(std::shared_ptr<Unit> unit, BattleSimParser::MoveCmdContext* ctx, Map& map) const;
+  void ExecuteLogicCommand(BattleSimParser::LogicCommandContext* command, std::shared_ptr<Unit> unit, Map& map) const;
+
+  void ExecuteMoveCommand(std::shared_ptr<Unit> unit, Map& map) const;
+
+  void ExecuteTurnCommand(std::shared_ptr<Unit> unit, BattleSimParser::TurnCmdContext* ctx) const;
+
+  void ExecuteIfCondition(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx, Map& map) const;
+
+  void ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx, Map& map) const;
+
+  void ExecuteAttackCommand(std::shared_ptr<Unit> unit, BattleSimParser::AttackCmdContext* ctx, Map& map) const;
+
+  void ExecuteSkipCommand(std::shared_ptr<Unit> unit) const;
+
+  // Conditions
+  bool EvaluateBooleanExpression(std::shared_ptr<Unit> unit, BattleSimParser::BoolexpContext* ctx, Map& map) const;
+
+  bool EvaluatePrimaryBoolExpression(std::shared_ptr<Unit> unit, BattleSimParser::PrimaryBoolContext* ctx, Map& map);
+
+  bool EvaluateNotAndOperator(std::shared_ptr<Unit> unit, BattleSimParser::NotExprContext* ctx, Map& map);
+
+  bool EvaluateAndOperator(std::shared_ptr<Unit> unit, BattleSimParser::AndExprContext* ctx, Map& map);
+
+  bool EvaluateBooleanExpression(std::shared_ptr<Unit> unit, BattleSimParser::BoolexpContext* ctx, Map& map);
 
 private:
 };
