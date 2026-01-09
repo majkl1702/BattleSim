@@ -42,7 +42,7 @@ private:
 
   // Game state data.
   //! Map of the game.
-  Map _map{0, 0};
+  std::shared_ptr<Map> _map;
 
   //! Units in the game.
   std::vector<std::shared_ptr<Unit>> _blueUnits;

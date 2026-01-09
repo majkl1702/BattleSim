@@ -54,9 +54,15 @@ void battlesimParserInitialize() {
   auto staticData = std::make_unique<BattleSimParserStaticData>(
     std::vector<std::string>{
       "battleSim", "map", "teamDef", "unitDef", "unitStats", "unitLogicSequence", 
-      "logicCommand", "moveCmd", "turnCmd", "ifCondition", "whileCycle", 
-      "attackCmd", "skipCmd", "boolexp", "orExpr", "andExpr", "notExpr", 
-      "primaryBool", "blockCheck", "orientationCheck", "orientation", "exp"
+      "logicCommand", "moveCmd", "turnCmd", "turnLeftCmd", "turnRightCmd", 
+      "turnOrientationCmd", "ifCondition", "whileCycle", "attackCmd", "attackAroundSelfCmd", 
+      "attackInFrontCmd", "rangeAttackCmd", "skipCmd", "boolexp", "orExpr", 
+      "andExpr", "notExpr", "primaryBool", "true", "false", "parenthesesBool", 
+      "comparisonBool", "orientationEqualityCheck", "enemyNearbyCheck", 
+      "blockCheck", "isFrontClearCheck", "isFrontBlockedCheck", "orientationCheck", 
+      "facingNCheck", "facingWCheck", "facingECheck", "facingSCheck", "orientation", 
+      "getNearbyEnemyOrientation", "getMyOrientation", "exp", "atomicExp", 
+      "parenthesesExp"
     },
     std::vector<std::string>{
       "", "'TeamBlue'", "'{'", "'}'", "'TeamRed'", "'x'", "';'", "'unit'", 
@@ -66,7 +72,7 @@ void battlesimParserInitialize() {
       "'skip'", "'||'", "'&&'", "'!'", "'true'", "'false'", "'=='", "'!='", 
       "'IsEnemyNearby()'", "'IsFrontClear()'", "'IsFrontBlocked()'", "'FacingNorth()'", 
       "'FacingWest()'", "'FacingEast()'", "'FacingSouth()'", "'GetNearbyEnemyOrientation()'", 
-      "'GetMyOrientation'"
+      "'GetMyOrientation()'"
     },
     std::vector<std::string>{
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
@@ -76,71 +82,97 @@ void battlesimParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,48,211,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,48,302,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
-  	21,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,2,1,2,1,
-  	2,4,2,62,8,2,11,2,12,2,63,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
-  	1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,5,5,90,8,5,10,5,12,
-  	5,93,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,103,8,6,1,7,1,7,1,8,1,8,
-  	1,8,1,8,1,8,1,8,3,8,113,8,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,
-  	9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,
-  	1,11,1,11,1,11,3,11,143,8,11,1,12,1,12,1,13,1,13,1,14,1,14,1,14,5,14,
-  	152,8,14,10,14,12,14,155,9,14,1,15,1,15,1,15,5,15,160,8,15,10,15,12,15,
-  	163,9,15,1,16,1,16,1,16,3,16,168,8,16,1,17,1,17,1,17,1,17,1,17,1,17,1,
-  	17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,3,17,187,8,17,1,
-  	18,1,18,1,19,1,19,1,20,1,20,1,21,1,21,1,21,1,21,1,21,1,21,3,21,201,8,
-  	21,1,21,1,21,1,21,5,21,206,8,21,10,21,12,21,209,9,21,1,21,0,1,42,22,0,
-  	2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,0,4,1,0,32,
-  	33,1,0,35,36,1,0,37,40,2,0,41,42,45,45,211,0,44,1,0,0,0,2,54,1,0,0,0,
-  	4,61,1,0,0,0,6,65,1,0,0,0,8,78,1,0,0,0,10,85,1,0,0,0,12,102,1,0,0,0,14,
-  	104,1,0,0,0,16,112,1,0,0,0,18,114,1,0,0,0,20,127,1,0,0,0,22,142,1,0,0,
-  	0,24,144,1,0,0,0,26,146,1,0,0,0,28,148,1,0,0,0,30,156,1,0,0,0,32,167,
-  	1,0,0,0,34,186,1,0,0,0,36,188,1,0,0,0,38,190,1,0,0,0,40,192,1,0,0,0,42,
-  	200,1,0,0,0,44,45,3,2,1,0,45,46,5,1,0,0,46,47,5,2,0,0,47,48,3,4,2,0,48,
-  	49,5,3,0,0,49,50,5,4,0,0,50,51,5,2,0,0,51,52,3,4,2,0,52,53,5,3,0,0,53,
-  	1,1,0,0,0,54,55,5,47,0,0,55,56,5,5,0,0,56,57,5,47,0,0,57,3,1,0,0,0,58,
-  	59,3,6,3,0,59,60,5,6,0,0,60,62,1,0,0,0,61,58,1,0,0,0,62,63,1,0,0,0,63,
-  	61,1,0,0,0,63,64,1,0,0,0,64,5,1,0,0,0,65,66,5,7,0,0,66,67,5,46,0,0,67,
-  	68,5,8,0,0,68,69,5,9,0,0,69,70,5,47,0,0,70,71,5,10,0,0,71,72,5,47,0,0,
-  	72,73,5,11,0,0,73,74,5,2,0,0,74,75,3,8,4,0,75,76,3,10,5,0,76,77,5,3,0,
-  	0,77,7,1,0,0,0,78,79,5,12,0,0,79,80,5,47,0,0,80,81,5,6,0,0,81,82,5,13,
-  	0,0,82,83,5,47,0,0,83,84,5,6,0,0,84,9,1,0,0,0,85,91,5,2,0,0,86,87,3,12,
-  	6,0,87,88,5,6,0,0,88,90,1,0,0,0,89,86,1,0,0,0,90,93,1,0,0,0,91,89,1,0,
-  	0,0,91,92,1,0,0,0,92,94,1,0,0,0,93,91,1,0,0,0,94,95,5,3,0,0,95,11,1,0,
-  	0,0,96,103,3,14,7,0,97,103,3,16,8,0,98,103,3,18,9,0,99,103,3,20,10,0,
-  	100,103,3,22,11,0,101,103,3,24,12,0,102,96,1,0,0,0,102,97,1,0,0,0,102,
-  	98,1,0,0,0,102,99,1,0,0,0,102,100,1,0,0,0,102,101,1,0,0,0,103,13,1,0,
-  	0,0,104,105,5,14,0,0,105,15,1,0,0,0,106,113,5,15,0,0,107,113,5,16,0,0,
-  	108,109,5,17,0,0,109,110,3,40,20,0,110,111,5,11,0,0,111,113,1,0,0,0,112,
-  	106,1,0,0,0,112,107,1,0,0,0,112,108,1,0,0,0,113,17,1,0,0,0,114,115,5,
-  	18,0,0,115,116,5,9,0,0,116,117,3,26,13,0,117,118,5,11,0,0,118,119,5,19,
-  	0,0,119,120,5,9,0,0,120,121,3,10,5,0,121,122,5,11,0,0,122,123,5,20,0,
-  	0,123,124,5,9,0,0,124,125,3,10,5,0,125,126,5,11,0,0,126,19,1,0,0,0,127,
-  	128,5,21,0,0,128,129,5,9,0,0,129,130,3,26,13,0,130,131,5,11,0,0,131,132,
-  	5,22,0,0,132,133,5,9,0,0,133,134,3,12,6,0,134,135,5,11,0,0,135,21,1,0,
-  	0,0,136,143,5,23,0,0,137,143,5,24,0,0,138,139,5,25,0,0,139,140,3,42,21,
-  	0,140,141,5,11,0,0,141,143,1,0,0,0,142,136,1,0,0,0,142,137,1,0,0,0,142,
-  	138,1,0,0,0,143,23,1,0,0,0,144,145,5,26,0,0,145,25,1,0,0,0,146,147,3,
-  	28,14,0,147,27,1,0,0,0,148,153,3,30,15,0,149,150,5,27,0,0,150,152,3,30,
-  	15,0,151,149,1,0,0,0,152,155,1,0,0,0,153,151,1,0,0,0,153,154,1,0,0,0,
-  	154,29,1,0,0,0,155,153,1,0,0,0,156,161,3,32,16,0,157,158,5,28,0,0,158,
-  	160,3,32,16,0,159,157,1,0,0,0,160,163,1,0,0,0,161,159,1,0,0,0,161,162,
-  	1,0,0,0,162,31,1,0,0,0,163,161,1,0,0,0,164,165,5,29,0,0,165,168,3,32,
-  	16,0,166,168,3,34,17,0,167,164,1,0,0,0,167,166,1,0,0,0,168,33,1,0,0,0,
-  	169,187,5,30,0,0,170,187,5,31,0,0,171,172,5,9,0,0,172,173,3,26,13,0,173,
-  	174,5,11,0,0,174,187,1,0,0,0,175,176,3,42,21,0,176,177,5,44,0,0,177,178,
-  	3,42,21,0,178,187,1,0,0,0,179,180,3,40,20,0,180,181,7,0,0,0,181,182,3,
-  	40,20,0,182,187,1,0,0,0,183,187,3,36,18,0,184,187,3,38,19,0,185,187,5,
-  	34,0,0,186,169,1,0,0,0,186,170,1,0,0,0,186,171,1,0,0,0,186,175,1,0,0,
-  	0,186,179,1,0,0,0,186,183,1,0,0,0,186,184,1,0,0,0,186,185,1,0,0,0,187,
-  	35,1,0,0,0,188,189,7,1,0,0,189,37,1,0,0,0,190,191,7,2,0,0,191,39,1,0,
-  	0,0,192,193,7,3,0,0,193,41,1,0,0,0,194,195,6,21,-1,0,195,201,5,47,0,0,
-  	196,197,5,9,0,0,197,198,3,42,21,0,198,199,5,11,0,0,199,201,1,0,0,0,200,
-  	194,1,0,0,0,200,196,1,0,0,0,201,207,1,0,0,0,202,203,10,2,0,0,203,204,
-  	5,43,0,0,204,206,3,42,21,3,205,202,1,0,0,0,206,209,1,0,0,0,207,205,1,
-  	0,0,0,207,208,1,0,0,0,208,43,1,0,0,0,209,207,1,0,0,0,11,63,91,102,112,
-  	142,153,161,167,186,200,207
+  	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
+  	28,2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,2,34,7,34,2,35,7,
+  	35,2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,2,42,7,
+  	42,2,43,7,43,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,
+  	1,2,1,2,1,2,4,2,106,8,2,11,2,12,2,107,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
+  	1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,5,5,134,
+  	8,5,10,5,12,5,137,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,3,6,147,8,6,1,7,
+  	1,7,1,8,1,8,1,8,3,8,154,8,8,1,9,1,9,1,10,1,10,1,11,1,11,1,11,1,11,1,12,
+  	1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,13,1,13,
+  	1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,14,1,14,1,14,3,14,189,8,14,1,15,
+  	1,15,1,16,1,16,1,17,1,17,1,17,1,17,1,18,1,18,1,19,1,19,1,20,1,20,1,20,
+  	5,20,206,8,20,10,20,12,20,209,9,20,1,21,1,21,1,21,5,21,214,8,21,10,21,
+  	12,21,217,9,21,1,22,1,22,1,22,3,22,222,8,22,1,23,1,23,1,23,1,23,1,23,
+  	1,23,1,23,1,23,3,23,232,8,23,1,24,1,24,1,25,1,25,1,26,1,26,1,26,1,26,
+  	1,27,1,27,1,27,1,27,1,28,1,28,1,28,1,28,1,29,1,29,1,30,1,30,3,30,254,
+  	8,30,1,31,1,31,1,32,1,32,1,33,1,33,1,33,1,33,3,33,264,8,33,1,34,1,34,
+  	1,35,1,35,1,36,1,36,1,37,1,37,1,38,1,38,1,38,3,38,277,8,38,1,39,1,39,
+  	1,40,1,40,1,41,1,41,1,41,3,41,286,8,41,1,41,1,41,1,41,5,41,291,8,41,10,
+  	41,12,41,294,9,41,1,42,1,42,1,43,1,43,1,43,1,43,1,43,0,1,82,44,0,2,4,
+  	6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,
+  	54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,0,1,1,0,32,33,286,
+  	0,88,1,0,0,0,2,98,1,0,0,0,4,105,1,0,0,0,6,109,1,0,0,0,8,122,1,0,0,0,10,
+  	129,1,0,0,0,12,146,1,0,0,0,14,148,1,0,0,0,16,153,1,0,0,0,18,155,1,0,0,
+  	0,20,157,1,0,0,0,22,159,1,0,0,0,24,163,1,0,0,0,26,176,1,0,0,0,28,188,
+  	1,0,0,0,30,190,1,0,0,0,32,192,1,0,0,0,34,194,1,0,0,0,36,198,1,0,0,0,38,
+  	200,1,0,0,0,40,202,1,0,0,0,42,210,1,0,0,0,44,221,1,0,0,0,46,231,1,0,0,
+  	0,48,233,1,0,0,0,50,235,1,0,0,0,52,237,1,0,0,0,54,241,1,0,0,0,56,245,
+  	1,0,0,0,58,249,1,0,0,0,60,253,1,0,0,0,62,255,1,0,0,0,64,257,1,0,0,0,66,
+  	263,1,0,0,0,68,265,1,0,0,0,70,267,1,0,0,0,72,269,1,0,0,0,74,271,1,0,0,
+  	0,76,276,1,0,0,0,78,278,1,0,0,0,80,280,1,0,0,0,82,285,1,0,0,0,84,295,
+  	1,0,0,0,86,297,1,0,0,0,88,89,3,2,1,0,89,90,5,1,0,0,90,91,5,2,0,0,91,92,
+  	3,4,2,0,92,93,5,3,0,0,93,94,5,4,0,0,94,95,5,2,0,0,95,96,3,4,2,0,96,97,
+  	5,3,0,0,97,1,1,0,0,0,98,99,5,47,0,0,99,100,5,5,0,0,100,101,5,47,0,0,101,
+  	3,1,0,0,0,102,103,3,6,3,0,103,104,5,6,0,0,104,106,1,0,0,0,105,102,1,0,
+  	0,0,106,107,1,0,0,0,107,105,1,0,0,0,107,108,1,0,0,0,108,5,1,0,0,0,109,
+  	110,5,7,0,0,110,111,5,46,0,0,111,112,5,8,0,0,112,113,5,9,0,0,113,114,
+  	5,47,0,0,114,115,5,10,0,0,115,116,5,47,0,0,116,117,5,11,0,0,117,118,5,
+  	2,0,0,118,119,3,8,4,0,119,120,3,10,5,0,120,121,5,3,0,0,121,7,1,0,0,0,
+  	122,123,5,12,0,0,123,124,5,47,0,0,124,125,5,6,0,0,125,126,5,13,0,0,126,
+  	127,5,47,0,0,127,128,5,6,0,0,128,9,1,0,0,0,129,135,5,2,0,0,130,131,3,
+  	12,6,0,131,132,5,6,0,0,132,134,1,0,0,0,133,130,1,0,0,0,134,137,1,0,0,
+  	0,135,133,1,0,0,0,135,136,1,0,0,0,136,138,1,0,0,0,137,135,1,0,0,0,138,
+  	139,5,3,0,0,139,11,1,0,0,0,140,147,3,14,7,0,141,147,3,16,8,0,142,147,
+  	3,24,12,0,143,147,3,26,13,0,144,147,3,28,14,0,145,147,3,36,18,0,146,140,
+  	1,0,0,0,146,141,1,0,0,0,146,142,1,0,0,0,146,143,1,0,0,0,146,144,1,0,0,
+  	0,146,145,1,0,0,0,147,13,1,0,0,0,148,149,5,14,0,0,149,15,1,0,0,0,150,
+  	154,3,18,9,0,151,154,3,20,10,0,152,154,3,22,11,0,153,150,1,0,0,0,153,
+  	151,1,0,0,0,153,152,1,0,0,0,154,17,1,0,0,0,155,156,5,15,0,0,156,19,1,
+  	0,0,0,157,158,5,16,0,0,158,21,1,0,0,0,159,160,5,17,0,0,160,161,3,76,38,
+  	0,161,162,5,11,0,0,162,23,1,0,0,0,163,164,5,18,0,0,164,165,5,9,0,0,165,
+  	166,3,38,19,0,166,167,5,11,0,0,167,168,5,19,0,0,168,169,5,9,0,0,169,170,
+  	3,10,5,0,170,171,5,11,0,0,171,172,5,20,0,0,172,173,5,9,0,0,173,174,3,
+  	10,5,0,174,175,5,11,0,0,175,25,1,0,0,0,176,177,5,21,0,0,177,178,5,9,0,
+  	0,178,179,3,38,19,0,179,180,5,11,0,0,180,181,5,22,0,0,181,182,5,9,0,0,
+  	182,183,3,12,6,0,183,184,5,11,0,0,184,27,1,0,0,0,185,189,3,30,15,0,186,
+  	189,3,32,16,0,187,189,3,34,17,0,188,185,1,0,0,0,188,186,1,0,0,0,188,187,
+  	1,0,0,0,189,29,1,0,0,0,190,191,5,23,0,0,191,31,1,0,0,0,192,193,5,24,0,
+  	0,193,33,1,0,0,0,194,195,5,25,0,0,195,196,3,82,41,0,196,197,5,11,0,0,
+  	197,35,1,0,0,0,198,199,5,26,0,0,199,37,1,0,0,0,200,201,3,40,20,0,201,
+  	39,1,0,0,0,202,207,3,42,21,0,203,204,5,27,0,0,204,206,3,42,21,0,205,203,
+  	1,0,0,0,206,209,1,0,0,0,207,205,1,0,0,0,207,208,1,0,0,0,208,41,1,0,0,
+  	0,209,207,1,0,0,0,210,215,3,44,22,0,211,212,5,28,0,0,212,214,3,44,22,
+  	0,213,211,1,0,0,0,214,217,1,0,0,0,215,213,1,0,0,0,215,216,1,0,0,0,216,
+  	43,1,0,0,0,217,215,1,0,0,0,218,219,5,29,0,0,219,222,3,44,22,0,220,222,
+  	3,46,23,0,221,218,1,0,0,0,221,220,1,0,0,0,222,45,1,0,0,0,223,232,3,48,
+  	24,0,224,232,3,50,25,0,225,232,3,52,26,0,226,232,3,54,27,0,227,232,3,
+  	56,28,0,228,232,3,60,30,0,229,232,3,66,33,0,230,232,3,58,29,0,231,223,
+  	1,0,0,0,231,224,1,0,0,0,231,225,1,0,0,0,231,226,1,0,0,0,231,227,1,0,0,
+  	0,231,228,1,0,0,0,231,229,1,0,0,0,231,230,1,0,0,0,232,47,1,0,0,0,233,
+  	234,5,30,0,0,234,49,1,0,0,0,235,236,5,31,0,0,236,51,1,0,0,0,237,238,5,
+  	9,0,0,238,239,3,38,19,0,239,240,5,11,0,0,240,53,1,0,0,0,241,242,3,82,
+  	41,0,242,243,5,44,0,0,243,244,3,82,41,0,244,55,1,0,0,0,245,246,3,76,38,
+  	0,246,247,7,0,0,0,247,248,3,76,38,0,248,57,1,0,0,0,249,250,5,34,0,0,250,
+  	59,1,0,0,0,251,254,3,62,31,0,252,254,3,64,32,0,253,251,1,0,0,0,253,252,
+  	1,0,0,0,254,61,1,0,0,0,255,256,5,35,0,0,256,63,1,0,0,0,257,258,5,36,0,
+  	0,258,65,1,0,0,0,259,264,3,68,34,0,260,264,3,70,35,0,261,264,3,72,36,
+  	0,262,264,3,74,37,0,263,259,1,0,0,0,263,260,1,0,0,0,263,261,1,0,0,0,263,
+  	262,1,0,0,0,264,67,1,0,0,0,265,266,5,37,0,0,266,69,1,0,0,0,267,268,5,
+  	38,0,0,268,71,1,0,0,0,269,270,5,39,0,0,270,73,1,0,0,0,271,272,5,40,0,
+  	0,272,75,1,0,0,0,273,277,5,45,0,0,274,277,3,78,39,0,275,277,3,80,40,0,
+  	276,273,1,0,0,0,276,274,1,0,0,0,276,275,1,0,0,0,277,77,1,0,0,0,278,279,
+  	5,41,0,0,279,79,1,0,0,0,280,281,5,42,0,0,281,81,1,0,0,0,282,283,6,41,
+  	-1,0,283,286,3,84,42,0,284,286,3,86,43,0,285,282,1,0,0,0,285,284,1,0,
+  	0,0,286,292,1,0,0,0,287,288,10,2,0,0,288,289,5,43,0,0,289,291,3,82,41,
+  	3,290,287,1,0,0,0,291,294,1,0,0,0,292,290,1,0,0,0,292,293,1,0,0,0,293,
+  	83,1,0,0,0,294,292,1,0,0,0,295,296,5,47,0,0,296,85,1,0,0,0,297,298,5,
+  	9,0,0,298,299,3,82,41,0,299,300,5,11,0,0,300,87,1,0,0,0,14,107,135,146,
+  	153,188,207,215,221,231,253,263,276,285,292
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -245,23 +277,23 @@ BattleSimParser::BattleSimContext* BattleSimParser::battleSim() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(44);
+    setState(88);
     map();
-    setState(45);
+    setState(89);
     match(BattleSimParser::T__0);
-    setState(46);
+    setState(90);
     match(BattleSimParser::T__1);
-    setState(47);
+    setState(91);
     teamDef();
-    setState(48);
+    setState(92);
     match(BattleSimParser::T__2);
-    setState(49);
+    setState(93);
     match(BattleSimParser::T__3);
-    setState(50);
+    setState(94);
     match(BattleSimParser::T__1);
-    setState(51);
+    setState(95);
     teamDef();
-    setState(52);
+    setState(96);
     match(BattleSimParser::T__2);
    
   }
@@ -326,11 +358,11 @@ BattleSimParser::MapContext* BattleSimParser::map() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(54);
+    setState(98);
     match(BattleSimParser::NUMBER);
-    setState(55);
+    setState(99);
     match(BattleSimParser::T__4);
-    setState(56);
+    setState(100);
     match(BattleSimParser::NUMBER);
    
   }
@@ -396,15 +428,15 @@ BattleSimParser::TeamDefContext* BattleSimParser::teamDef() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(61); 
+    setState(105); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(58);
+      setState(102);
       unitDef();
-      setState(59);
+      setState(103);
       match(BattleSimParser::T__5);
-      setState(63); 
+      setState(107); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == BattleSimParser::T__6);
@@ -483,29 +515,29 @@ BattleSimParser::UnitDefContext* BattleSimParser::unitDef() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(65);
+    setState(109);
     match(BattleSimParser::T__6);
-    setState(66);
+    setState(110);
     match(BattleSimParser::NAME);
-    setState(67);
+    setState(111);
     match(BattleSimParser::T__7);
-    setState(68);
+    setState(112);
     match(BattleSimParser::T__8);
-    setState(69);
+    setState(113);
     match(BattleSimParser::NUMBER);
-    setState(70);
+    setState(114);
     match(BattleSimParser::T__9);
-    setState(71);
+    setState(115);
     match(BattleSimParser::NUMBER);
-    setState(72);
+    setState(116);
     match(BattleSimParser::T__10);
-    setState(73);
+    setState(117);
     match(BattleSimParser::T__1);
-    setState(74);
+    setState(118);
     unitStats();
-    setState(75);
+    setState(119);
     unitLogicSequence();
-    setState(76);
+    setState(120);
     match(BattleSimParser::T__2);
    
   }
@@ -570,17 +602,17 @@ BattleSimParser::UnitStatsContext* BattleSimParser::unitStats() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(78);
+    setState(122);
     match(BattleSimParser::T__11);
-    setState(79);
+    setState(123);
     match(BattleSimParser::NUMBER);
-    setState(80);
+    setState(124);
     match(BattleSimParser::T__5);
-    setState(81);
+    setState(125);
     match(BattleSimParser::T__12);
-    setState(82);
+    setState(126);
     match(BattleSimParser::NUMBER);
-    setState(83);
+    setState(127);
     match(BattleSimParser::T__5);
    
   }
@@ -646,22 +678,22 @@ BattleSimParser::UnitLogicSequenceContext* BattleSimParser::unitLogicSequence() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(85);
+    setState(129);
     match(BattleSimParser::T__1);
-    setState(91);
+    setState(135);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 128434176) != 0)) {
-      setState(86);
+      setState(130);
       logicCommand();
-      setState(87);
+      setState(131);
       match(BattleSimParser::T__5);
-      setState(93);
+      setState(137);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(94);
+    setState(138);
     match(BattleSimParser::T__2);
    
   }
@@ -741,12 +773,12 @@ BattleSimParser::LogicCommandContext* BattleSimParser::logicCommand() {
     exitRule();
   });
   try {
-    setState(102);
+    setState(146);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__13: {
         enterOuterAlt(_localctx, 1);
-        setState(96);
+        setState(140);
         moveCmd();
         break;
       }
@@ -755,21 +787,21 @@ BattleSimParser::LogicCommandContext* BattleSimParser::logicCommand() {
       case BattleSimParser::T__15:
       case BattleSimParser::T__16: {
         enterOuterAlt(_localctx, 2);
-        setState(97);
+        setState(141);
         turnCmd();
         break;
       }
 
       case BattleSimParser::T__17: {
         enterOuterAlt(_localctx, 3);
-        setState(98);
+        setState(142);
         ifCondition();
         break;
       }
 
       case BattleSimParser::T__20: {
         enterOuterAlt(_localctx, 4);
-        setState(99);
+        setState(143);
         whileCycle();
         break;
       }
@@ -778,14 +810,14 @@ BattleSimParser::LogicCommandContext* BattleSimParser::logicCommand() {
       case BattleSimParser::T__23:
       case BattleSimParser::T__24: {
         enterOuterAlt(_localctx, 5);
-        setState(100);
+        setState(144);
         attackCmd();
         break;
       }
 
       case BattleSimParser::T__25: {
         enterOuterAlt(_localctx, 6);
-        setState(101);
+        setState(145);
         skipCmd();
         break;
       }
@@ -848,7 +880,7 @@ BattleSimParser::MoveCmdContext* BattleSimParser::moveCmd() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(104);
+    setState(148);
     match(BattleSimParser::T__13);
    
   }
@@ -867,8 +899,16 @@ BattleSimParser::TurnCmdContext::TurnCmdContext(ParserRuleContext *parent, size_
   : ParserRuleContext(parent, invokingState) {
 }
 
-BattleSimParser::OrientationContext* BattleSimParser::TurnCmdContext::orientation() {
-  return getRuleContext<BattleSimParser::OrientationContext>(0);
+BattleSimParser::TurnLeftCmdContext* BattleSimParser::TurnCmdContext::turnLeftCmd() {
+  return getRuleContext<BattleSimParser::TurnLeftCmdContext>(0);
+}
+
+BattleSimParser::TurnRightCmdContext* BattleSimParser::TurnCmdContext::turnRightCmd() {
+  return getRuleContext<BattleSimParser::TurnRightCmdContext>(0);
+}
+
+BattleSimParser::TurnOrientationCmdContext* BattleSimParser::TurnCmdContext::turnOrientationCmd() {
+  return getRuleContext<BattleSimParser::TurnOrientationCmdContext>(0);
 }
 
 
@@ -908,37 +948,212 @@ BattleSimParser::TurnCmdContext* BattleSimParser::turnCmd() {
     exitRule();
   });
   try {
-    setState(112);
+    setState(153);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__14: {
         enterOuterAlt(_localctx, 1);
-        setState(106);
-        match(BattleSimParser::T__14);
+        setState(150);
+        turnLeftCmd();
         break;
       }
 
       case BattleSimParser::T__15: {
         enterOuterAlt(_localctx, 2);
-        setState(107);
-        match(BattleSimParser::T__15);
+        setState(151);
+        turnRightCmd();
         break;
       }
 
       case BattleSimParser::T__16: {
         enterOuterAlt(_localctx, 3);
-        setState(108);
-        match(BattleSimParser::T__16);
-        setState(109);
-        orientation();
-        setState(110);
-        match(BattleSimParser::T__10);
+        setState(152);
+        turnOrientationCmd();
         break;
       }
 
     default:
       throw NoViableAltException(this);
     }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- TurnLeftCmdContext ------------------------------------------------------------------
+
+BattleSimParser::TurnLeftCmdContext::TurnLeftCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::TurnLeftCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleTurnLeftCmd;
+}
+
+void BattleSimParser::TurnLeftCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTurnLeftCmd(this);
+}
+
+void BattleSimParser::TurnLeftCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTurnLeftCmd(this);
+}
+
+
+std::any BattleSimParser::TurnLeftCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitTurnLeftCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::TurnLeftCmdContext* BattleSimParser::turnLeftCmd() {
+  TurnLeftCmdContext *_localctx = _tracker.createInstance<TurnLeftCmdContext>(_ctx, getState());
+  enterRule(_localctx, 18, BattleSimParser::RuleTurnLeftCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(155);
+    match(BattleSimParser::T__14);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- TurnRightCmdContext ------------------------------------------------------------------
+
+BattleSimParser::TurnRightCmdContext::TurnRightCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::TurnRightCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleTurnRightCmd;
+}
+
+void BattleSimParser::TurnRightCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTurnRightCmd(this);
+}
+
+void BattleSimParser::TurnRightCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTurnRightCmd(this);
+}
+
+
+std::any BattleSimParser::TurnRightCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitTurnRightCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::TurnRightCmdContext* BattleSimParser::turnRightCmd() {
+  TurnRightCmdContext *_localctx = _tracker.createInstance<TurnRightCmdContext>(_ctx, getState());
+  enterRule(_localctx, 20, BattleSimParser::RuleTurnRightCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(157);
+    match(BattleSimParser::T__15);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- TurnOrientationCmdContext ------------------------------------------------------------------
+
+BattleSimParser::TurnOrientationCmdContext::TurnOrientationCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::OrientationContext* BattleSimParser::TurnOrientationCmdContext::orientation() {
+  return getRuleContext<BattleSimParser::OrientationContext>(0);
+}
+
+
+size_t BattleSimParser::TurnOrientationCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleTurnOrientationCmd;
+}
+
+void BattleSimParser::TurnOrientationCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTurnOrientationCmd(this);
+}
+
+void BattleSimParser::TurnOrientationCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTurnOrientationCmd(this);
+}
+
+
+std::any BattleSimParser::TurnOrientationCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitTurnOrientationCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::TurnOrientationCmdContext* BattleSimParser::turnOrientationCmd() {
+  TurnOrientationCmdContext *_localctx = _tracker.createInstance<TurnOrientationCmdContext>(_ctx, getState());
+  enterRule(_localctx, 22, BattleSimParser::RuleTurnOrientationCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(159);
+    match(BattleSimParser::T__16);
+    setState(160);
+    orientation();
+    setState(161);
+    match(BattleSimParser::T__10);
    
   }
   catch (RecognitionException &e) {
@@ -995,7 +1210,7 @@ std::any BattleSimParser::IfConditionContext::accept(tree::ParseTreeVisitor *vis
 
 BattleSimParser::IfConditionContext* BattleSimParser::ifCondition() {
   IfConditionContext *_localctx = _tracker.createInstance<IfConditionContext>(_ctx, getState());
-  enterRule(_localctx, 18, BattleSimParser::RuleIfCondition);
+  enterRule(_localctx, 24, BattleSimParser::RuleIfCondition);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1006,29 +1221,29 @@ BattleSimParser::IfConditionContext* BattleSimParser::ifCondition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(114);
+    setState(163);
     match(BattleSimParser::T__17);
-    setState(115);
+    setState(164);
     match(BattleSimParser::T__8);
-    setState(116);
+    setState(165);
     boolexp();
-    setState(117);
+    setState(166);
     match(BattleSimParser::T__10);
-    setState(118);
+    setState(167);
     match(BattleSimParser::T__18);
-    setState(119);
+    setState(168);
     match(BattleSimParser::T__8);
-    setState(120);
+    setState(169);
     unitLogicSequence();
-    setState(121);
+    setState(170);
     match(BattleSimParser::T__10);
-    setState(122);
+    setState(171);
     match(BattleSimParser::T__19);
-    setState(123);
+    setState(172);
     match(BattleSimParser::T__8);
-    setState(124);
+    setState(173);
     unitLogicSequence();
-    setState(125);
+    setState(174);
     match(BattleSimParser::T__10);
    
   }
@@ -1082,7 +1297,7 @@ std::any BattleSimParser::WhileCycleContext::accept(tree::ParseTreeVisitor *visi
 
 BattleSimParser::WhileCycleContext* BattleSimParser::whileCycle() {
   WhileCycleContext *_localctx = _tracker.createInstance<WhileCycleContext>(_ctx, getState());
-  enterRule(_localctx, 20, BattleSimParser::RuleWhileCycle);
+  enterRule(_localctx, 26, BattleSimParser::RuleWhileCycle);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1093,21 +1308,21 @@ BattleSimParser::WhileCycleContext* BattleSimParser::whileCycle() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(127);
+    setState(176);
     match(BattleSimParser::T__20);
-    setState(128);
+    setState(177);
     match(BattleSimParser::T__8);
-    setState(129);
+    setState(178);
     boolexp();
-    setState(130);
+    setState(179);
     match(BattleSimParser::T__10);
-    setState(131);
+    setState(180);
     match(BattleSimParser::T__21);
-    setState(132);
+    setState(181);
     match(BattleSimParser::T__8);
-    setState(133);
+    setState(182);
     logicCommand();
-    setState(134);
+    setState(183);
     match(BattleSimParser::T__10);
    
   }
@@ -1126,8 +1341,16 @@ BattleSimParser::AttackCmdContext::AttackCmdContext(ParserRuleContext *parent, s
   : ParserRuleContext(parent, invokingState) {
 }
 
-BattleSimParser::ExpContext* BattleSimParser::AttackCmdContext::exp() {
-  return getRuleContext<BattleSimParser::ExpContext>(0);
+BattleSimParser::AttackAroundSelfCmdContext* BattleSimParser::AttackCmdContext::attackAroundSelfCmd() {
+  return getRuleContext<BattleSimParser::AttackAroundSelfCmdContext>(0);
+}
+
+BattleSimParser::AttackInFrontCmdContext* BattleSimParser::AttackCmdContext::attackInFrontCmd() {
+  return getRuleContext<BattleSimParser::AttackInFrontCmdContext>(0);
+}
+
+BattleSimParser::RangeAttackCmdContext* BattleSimParser::AttackCmdContext::rangeAttackCmd() {
+  return getRuleContext<BattleSimParser::RangeAttackCmdContext>(0);
 }
 
 
@@ -1157,7 +1380,7 @@ std::any BattleSimParser::AttackCmdContext::accept(tree::ParseTreeVisitor *visit
 
 BattleSimParser::AttackCmdContext* BattleSimParser::attackCmd() {
   AttackCmdContext *_localctx = _tracker.createInstance<AttackCmdContext>(_ctx, getState());
-  enterRule(_localctx, 22, BattleSimParser::RuleAttackCmd);
+  enterRule(_localctx, 28, BattleSimParser::RuleAttackCmd);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1167,37 +1390,212 @@ BattleSimParser::AttackCmdContext* BattleSimParser::attackCmd() {
     exitRule();
   });
   try {
-    setState(142);
+    setState(188);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__22: {
         enterOuterAlt(_localctx, 1);
-        setState(136);
-        match(BattleSimParser::T__22);
+        setState(185);
+        attackAroundSelfCmd();
         break;
       }
 
       case BattleSimParser::T__23: {
         enterOuterAlt(_localctx, 2);
-        setState(137);
-        match(BattleSimParser::T__23);
+        setState(186);
+        attackInFrontCmd();
         break;
       }
 
       case BattleSimParser::T__24: {
         enterOuterAlt(_localctx, 3);
-        setState(138);
-        match(BattleSimParser::T__24);
-        setState(139);
-        exp(0);
-        setState(140);
-        match(BattleSimParser::T__10);
+        setState(187);
+        rangeAttackCmd();
         break;
       }
 
     default:
       throw NoViableAltException(this);
     }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- AttackAroundSelfCmdContext ------------------------------------------------------------------
+
+BattleSimParser::AttackAroundSelfCmdContext::AttackAroundSelfCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::AttackAroundSelfCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleAttackAroundSelfCmd;
+}
+
+void BattleSimParser::AttackAroundSelfCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAttackAroundSelfCmd(this);
+}
+
+void BattleSimParser::AttackAroundSelfCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAttackAroundSelfCmd(this);
+}
+
+
+std::any BattleSimParser::AttackAroundSelfCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitAttackAroundSelfCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::AttackAroundSelfCmdContext* BattleSimParser::attackAroundSelfCmd() {
+  AttackAroundSelfCmdContext *_localctx = _tracker.createInstance<AttackAroundSelfCmdContext>(_ctx, getState());
+  enterRule(_localctx, 30, BattleSimParser::RuleAttackAroundSelfCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(190);
+    match(BattleSimParser::T__22);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- AttackInFrontCmdContext ------------------------------------------------------------------
+
+BattleSimParser::AttackInFrontCmdContext::AttackInFrontCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::AttackInFrontCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleAttackInFrontCmd;
+}
+
+void BattleSimParser::AttackInFrontCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAttackInFrontCmd(this);
+}
+
+void BattleSimParser::AttackInFrontCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAttackInFrontCmd(this);
+}
+
+
+std::any BattleSimParser::AttackInFrontCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitAttackInFrontCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::AttackInFrontCmdContext* BattleSimParser::attackInFrontCmd() {
+  AttackInFrontCmdContext *_localctx = _tracker.createInstance<AttackInFrontCmdContext>(_ctx, getState());
+  enterRule(_localctx, 32, BattleSimParser::RuleAttackInFrontCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(192);
+    match(BattleSimParser::T__23);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- RangeAttackCmdContext ------------------------------------------------------------------
+
+BattleSimParser::RangeAttackCmdContext::RangeAttackCmdContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::ExpContext* BattleSimParser::RangeAttackCmdContext::exp() {
+  return getRuleContext<BattleSimParser::ExpContext>(0);
+}
+
+
+size_t BattleSimParser::RangeAttackCmdContext::getRuleIndex() const {
+  return BattleSimParser::RuleRangeAttackCmd;
+}
+
+void BattleSimParser::RangeAttackCmdContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterRangeAttackCmd(this);
+}
+
+void BattleSimParser::RangeAttackCmdContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitRangeAttackCmd(this);
+}
+
+
+std::any BattleSimParser::RangeAttackCmdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitRangeAttackCmd(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::RangeAttackCmdContext* BattleSimParser::rangeAttackCmd() {
+  RangeAttackCmdContext *_localctx = _tracker.createInstance<RangeAttackCmdContext>(_ctx, getState());
+  enterRule(_localctx, 34, BattleSimParser::RuleRangeAttackCmd);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(194);
+    match(BattleSimParser::T__24);
+    setState(195);
+    exp(0);
+    setState(196);
+    match(BattleSimParser::T__10);
    
   }
   catch (RecognitionException &e) {
@@ -1242,7 +1640,7 @@ std::any BattleSimParser::SkipCmdContext::accept(tree::ParseTreeVisitor *visitor
 
 BattleSimParser::SkipCmdContext* BattleSimParser::skipCmd() {
   SkipCmdContext *_localctx = _tracker.createInstance<SkipCmdContext>(_ctx, getState());
-  enterRule(_localctx, 24, BattleSimParser::RuleSkipCmd);
+  enterRule(_localctx, 36, BattleSimParser::RuleSkipCmd);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1253,7 +1651,7 @@ BattleSimParser::SkipCmdContext* BattleSimParser::skipCmd() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(144);
+    setState(198);
     match(BattleSimParser::T__25);
    
   }
@@ -1303,7 +1701,7 @@ std::any BattleSimParser::BoolexpContext::accept(tree::ParseTreeVisitor *visitor
 
 BattleSimParser::BoolexpContext* BattleSimParser::boolexp() {
   BoolexpContext *_localctx = _tracker.createInstance<BoolexpContext>(_ctx, getState());
-  enterRule(_localctx, 26, BattleSimParser::RuleBoolexp);
+  enterRule(_localctx, 38, BattleSimParser::RuleBoolexp);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1314,7 +1712,7 @@ BattleSimParser::BoolexpContext* BattleSimParser::boolexp() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(146);
+    setState(200);
     orExpr();
    
   }
@@ -1368,7 +1766,7 @@ std::any BattleSimParser::OrExprContext::accept(tree::ParseTreeVisitor *visitor)
 
 BattleSimParser::OrExprContext* BattleSimParser::orExpr() {
   OrExprContext *_localctx = _tracker.createInstance<OrExprContext>(_ctx, getState());
-  enterRule(_localctx, 28, BattleSimParser::RuleOrExpr);
+  enterRule(_localctx, 40, BattleSimParser::RuleOrExpr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1380,17 +1778,17 @@ BattleSimParser::OrExprContext* BattleSimParser::orExpr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(148);
+    setState(202);
     andExpr();
-    setState(153);
+    setState(207);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == BattleSimParser::T__26) {
-      setState(149);
+      setState(203);
       match(BattleSimParser::T__26);
-      setState(150);
+      setState(204);
       andExpr();
-      setState(155);
+      setState(209);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1446,7 +1844,7 @@ std::any BattleSimParser::AndExprContext::accept(tree::ParseTreeVisitor *visitor
 
 BattleSimParser::AndExprContext* BattleSimParser::andExpr() {
   AndExprContext *_localctx = _tracker.createInstance<AndExprContext>(_ctx, getState());
-  enterRule(_localctx, 30, BattleSimParser::RuleAndExpr);
+  enterRule(_localctx, 42, BattleSimParser::RuleAndExpr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1458,17 +1856,17 @@ BattleSimParser::AndExprContext* BattleSimParser::andExpr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(156);
+    setState(210);
     notExpr();
-    setState(161);
+    setState(215);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == BattleSimParser::T__27) {
-      setState(157);
+      setState(211);
       match(BattleSimParser::T__27);
-      setState(158);
+      setState(212);
       notExpr();
-      setState(163);
+      setState(217);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1524,7 +1922,7 @@ std::any BattleSimParser::NotExprContext::accept(tree::ParseTreeVisitor *visitor
 
 BattleSimParser::NotExprContext* BattleSimParser::notExpr() {
   NotExprContext *_localctx = _tracker.createInstance<NotExprContext>(_ctx, getState());
-  enterRule(_localctx, 32, BattleSimParser::RuleNotExpr);
+  enterRule(_localctx, 44, BattleSimParser::RuleNotExpr);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1534,14 +1932,14 @@ BattleSimParser::NotExprContext* BattleSimParser::notExpr() {
     exitRule();
   });
   try {
-    setState(167);
+    setState(221);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::T__28: {
         enterOuterAlt(_localctx, 1);
-        setState(164);
+        setState(218);
         match(BattleSimParser::T__28);
-        setState(165);
+        setState(219);
         notExpr();
         break;
       }
@@ -1561,7 +1959,7 @@ BattleSimParser::NotExprContext* BattleSimParser::notExpr() {
       case BattleSimParser::ORIENTATION:
       case BattleSimParser::NUMBER: {
         enterOuterAlt(_localctx, 2);
-        setState(166);
+        setState(220);
         primaryBool();
         break;
       }
@@ -1586,28 +1984,24 @@ BattleSimParser::PrimaryBoolContext::PrimaryBoolContext(ParserRuleContext *paren
   : ParserRuleContext(parent, invokingState) {
 }
 
-BattleSimParser::BoolexpContext* BattleSimParser::PrimaryBoolContext::boolexp() {
-  return getRuleContext<BattleSimParser::BoolexpContext>(0);
+BattleSimParser::TrueContext* BattleSimParser::PrimaryBoolContext::true_() {
+  return getRuleContext<BattleSimParser::TrueContext>(0);
 }
 
-std::vector<BattleSimParser::ExpContext *> BattleSimParser::PrimaryBoolContext::exp() {
-  return getRuleContexts<BattleSimParser::ExpContext>();
+BattleSimParser::FalseContext* BattleSimParser::PrimaryBoolContext::false_() {
+  return getRuleContext<BattleSimParser::FalseContext>(0);
 }
 
-BattleSimParser::ExpContext* BattleSimParser::PrimaryBoolContext::exp(size_t i) {
-  return getRuleContext<BattleSimParser::ExpContext>(i);
+BattleSimParser::ParenthesesBoolContext* BattleSimParser::PrimaryBoolContext::parenthesesBool() {
+  return getRuleContext<BattleSimParser::ParenthesesBoolContext>(0);
 }
 
-tree::TerminalNode* BattleSimParser::PrimaryBoolContext::COMPSYMBOL() {
-  return getToken(BattleSimParser::COMPSYMBOL, 0);
+BattleSimParser::ComparisonBoolContext* BattleSimParser::PrimaryBoolContext::comparisonBool() {
+  return getRuleContext<BattleSimParser::ComparisonBoolContext>(0);
 }
 
-std::vector<BattleSimParser::OrientationContext *> BattleSimParser::PrimaryBoolContext::orientation() {
-  return getRuleContexts<BattleSimParser::OrientationContext>();
-}
-
-BattleSimParser::OrientationContext* BattleSimParser::PrimaryBoolContext::orientation(size_t i) {
-  return getRuleContext<BattleSimParser::OrientationContext>(i);
+BattleSimParser::OrientationEqualityCheckContext* BattleSimParser::PrimaryBoolContext::orientationEqualityCheck() {
+  return getRuleContext<BattleSimParser::OrientationEqualityCheckContext>(0);
 }
 
 BattleSimParser::BlockCheckContext* BattleSimParser::PrimaryBoolContext::blockCheck() {
@@ -1616,6 +2010,10 @@ BattleSimParser::BlockCheckContext* BattleSimParser::PrimaryBoolContext::blockCh
 
 BattleSimParser::OrientationCheckContext* BattleSimParser::PrimaryBoolContext::orientationCheck() {
   return getRuleContext<BattleSimParser::OrientationCheckContext>(0);
+}
+
+BattleSimParser::EnemyNearbyCheckContext* BattleSimParser::PrimaryBoolContext::enemyNearbyCheck() {
+  return getRuleContext<BattleSimParser::EnemyNearbyCheckContext>(0);
 }
 
 
@@ -1645,8 +2043,7 @@ std::any BattleSimParser::PrimaryBoolContext::accept(tree::ParseTreeVisitor *vis
 
 BattleSimParser::PrimaryBoolContext* BattleSimParser::primaryBool() {
   PrimaryBoolContext *_localctx = _tracker.createInstance<PrimaryBoolContext>(_ctx, getState());
-  enterRule(_localctx, 34, BattleSimParser::RulePrimaryBool);
-  size_t _la = 0;
+  enterRule(_localctx, 46, BattleSimParser::RulePrimaryBool);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1656,83 +2053,62 @@ BattleSimParser::PrimaryBoolContext* BattleSimParser::primaryBool() {
     exitRule();
   });
   try {
-    setState(186);
+    setState(231);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 8, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(169);
-      match(BattleSimParser::T__29);
+      setState(223);
+      true_();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(170);
-      match(BattleSimParser::T__30);
+      setState(224);
+      false_();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(171);
-      match(BattleSimParser::T__8);
-      setState(172);
-      boolexp();
-      setState(173);
-      match(BattleSimParser::T__10);
+      setState(225);
+      parenthesesBool();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(175);
-      exp(0);
-      setState(176);
-      match(BattleSimParser::COMPSYMBOL);
-      setState(177);
-      exp(0);
+      setState(226);
+      comparisonBool();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(179);
-      orientation();
-      setState(180);
-      _la = _input->LA(1);
-      if (!(_la == BattleSimParser::T__31
-
-      || _la == BattleSimParser::T__32)) {
-      _errHandler->recoverInline(this);
-      }
-      else {
-        _errHandler->reportMatch(this);
-        consume();
-      }
-      setState(181);
-      orientation();
+      setState(227);
+      orientationEqualityCheck();
       break;
     }
 
     case 6: {
       enterOuterAlt(_localctx, 6);
-      setState(183);
+      setState(228);
       blockCheck();
       break;
     }
 
     case 7: {
       enterOuterAlt(_localctx, 7);
-      setState(184);
+      setState(229);
       orientationCheck();
       break;
     }
 
     case 8: {
       enterOuterAlt(_localctx, 8);
-      setState(185);
-      match(BattleSimParser::T__33);
+      setState(230);
+      enemyNearbyCheck();
       break;
     }
 
@@ -1750,10 +2126,406 @@ BattleSimParser::PrimaryBoolContext* BattleSimParser::primaryBool() {
   return _localctx;
 }
 
+//----------------- TrueContext ------------------------------------------------------------------
+
+BattleSimParser::TrueContext::TrueContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::TrueContext::getRuleIndex() const {
+  return BattleSimParser::RuleTrue;
+}
+
+void BattleSimParser::TrueContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterTrue(this);
+}
+
+void BattleSimParser::TrueContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitTrue(this);
+}
+
+
+std::any BattleSimParser::TrueContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitTrue(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::TrueContext* BattleSimParser::true_() {
+  TrueContext *_localctx = _tracker.createInstance<TrueContext>(_ctx, getState());
+  enterRule(_localctx, 48, BattleSimParser::RuleTrue);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(233);
+    match(BattleSimParser::T__29);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- FalseContext ------------------------------------------------------------------
+
+BattleSimParser::FalseContext::FalseContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::FalseContext::getRuleIndex() const {
+  return BattleSimParser::RuleFalse;
+}
+
+void BattleSimParser::FalseContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFalse(this);
+}
+
+void BattleSimParser::FalseContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFalse(this);
+}
+
+
+std::any BattleSimParser::FalseContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitFalse(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::FalseContext* BattleSimParser::false_() {
+  FalseContext *_localctx = _tracker.createInstance<FalseContext>(_ctx, getState());
+  enterRule(_localctx, 50, BattleSimParser::RuleFalse);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(235);
+    match(BattleSimParser::T__30);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ParenthesesBoolContext ------------------------------------------------------------------
+
+BattleSimParser::ParenthesesBoolContext::ParenthesesBoolContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::BoolexpContext* BattleSimParser::ParenthesesBoolContext::boolexp() {
+  return getRuleContext<BattleSimParser::BoolexpContext>(0);
+}
+
+
+size_t BattleSimParser::ParenthesesBoolContext::getRuleIndex() const {
+  return BattleSimParser::RuleParenthesesBool;
+}
+
+void BattleSimParser::ParenthesesBoolContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterParenthesesBool(this);
+}
+
+void BattleSimParser::ParenthesesBoolContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitParenthesesBool(this);
+}
+
+
+std::any BattleSimParser::ParenthesesBoolContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitParenthesesBool(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::ParenthesesBoolContext* BattleSimParser::parenthesesBool() {
+  ParenthesesBoolContext *_localctx = _tracker.createInstance<ParenthesesBoolContext>(_ctx, getState());
+  enterRule(_localctx, 52, BattleSimParser::RuleParenthesesBool);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(237);
+    match(BattleSimParser::T__8);
+    setState(238);
+    boolexp();
+    setState(239);
+    match(BattleSimParser::T__10);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ComparisonBoolContext ------------------------------------------------------------------
+
+BattleSimParser::ComparisonBoolContext::ComparisonBoolContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+std::vector<BattleSimParser::ExpContext *> BattleSimParser::ComparisonBoolContext::exp() {
+  return getRuleContexts<BattleSimParser::ExpContext>();
+}
+
+BattleSimParser::ExpContext* BattleSimParser::ComparisonBoolContext::exp(size_t i) {
+  return getRuleContext<BattleSimParser::ExpContext>(i);
+}
+
+tree::TerminalNode* BattleSimParser::ComparisonBoolContext::COMPSYMBOL() {
+  return getToken(BattleSimParser::COMPSYMBOL, 0);
+}
+
+
+size_t BattleSimParser::ComparisonBoolContext::getRuleIndex() const {
+  return BattleSimParser::RuleComparisonBool;
+}
+
+void BattleSimParser::ComparisonBoolContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterComparisonBool(this);
+}
+
+void BattleSimParser::ComparisonBoolContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitComparisonBool(this);
+}
+
+
+std::any BattleSimParser::ComparisonBoolContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitComparisonBool(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::ComparisonBoolContext* BattleSimParser::comparisonBool() {
+  ComparisonBoolContext *_localctx = _tracker.createInstance<ComparisonBoolContext>(_ctx, getState());
+  enterRule(_localctx, 54, BattleSimParser::RuleComparisonBool);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(241);
+    exp(0);
+    setState(242);
+    match(BattleSimParser::COMPSYMBOL);
+    setState(243);
+    exp(0);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- OrientationEqualityCheckContext ------------------------------------------------------------------
+
+BattleSimParser::OrientationEqualityCheckContext::OrientationEqualityCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+std::vector<BattleSimParser::OrientationContext *> BattleSimParser::OrientationEqualityCheckContext::orientation() {
+  return getRuleContexts<BattleSimParser::OrientationContext>();
+}
+
+BattleSimParser::OrientationContext* BattleSimParser::OrientationEqualityCheckContext::orientation(size_t i) {
+  return getRuleContext<BattleSimParser::OrientationContext>(i);
+}
+
+
+size_t BattleSimParser::OrientationEqualityCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleOrientationEqualityCheck;
+}
+
+void BattleSimParser::OrientationEqualityCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterOrientationEqualityCheck(this);
+}
+
+void BattleSimParser::OrientationEqualityCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitOrientationEqualityCheck(this);
+}
+
+
+std::any BattleSimParser::OrientationEqualityCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitOrientationEqualityCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::OrientationEqualityCheckContext* BattleSimParser::orientationEqualityCheck() {
+  OrientationEqualityCheckContext *_localctx = _tracker.createInstance<OrientationEqualityCheckContext>(_ctx, getState());
+  enterRule(_localctx, 56, BattleSimParser::RuleOrientationEqualityCheck);
+  size_t _la = 0;
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(245);
+    orientation();
+    setState(246);
+    _la = _input->LA(1);
+    if (!(_la == BattleSimParser::T__31
+
+    || _la == BattleSimParser::T__32)) {
+    _errHandler->recoverInline(this);
+    }
+    else {
+      _errHandler->reportMatch(this);
+      consume();
+    }
+    setState(247);
+    orientation();
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- EnemyNearbyCheckContext ------------------------------------------------------------------
+
+BattleSimParser::EnemyNearbyCheckContext::EnemyNearbyCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::EnemyNearbyCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleEnemyNearbyCheck;
+}
+
+void BattleSimParser::EnemyNearbyCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterEnemyNearbyCheck(this);
+}
+
+void BattleSimParser::EnemyNearbyCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitEnemyNearbyCheck(this);
+}
+
+
+std::any BattleSimParser::EnemyNearbyCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitEnemyNearbyCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::EnemyNearbyCheckContext* BattleSimParser::enemyNearbyCheck() {
+  EnemyNearbyCheckContext *_localctx = _tracker.createInstance<EnemyNearbyCheckContext>(_ctx, getState());
+  enterRule(_localctx, 58, BattleSimParser::RuleEnemyNearbyCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(249);
+    match(BattleSimParser::T__33);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
 //----------------- BlockCheckContext ------------------------------------------------------------------
 
 BattleSimParser::BlockCheckContext::BlockCheckContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::IsFrontClearCheckContext* BattleSimParser::BlockCheckContext::isFrontClearCheck() {
+  return getRuleContext<BattleSimParser::IsFrontClearCheckContext>(0);
+}
+
+BattleSimParser::IsFrontBlockedCheckContext* BattleSimParser::BlockCheckContext::isFrontBlockedCheck() {
+  return getRuleContext<BattleSimParser::IsFrontBlockedCheckContext>(0);
 }
 
 
@@ -1783,8 +2555,81 @@ std::any BattleSimParser::BlockCheckContext::accept(tree::ParseTreeVisitor *visi
 
 BattleSimParser::BlockCheckContext* BattleSimParser::blockCheck() {
   BlockCheckContext *_localctx = _tracker.createInstance<BlockCheckContext>(_ctx, getState());
-  enterRule(_localctx, 36, BattleSimParser::RuleBlockCheck);
-  size_t _la = 0;
+  enterRule(_localctx, 60, BattleSimParser::RuleBlockCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(253);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case BattleSimParser::T__34: {
+        enterOuterAlt(_localctx, 1);
+        setState(251);
+        isFrontClearCheck();
+        break;
+      }
+
+      case BattleSimParser::T__35: {
+        enterOuterAlt(_localctx, 2);
+        setState(252);
+        isFrontBlockedCheck();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- IsFrontClearCheckContext ------------------------------------------------------------------
+
+BattleSimParser::IsFrontClearCheckContext::IsFrontClearCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::IsFrontClearCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleIsFrontClearCheck;
+}
+
+void BattleSimParser::IsFrontClearCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterIsFrontClearCheck(this);
+}
+
+void BattleSimParser::IsFrontClearCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitIsFrontClearCheck(this);
+}
+
+
+std::any BattleSimParser::IsFrontClearCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitIsFrontClearCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::IsFrontClearCheckContext* BattleSimParser::isFrontClearCheck() {
+  IsFrontClearCheckContext *_localctx = _tracker.createInstance<IsFrontClearCheckContext>(_ctx, getState());
+  enterRule(_localctx, 62, BattleSimParser::RuleIsFrontClearCheck);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1795,17 +2640,65 @@ BattleSimParser::BlockCheckContext* BattleSimParser::blockCheck() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(188);
-    _la = _input->LA(1);
-    if (!(_la == BattleSimParser::T__34
+    setState(255);
+    match(BattleSimParser::T__34);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
 
-    || _la == BattleSimParser::T__35)) {
-    _errHandler->recoverInline(this);
-    }
-    else {
-      _errHandler->reportMatch(this);
-      consume();
-    }
+  return _localctx;
+}
+
+//----------------- IsFrontBlockedCheckContext ------------------------------------------------------------------
+
+BattleSimParser::IsFrontBlockedCheckContext::IsFrontBlockedCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::IsFrontBlockedCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleIsFrontBlockedCheck;
+}
+
+void BattleSimParser::IsFrontBlockedCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterIsFrontBlockedCheck(this);
+}
+
+void BattleSimParser::IsFrontBlockedCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitIsFrontBlockedCheck(this);
+}
+
+
+std::any BattleSimParser::IsFrontBlockedCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitIsFrontBlockedCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::IsFrontBlockedCheckContext* BattleSimParser::isFrontBlockedCheck() {
+  IsFrontBlockedCheckContext *_localctx = _tracker.createInstance<IsFrontBlockedCheckContext>(_ctx, getState());
+  enterRule(_localctx, 64, BattleSimParser::RuleIsFrontBlockedCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(257);
+    match(BattleSimParser::T__35);
    
   }
   catch (RecognitionException &e) {
@@ -1821,6 +2714,22 @@ BattleSimParser::BlockCheckContext* BattleSimParser::blockCheck() {
 
 BattleSimParser::OrientationCheckContext::OrientationCheckContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::FacingNCheckContext* BattleSimParser::OrientationCheckContext::facingNCheck() {
+  return getRuleContext<BattleSimParser::FacingNCheckContext>(0);
+}
+
+BattleSimParser::FacingWCheckContext* BattleSimParser::OrientationCheckContext::facingWCheck() {
+  return getRuleContext<BattleSimParser::FacingWCheckContext>(0);
+}
+
+BattleSimParser::FacingECheckContext* BattleSimParser::OrientationCheckContext::facingECheck() {
+  return getRuleContext<BattleSimParser::FacingECheckContext>(0);
+}
+
+BattleSimParser::FacingSCheckContext* BattleSimParser::OrientationCheckContext::facingSCheck() {
+  return getRuleContext<BattleSimParser::FacingSCheckContext>(0);
 }
 
 
@@ -1850,8 +2759,95 @@ std::any BattleSimParser::OrientationCheckContext::accept(tree::ParseTreeVisitor
 
 BattleSimParser::OrientationCheckContext* BattleSimParser::orientationCheck() {
   OrientationCheckContext *_localctx = _tracker.createInstance<OrientationCheckContext>(_ctx, getState());
-  enterRule(_localctx, 38, BattleSimParser::RuleOrientationCheck);
-  size_t _la = 0;
+  enterRule(_localctx, 66, BattleSimParser::RuleOrientationCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(263);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case BattleSimParser::T__36: {
+        enterOuterAlt(_localctx, 1);
+        setState(259);
+        facingNCheck();
+        break;
+      }
+
+      case BattleSimParser::T__37: {
+        enterOuterAlt(_localctx, 2);
+        setState(260);
+        facingWCheck();
+        break;
+      }
+
+      case BattleSimParser::T__38: {
+        enterOuterAlt(_localctx, 3);
+        setState(261);
+        facingECheck();
+        break;
+      }
+
+      case BattleSimParser::T__39: {
+        enterOuterAlt(_localctx, 4);
+        setState(262);
+        facingSCheck();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- FacingNCheckContext ------------------------------------------------------------------
+
+BattleSimParser::FacingNCheckContext::FacingNCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::FacingNCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleFacingNCheck;
+}
+
+void BattleSimParser::FacingNCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFacingNCheck(this);
+}
+
+void BattleSimParser::FacingNCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFacingNCheck(this);
+}
+
+
+std::any BattleSimParser::FacingNCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitFacingNCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::FacingNCheckContext* BattleSimParser::facingNCheck() {
+  FacingNCheckContext *_localctx = _tracker.createInstance<FacingNCheckContext>(_ctx, getState());
+  enterRule(_localctx, 68, BattleSimParser::RuleFacingNCheck);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1862,16 +2858,179 @@ BattleSimParser::OrientationCheckContext* BattleSimParser::orientationCheck() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(190);
-    _la = _input->LA(1);
-    if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 2061584302080) != 0))) {
-    _errHandler->recoverInline(this);
-    }
-    else {
-      _errHandler->reportMatch(this);
-      consume();
-    }
+    setState(265);
+    match(BattleSimParser::T__36);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- FacingWCheckContext ------------------------------------------------------------------
+
+BattleSimParser::FacingWCheckContext::FacingWCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::FacingWCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleFacingWCheck;
+}
+
+void BattleSimParser::FacingWCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFacingWCheck(this);
+}
+
+void BattleSimParser::FacingWCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFacingWCheck(this);
+}
+
+
+std::any BattleSimParser::FacingWCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitFacingWCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::FacingWCheckContext* BattleSimParser::facingWCheck() {
+  FacingWCheckContext *_localctx = _tracker.createInstance<FacingWCheckContext>(_ctx, getState());
+  enterRule(_localctx, 70, BattleSimParser::RuleFacingWCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(267);
+    match(BattleSimParser::T__37);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- FacingECheckContext ------------------------------------------------------------------
+
+BattleSimParser::FacingECheckContext::FacingECheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::FacingECheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleFacingECheck;
+}
+
+void BattleSimParser::FacingECheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFacingECheck(this);
+}
+
+void BattleSimParser::FacingECheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFacingECheck(this);
+}
+
+
+std::any BattleSimParser::FacingECheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitFacingECheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::FacingECheckContext* BattleSimParser::facingECheck() {
+  FacingECheckContext *_localctx = _tracker.createInstance<FacingECheckContext>(_ctx, getState());
+  enterRule(_localctx, 72, BattleSimParser::RuleFacingECheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(269);
+    match(BattleSimParser::T__38);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- FacingSCheckContext ------------------------------------------------------------------
+
+BattleSimParser::FacingSCheckContext::FacingSCheckContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::FacingSCheckContext::getRuleIndex() const {
+  return BattleSimParser::RuleFacingSCheck;
+}
+
+void BattleSimParser::FacingSCheckContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFacingSCheck(this);
+}
+
+void BattleSimParser::FacingSCheckContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFacingSCheck(this);
+}
+
+
+std::any BattleSimParser::FacingSCheckContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitFacingSCheck(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::FacingSCheckContext* BattleSimParser::facingSCheck() {
+  FacingSCheckContext *_localctx = _tracker.createInstance<FacingSCheckContext>(_ctx, getState());
+  enterRule(_localctx, 74, BattleSimParser::RuleFacingSCheck);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(271);
+    match(BattleSimParser::T__39);
    
   }
   catch (RecognitionException &e) {
@@ -1891,6 +3050,14 @@ BattleSimParser::OrientationContext::OrientationContext(ParserRuleContext *paren
 
 tree::TerminalNode* BattleSimParser::OrientationContext::ORIENTATION() {
   return getToken(BattleSimParser::ORIENTATION, 0);
+}
+
+BattleSimParser::GetNearbyEnemyOrientationContext* BattleSimParser::OrientationContext::getNearbyEnemyOrientation() {
+  return getRuleContext<BattleSimParser::GetNearbyEnemyOrientationContext>(0);
+}
+
+BattleSimParser::GetMyOrientationContext* BattleSimParser::OrientationContext::getMyOrientation() {
+  return getRuleContext<BattleSimParser::GetMyOrientationContext>(0);
 }
 
 
@@ -1920,8 +3087,88 @@ std::any BattleSimParser::OrientationContext::accept(tree::ParseTreeVisitor *vis
 
 BattleSimParser::OrientationContext* BattleSimParser::orientation() {
   OrientationContext *_localctx = _tracker.createInstance<OrientationContext>(_ctx, getState());
-  enterRule(_localctx, 40, BattleSimParser::RuleOrientation);
-  size_t _la = 0;
+  enterRule(_localctx, 76, BattleSimParser::RuleOrientation);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(276);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case BattleSimParser::ORIENTATION: {
+        enterOuterAlt(_localctx, 1);
+        setState(273);
+        match(BattleSimParser::ORIENTATION);
+        break;
+      }
+
+      case BattleSimParser::T__40: {
+        enterOuterAlt(_localctx, 2);
+        setState(274);
+        getNearbyEnemyOrientation();
+        break;
+      }
+
+      case BattleSimParser::T__41: {
+        enterOuterAlt(_localctx, 3);
+        setState(275);
+        getMyOrientation();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- GetNearbyEnemyOrientationContext ------------------------------------------------------------------
+
+BattleSimParser::GetNearbyEnemyOrientationContext::GetNearbyEnemyOrientationContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::GetNearbyEnemyOrientationContext::getRuleIndex() const {
+  return BattleSimParser::RuleGetNearbyEnemyOrientation;
+}
+
+void BattleSimParser::GetNearbyEnemyOrientationContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterGetNearbyEnemyOrientation(this);
+}
+
+void BattleSimParser::GetNearbyEnemyOrientationContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitGetNearbyEnemyOrientation(this);
+}
+
+
+std::any BattleSimParser::GetNearbyEnemyOrientationContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitGetNearbyEnemyOrientation(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::GetNearbyEnemyOrientationContext* BattleSimParser::getNearbyEnemyOrientation() {
+  GetNearbyEnemyOrientationContext *_localctx = _tracker.createInstance<GetNearbyEnemyOrientationContext>(_ctx, getState());
+  enterRule(_localctx, 78, BattleSimParser::RuleGetNearbyEnemyOrientation);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1932,16 +3179,65 @@ BattleSimParser::OrientationContext* BattleSimParser::orientation() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(192);
-    _la = _input->LA(1);
-    if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 41781441855488) != 0))) {
-    _errHandler->recoverInline(this);
-    }
-    else {
-      _errHandler->reportMatch(this);
-      consume();
-    }
+    setState(278);
+    match(BattleSimParser::T__40);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- GetMyOrientationContext ------------------------------------------------------------------
+
+BattleSimParser::GetMyOrientationContext::GetMyOrientationContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t BattleSimParser::GetMyOrientationContext::getRuleIndex() const {
+  return BattleSimParser::RuleGetMyOrientation;
+}
+
+void BattleSimParser::GetMyOrientationContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterGetMyOrientation(this);
+}
+
+void BattleSimParser::GetMyOrientationContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitGetMyOrientation(this);
+}
+
+
+std::any BattleSimParser::GetMyOrientationContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitGetMyOrientation(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::GetMyOrientationContext* BattleSimParser::getMyOrientation() {
+  GetMyOrientationContext *_localctx = _tracker.createInstance<GetMyOrientationContext>(_ctx, getState());
+  enterRule(_localctx, 80, BattleSimParser::RuleGetMyOrientation);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(280);
+    match(BattleSimParser::T__41);
    
   }
   catch (RecognitionException &e) {
@@ -1959,8 +3255,12 @@ BattleSimParser::ExpContext::ExpContext(ParserRuleContext *parent, size_t invoki
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* BattleSimParser::ExpContext::NUMBER() {
-  return getToken(BattleSimParser::NUMBER, 0);
+BattleSimParser::AtomicExpContext* BattleSimParser::ExpContext::atomicExp() {
+  return getRuleContext<BattleSimParser::AtomicExpContext>(0);
+}
+
+BattleSimParser::ParenthesesExpContext* BattleSimParser::ExpContext::parenthesesExp() {
+  return getRuleContext<BattleSimParser::ParenthesesExpContext>(0);
 }
 
 std::vector<BattleSimParser::ExpContext *> BattleSimParser::ExpContext::exp() {
@@ -2011,8 +3311,8 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
   BattleSimParser::ExpContext *_localctx = _tracker.createInstance<ExpContext>(_ctx, parentState);
   BattleSimParser::ExpContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 42;
-  enterRecursionRule(_localctx, 42, BattleSimParser::RuleExp, precedence);
+  size_t startState = 82;
+  enterRecursionRule(_localctx, 82, BattleSimParser::RuleExp, precedence);
 
     
 
@@ -2026,22 +3326,18 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(200);
+    setState(285);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BattleSimParser::NUMBER: {
-        setState(195);
-        match(BattleSimParser::NUMBER);
+        setState(283);
+        atomicExp();
         break;
       }
 
       case BattleSimParser::T__8: {
-        setState(196);
-        match(BattleSimParser::T__8);
-        setState(197);
-        exp(0);
-        setState(198);
-        match(BattleSimParser::T__10);
+        setState(284);
+        parenthesesExp();
         break;
       }
 
@@ -2049,9 +3345,9 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(207);
+    setState(292);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 13, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
@@ -2059,17 +3355,17 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
         previousContext = _localctx;
         _localctx = _tracker.createInstance<ExpContext>(parentContext, parentState);
         pushNewRecursionContext(_localctx, startState, RuleExp);
-        setState(202);
+        setState(287);
 
         if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
-        setState(203);
+        setState(288);
         match(BattleSimParser::MATHSYMBOL);
-        setState(204);
+        setState(289);
         exp(3); 
       }
-      setState(209);
+      setState(294);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 13, _ctx);
     }
   }
   catch (RecognitionException &e) {
@@ -2080,9 +3376,135 @@ BattleSimParser::ExpContext* BattleSimParser::exp(int precedence) {
   return _localctx;
 }
 
+//----------------- AtomicExpContext ------------------------------------------------------------------
+
+BattleSimParser::AtomicExpContext::AtomicExpContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* BattleSimParser::AtomicExpContext::NUMBER() {
+  return getToken(BattleSimParser::NUMBER, 0);
+}
+
+
+size_t BattleSimParser::AtomicExpContext::getRuleIndex() const {
+  return BattleSimParser::RuleAtomicExp;
+}
+
+void BattleSimParser::AtomicExpContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAtomicExp(this);
+}
+
+void BattleSimParser::AtomicExpContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAtomicExp(this);
+}
+
+
+std::any BattleSimParser::AtomicExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitAtomicExp(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::AtomicExpContext* BattleSimParser::atomicExp() {
+  AtomicExpContext *_localctx = _tracker.createInstance<AtomicExpContext>(_ctx, getState());
+  enterRule(_localctx, 84, BattleSimParser::RuleAtomicExp);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(295);
+    match(BattleSimParser::NUMBER);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ParenthesesExpContext ------------------------------------------------------------------
+
+BattleSimParser::ParenthesesExpContext::ParenthesesExpContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+BattleSimParser::ExpContext* BattleSimParser::ParenthesesExpContext::exp() {
+  return getRuleContext<BattleSimParser::ExpContext>(0);
+}
+
+
+size_t BattleSimParser::ParenthesesExpContext::getRuleIndex() const {
+  return BattleSimParser::RuleParenthesesExp;
+}
+
+void BattleSimParser::ParenthesesExpContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterParenthesesExp(this);
+}
+
+void BattleSimParser::ParenthesesExpContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<BattleSimListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitParenthesesExp(this);
+}
+
+
+std::any BattleSimParser::ParenthesesExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BattleSimVisitor*>(visitor))
+    return parserVisitor->visitParenthesesExp(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BattleSimParser::ParenthesesExpContext* BattleSimParser::parenthesesExp() {
+  ParenthesesExpContext *_localctx = _tracker.createInstance<ParenthesesExpContext>(_ctx, getState());
+  enterRule(_localctx, 86, BattleSimParser::RuleParenthesesExp);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(297);
+    match(BattleSimParser::T__8);
+    setState(298);
+    exp(0);
+    setState(299);
+    match(BattleSimParser::T__10);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
 bool BattleSimParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 21: return expSempred(antlrcpp::downCast<ExpContext *>(context), predicateIndex);
+    case 41: return expSempred(antlrcpp::downCast<ExpContext *>(context), predicateIndex);
 
   default:
     break;

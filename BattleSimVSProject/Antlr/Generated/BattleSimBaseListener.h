@@ -43,6 +43,15 @@ public:
   virtual void enterTurnCmd(BattleSimParser::TurnCmdContext * /*ctx*/) override { }
   virtual void exitTurnCmd(BattleSimParser::TurnCmdContext * /*ctx*/) override { }
 
+  virtual void enterTurnLeftCmd(BattleSimParser::TurnLeftCmdContext * /*ctx*/) override { }
+  virtual void exitTurnLeftCmd(BattleSimParser::TurnLeftCmdContext * /*ctx*/) override { }
+
+  virtual void enterTurnRightCmd(BattleSimParser::TurnRightCmdContext * /*ctx*/) override { }
+  virtual void exitTurnRightCmd(BattleSimParser::TurnRightCmdContext * /*ctx*/) override { }
+
+  virtual void enterTurnOrientationCmd(BattleSimParser::TurnOrientationCmdContext * /*ctx*/) override { }
+  virtual void exitTurnOrientationCmd(BattleSimParser::TurnOrientationCmdContext * /*ctx*/) override { }
+
   virtual void enterIfCondition(BattleSimParser::IfConditionContext * /*ctx*/) override { }
   virtual void exitIfCondition(BattleSimParser::IfConditionContext * /*ctx*/) override { }
 
@@ -51,6 +60,15 @@ public:
 
   virtual void enterAttackCmd(BattleSimParser::AttackCmdContext * /*ctx*/) override { }
   virtual void exitAttackCmd(BattleSimParser::AttackCmdContext * /*ctx*/) override { }
+
+  virtual void enterAttackAroundSelfCmd(BattleSimParser::AttackAroundSelfCmdContext * /*ctx*/) override { }
+  virtual void exitAttackAroundSelfCmd(BattleSimParser::AttackAroundSelfCmdContext * /*ctx*/) override { }
+
+  virtual void enterAttackInFrontCmd(BattleSimParser::AttackInFrontCmdContext * /*ctx*/) override { }
+  virtual void exitAttackInFrontCmd(BattleSimParser::AttackInFrontCmdContext * /*ctx*/) override { }
+
+  virtual void enterRangeAttackCmd(BattleSimParser::RangeAttackCmdContext * /*ctx*/) override { }
+  virtual void exitRangeAttackCmd(BattleSimParser::RangeAttackCmdContext * /*ctx*/) override { }
 
   virtual void enterSkipCmd(BattleSimParser::SkipCmdContext * /*ctx*/) override { }
   virtual void exitSkipCmd(BattleSimParser::SkipCmdContext * /*ctx*/) override { }
@@ -70,17 +88,65 @@ public:
   virtual void enterPrimaryBool(BattleSimParser::PrimaryBoolContext * /*ctx*/) override { }
   virtual void exitPrimaryBool(BattleSimParser::PrimaryBoolContext * /*ctx*/) override { }
 
+  virtual void enterTrue(BattleSimParser::TrueContext * /*ctx*/) override { }
+  virtual void exitTrue(BattleSimParser::TrueContext * /*ctx*/) override { }
+
+  virtual void enterFalse(BattleSimParser::FalseContext * /*ctx*/) override { }
+  virtual void exitFalse(BattleSimParser::FalseContext * /*ctx*/) override { }
+
+  virtual void enterParenthesesBool(BattleSimParser::ParenthesesBoolContext * /*ctx*/) override { }
+  virtual void exitParenthesesBool(BattleSimParser::ParenthesesBoolContext * /*ctx*/) override { }
+
+  virtual void enterComparisonBool(BattleSimParser::ComparisonBoolContext * /*ctx*/) override { }
+  virtual void exitComparisonBool(BattleSimParser::ComparisonBoolContext * /*ctx*/) override { }
+
+  virtual void enterOrientationEqualityCheck(BattleSimParser::OrientationEqualityCheckContext * /*ctx*/) override { }
+  virtual void exitOrientationEqualityCheck(BattleSimParser::OrientationEqualityCheckContext * /*ctx*/) override { }
+
+  virtual void enterEnemyNearbyCheck(BattleSimParser::EnemyNearbyCheckContext * /*ctx*/) override { }
+  virtual void exitEnemyNearbyCheck(BattleSimParser::EnemyNearbyCheckContext * /*ctx*/) override { }
+
   virtual void enterBlockCheck(BattleSimParser::BlockCheckContext * /*ctx*/) override { }
   virtual void exitBlockCheck(BattleSimParser::BlockCheckContext * /*ctx*/) override { }
+
+  virtual void enterIsFrontClearCheck(BattleSimParser::IsFrontClearCheckContext * /*ctx*/) override { }
+  virtual void exitIsFrontClearCheck(BattleSimParser::IsFrontClearCheckContext * /*ctx*/) override { }
+
+  virtual void enterIsFrontBlockedCheck(BattleSimParser::IsFrontBlockedCheckContext * /*ctx*/) override { }
+  virtual void exitIsFrontBlockedCheck(BattleSimParser::IsFrontBlockedCheckContext * /*ctx*/) override { }
 
   virtual void enterOrientationCheck(BattleSimParser::OrientationCheckContext * /*ctx*/) override { }
   virtual void exitOrientationCheck(BattleSimParser::OrientationCheckContext * /*ctx*/) override { }
 
+  virtual void enterFacingNCheck(BattleSimParser::FacingNCheckContext * /*ctx*/) override { }
+  virtual void exitFacingNCheck(BattleSimParser::FacingNCheckContext * /*ctx*/) override { }
+
+  virtual void enterFacingWCheck(BattleSimParser::FacingWCheckContext * /*ctx*/) override { }
+  virtual void exitFacingWCheck(BattleSimParser::FacingWCheckContext * /*ctx*/) override { }
+
+  virtual void enterFacingECheck(BattleSimParser::FacingECheckContext * /*ctx*/) override { }
+  virtual void exitFacingECheck(BattleSimParser::FacingECheckContext * /*ctx*/) override { }
+
+  virtual void enterFacingSCheck(BattleSimParser::FacingSCheckContext * /*ctx*/) override { }
+  virtual void exitFacingSCheck(BattleSimParser::FacingSCheckContext * /*ctx*/) override { }
+
   virtual void enterOrientation(BattleSimParser::OrientationContext * /*ctx*/) override { }
   virtual void exitOrientation(BattleSimParser::OrientationContext * /*ctx*/) override { }
 
+  virtual void enterGetNearbyEnemyOrientation(BattleSimParser::GetNearbyEnemyOrientationContext * /*ctx*/) override { }
+  virtual void exitGetNearbyEnemyOrientation(BattleSimParser::GetNearbyEnemyOrientationContext * /*ctx*/) override { }
+
+  virtual void enterGetMyOrientation(BattleSimParser::GetMyOrientationContext * /*ctx*/) override { }
+  virtual void exitGetMyOrientation(BattleSimParser::GetMyOrientationContext * /*ctx*/) override { }
+
   virtual void enterExp(BattleSimParser::ExpContext * /*ctx*/) override { }
   virtual void exitExp(BattleSimParser::ExpContext * /*ctx*/) override { }
+
+  virtual void enterAtomicExp(BattleSimParser::AtomicExpContext * /*ctx*/) override { }
+  virtual void exitAtomicExp(BattleSimParser::AtomicExpContext * /*ctx*/) override { }
+
+  virtual void enterParenthesesExp(BattleSimParser::ParenthesesExpContext * /*ctx*/) override { }
+  virtual void exitParenthesesExp(BattleSimParser::ParenthesesExpContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

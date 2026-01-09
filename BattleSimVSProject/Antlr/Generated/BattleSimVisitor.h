@@ -37,11 +37,23 @@ public:
 
     virtual std::any visitTurnCmd(BattleSimParser::TurnCmdContext *context) = 0;
 
+    virtual std::any visitTurnLeftCmd(BattleSimParser::TurnLeftCmdContext *context) = 0;
+
+    virtual std::any visitTurnRightCmd(BattleSimParser::TurnRightCmdContext *context) = 0;
+
+    virtual std::any visitTurnOrientationCmd(BattleSimParser::TurnOrientationCmdContext *context) = 0;
+
     virtual std::any visitIfCondition(BattleSimParser::IfConditionContext *context) = 0;
 
     virtual std::any visitWhileCycle(BattleSimParser::WhileCycleContext *context) = 0;
 
     virtual std::any visitAttackCmd(BattleSimParser::AttackCmdContext *context) = 0;
+
+    virtual std::any visitAttackAroundSelfCmd(BattleSimParser::AttackAroundSelfCmdContext *context) = 0;
+
+    virtual std::any visitAttackInFrontCmd(BattleSimParser::AttackInFrontCmdContext *context) = 0;
+
+    virtual std::any visitRangeAttackCmd(BattleSimParser::RangeAttackCmdContext *context) = 0;
 
     virtual std::any visitSkipCmd(BattleSimParser::SkipCmdContext *context) = 0;
 
@@ -55,13 +67,45 @@ public:
 
     virtual std::any visitPrimaryBool(BattleSimParser::PrimaryBoolContext *context) = 0;
 
+    virtual std::any visitTrue(BattleSimParser::TrueContext *context) = 0;
+
+    virtual std::any visitFalse(BattleSimParser::FalseContext *context) = 0;
+
+    virtual std::any visitParenthesesBool(BattleSimParser::ParenthesesBoolContext *context) = 0;
+
+    virtual std::any visitComparisonBool(BattleSimParser::ComparisonBoolContext *context) = 0;
+
+    virtual std::any visitOrientationEqualityCheck(BattleSimParser::OrientationEqualityCheckContext *context) = 0;
+
+    virtual std::any visitEnemyNearbyCheck(BattleSimParser::EnemyNearbyCheckContext *context) = 0;
+
     virtual std::any visitBlockCheck(BattleSimParser::BlockCheckContext *context) = 0;
+
+    virtual std::any visitIsFrontClearCheck(BattleSimParser::IsFrontClearCheckContext *context) = 0;
+
+    virtual std::any visitIsFrontBlockedCheck(BattleSimParser::IsFrontBlockedCheckContext *context) = 0;
 
     virtual std::any visitOrientationCheck(BattleSimParser::OrientationCheckContext *context) = 0;
 
+    virtual std::any visitFacingNCheck(BattleSimParser::FacingNCheckContext *context) = 0;
+
+    virtual std::any visitFacingWCheck(BattleSimParser::FacingWCheckContext *context) = 0;
+
+    virtual std::any visitFacingECheck(BattleSimParser::FacingECheckContext *context) = 0;
+
+    virtual std::any visitFacingSCheck(BattleSimParser::FacingSCheckContext *context) = 0;
+
     virtual std::any visitOrientation(BattleSimParser::OrientationContext *context) = 0;
 
+    virtual std::any visitGetNearbyEnemyOrientation(BattleSimParser::GetNearbyEnemyOrientationContext *context) = 0;
+
+    virtual std::any visitGetMyOrientation(BattleSimParser::GetMyOrientationContext *context) = 0;
+
     virtual std::any visitExp(BattleSimParser::ExpContext *context) = 0;
+
+    virtual std::any visitAtomicExp(BattleSimParser::AtomicExpContext *context) = 0;
+
+    virtual std::any visitParenthesesExp(BattleSimParser::ParenthesesExpContext *context) = 0;
 
 
 };

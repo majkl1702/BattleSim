@@ -25,10 +25,17 @@ public:
   enum {
     RuleBattleSim = 0, RuleMap = 1, RuleTeamDef = 2, RuleUnitDef = 3, RuleUnitStats = 4, 
     RuleUnitLogicSequence = 5, RuleLogicCommand = 6, RuleMoveCmd = 7, RuleTurnCmd = 8, 
-    RuleIfCondition = 9, RuleWhileCycle = 10, RuleAttackCmd = 11, RuleSkipCmd = 12, 
-    RuleBoolexp = 13, RuleOrExpr = 14, RuleAndExpr = 15, RuleNotExpr = 16, 
-    RulePrimaryBool = 17, RuleBlockCheck = 18, RuleOrientationCheck = 19, 
-    RuleOrientation = 20, RuleExp = 21
+    RuleTurnLeftCmd = 9, RuleTurnRightCmd = 10, RuleTurnOrientationCmd = 11, 
+    RuleIfCondition = 12, RuleWhileCycle = 13, RuleAttackCmd = 14, RuleAttackAroundSelfCmd = 15, 
+    RuleAttackInFrontCmd = 16, RuleRangeAttackCmd = 17, RuleSkipCmd = 18, 
+    RuleBoolexp = 19, RuleOrExpr = 20, RuleAndExpr = 21, RuleNotExpr = 22, 
+    RulePrimaryBool = 23, RuleTrue = 24, RuleFalse = 25, RuleParenthesesBool = 26, 
+    RuleComparisonBool = 27, RuleOrientationEqualityCheck = 28, RuleEnemyNearbyCheck = 29, 
+    RuleBlockCheck = 30, RuleIsFrontClearCheck = 31, RuleIsFrontBlockedCheck = 32, 
+    RuleOrientationCheck = 33, RuleFacingNCheck = 34, RuleFacingWCheck = 35, 
+    RuleFacingECheck = 36, RuleFacingSCheck = 37, RuleOrientation = 38, 
+    RuleGetNearbyEnemyOrientation = 39, RuleGetMyOrientation = 40, RuleExp = 41, 
+    RuleAtomicExp = 42, RuleParenthesesExp = 43
   };
 
   explicit BattleSimParser(antlr4::TokenStream *input);
@@ -57,19 +64,41 @@ public:
   class LogicCommandContext;
   class MoveCmdContext;
   class TurnCmdContext;
+  class TurnLeftCmdContext;
+  class TurnRightCmdContext;
+  class TurnOrientationCmdContext;
   class IfConditionContext;
   class WhileCycleContext;
   class AttackCmdContext;
+  class AttackAroundSelfCmdContext;
+  class AttackInFrontCmdContext;
+  class RangeAttackCmdContext;
   class SkipCmdContext;
   class BoolexpContext;
   class OrExprContext;
   class AndExprContext;
   class NotExprContext;
   class PrimaryBoolContext;
+  class TrueContext;
+  class FalseContext;
+  class ParenthesesBoolContext;
+  class ComparisonBoolContext;
+  class OrientationEqualityCheckContext;
+  class EnemyNearbyCheckContext;
   class BlockCheckContext;
+  class IsFrontClearCheckContext;
+  class IsFrontBlockedCheckContext;
   class OrientationCheckContext;
+  class FacingNCheckContext;
+  class FacingWCheckContext;
+  class FacingECheckContext;
+  class FacingSCheckContext;
   class OrientationContext;
-  class ExpContext; 
+  class GetNearbyEnemyOrientationContext;
+  class GetMyOrientationContext;
+  class ExpContext;
+  class AtomicExpContext;
+  class ParenthesesExpContext; 
 
   class  BattleSimContext : public antlr4::ParserRuleContext {
   public:
@@ -209,7 +238,9 @@ public:
   public:
     TurnCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    OrientationContext *orientation();
+    TurnLeftCmdContext *turnLeftCmd();
+    TurnRightCmdContext *turnRightCmd();
+    TurnOrientationCmdContext *turnOrientationCmd();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -219,6 +250,49 @@ public:
   };
 
   TurnCmdContext* turnCmd();
+
+  class  TurnLeftCmdContext : public antlr4::ParserRuleContext {
+  public:
+    TurnLeftCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TurnLeftCmdContext* turnLeftCmd();
+
+  class  TurnRightCmdContext : public antlr4::ParserRuleContext {
+  public:
+    TurnRightCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TurnRightCmdContext* turnRightCmd();
+
+  class  TurnOrientationCmdContext : public antlr4::ParserRuleContext {
+  public:
+    TurnOrientationCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    OrientationContext *orientation();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TurnOrientationCmdContext* turnOrientationCmd();
 
   class  IfConditionContext : public antlr4::ParserRuleContext {
   public:
@@ -257,7 +331,9 @@ public:
   public:
     AttackCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    ExpContext *exp();
+    AttackAroundSelfCmdContext *attackAroundSelfCmd();
+    AttackInFrontCmdContext *attackInFrontCmd();
+    RangeAttackCmdContext *rangeAttackCmd();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -267,6 +343,49 @@ public:
   };
 
   AttackCmdContext* attackCmd();
+
+  class  AttackAroundSelfCmdContext : public antlr4::ParserRuleContext {
+  public:
+    AttackAroundSelfCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AttackAroundSelfCmdContext* attackAroundSelfCmd();
+
+  class  AttackInFrontCmdContext : public antlr4::ParserRuleContext {
+  public:
+    AttackInFrontCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AttackInFrontCmdContext* attackInFrontCmd();
+
+  class  RangeAttackCmdContext : public antlr4::ParserRuleContext {
+  public:
+    RangeAttackCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExpContext *exp();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  RangeAttackCmdContext* rangeAttackCmd();
 
   class  SkipCmdContext : public antlr4::ParserRuleContext {
   public:
@@ -349,14 +468,14 @@ public:
   public:
     PrimaryBoolContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    BoolexpContext *boolexp();
-    std::vector<ExpContext *> exp();
-    ExpContext* exp(size_t i);
-    antlr4::tree::TerminalNode *COMPSYMBOL();
-    std::vector<OrientationContext *> orientation();
-    OrientationContext* orientation(size_t i);
+    TrueContext *true_();
+    FalseContext *false_();
+    ParenthesesBoolContext *parenthesesBool();
+    ComparisonBoolContext *comparisonBool();
+    OrientationEqualityCheckContext *orientationEqualityCheck();
     BlockCheckContext *blockCheck();
     OrientationCheckContext *orientationCheck();
+    EnemyNearbyCheckContext *enemyNearbyCheck();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -367,10 +486,102 @@ public:
 
   PrimaryBoolContext* primaryBool();
 
+  class  TrueContext : public antlr4::ParserRuleContext {
+  public:
+    TrueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TrueContext* true_();
+
+  class  FalseContext : public antlr4::ParserRuleContext {
+  public:
+    FalseContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FalseContext* false_();
+
+  class  ParenthesesBoolContext : public antlr4::ParserRuleContext {
+  public:
+    ParenthesesBoolContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    BoolexpContext *boolexp();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ParenthesesBoolContext* parenthesesBool();
+
+  class  ComparisonBoolContext : public antlr4::ParserRuleContext {
+  public:
+    ComparisonBoolContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ExpContext *> exp();
+    ExpContext* exp(size_t i);
+    antlr4::tree::TerminalNode *COMPSYMBOL();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ComparisonBoolContext* comparisonBool();
+
+  class  OrientationEqualityCheckContext : public antlr4::ParserRuleContext {
+  public:
+    OrientationEqualityCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<OrientationContext *> orientation();
+    OrientationContext* orientation(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  OrientationEqualityCheckContext* orientationEqualityCheck();
+
+  class  EnemyNearbyCheckContext : public antlr4::ParserRuleContext {
+  public:
+    EnemyNearbyCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EnemyNearbyCheckContext* enemyNearbyCheck();
+
   class  BlockCheckContext : public antlr4::ParserRuleContext {
   public:
     BlockCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    IsFrontClearCheckContext *isFrontClearCheck();
+    IsFrontBlockedCheckContext *isFrontBlockedCheck();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -381,10 +592,42 @@ public:
 
   BlockCheckContext* blockCheck();
 
+  class  IsFrontClearCheckContext : public antlr4::ParserRuleContext {
+  public:
+    IsFrontClearCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IsFrontClearCheckContext* isFrontClearCheck();
+
+  class  IsFrontBlockedCheckContext : public antlr4::ParserRuleContext {
+  public:
+    IsFrontBlockedCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IsFrontBlockedCheckContext* isFrontBlockedCheck();
+
   class  OrientationCheckContext : public antlr4::ParserRuleContext {
   public:
     OrientationCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    FacingNCheckContext *facingNCheck();
+    FacingWCheckContext *facingWCheck();
+    FacingECheckContext *facingECheck();
+    FacingSCheckContext *facingSCheck();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -395,11 +638,69 @@ public:
 
   OrientationCheckContext* orientationCheck();
 
+  class  FacingNCheckContext : public antlr4::ParserRuleContext {
+  public:
+    FacingNCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FacingNCheckContext* facingNCheck();
+
+  class  FacingWCheckContext : public antlr4::ParserRuleContext {
+  public:
+    FacingWCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FacingWCheckContext* facingWCheck();
+
+  class  FacingECheckContext : public antlr4::ParserRuleContext {
+  public:
+    FacingECheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FacingECheckContext* facingECheck();
+
+  class  FacingSCheckContext : public antlr4::ParserRuleContext {
+  public:
+    FacingSCheckContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FacingSCheckContext* facingSCheck();
+
   class  OrientationContext : public antlr4::ParserRuleContext {
   public:
     OrientationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ORIENTATION();
+    GetNearbyEnemyOrientationContext *getNearbyEnemyOrientation();
+    GetMyOrientationContext *getMyOrientation();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -410,11 +711,40 @@ public:
 
   OrientationContext* orientation();
 
+  class  GetNearbyEnemyOrientationContext : public antlr4::ParserRuleContext {
+  public:
+    GetNearbyEnemyOrientationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  GetNearbyEnemyOrientationContext* getNearbyEnemyOrientation();
+
+  class  GetMyOrientationContext : public antlr4::ParserRuleContext {
+  public:
+    GetMyOrientationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  GetMyOrientationContext* getMyOrientation();
+
   class  ExpContext : public antlr4::ParserRuleContext {
   public:
     ExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NUMBER();
+    AtomicExpContext *atomicExp();
+    ParenthesesExpContext *parenthesesExp();
     std::vector<ExpContext *> exp();
     ExpContext* exp(size_t i);
     antlr4::tree::TerminalNode *MATHSYMBOL();
@@ -428,6 +758,36 @@ public:
 
   ExpContext* exp();
   ExpContext* exp(int precedence);
+  class  AtomicExpContext : public antlr4::ParserRuleContext {
+  public:
+    AtomicExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AtomicExpContext* atomicExp();
+
+  class  ParenthesesExpContext : public antlr4::ParserRuleContext {
+  public:
+    ParenthesesExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExpContext *exp();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ParenthesesExpContext* parenthesesExp();
+
 
   bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
 

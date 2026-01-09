@@ -5,7 +5,7 @@ TeamBlue {
         attack: 20;
         {
             MoveForward();
-            if (!IsFrontClear()) then (TurnLeft()) else (skip);
+            if (!IsFrontClear()) then ( {TurnLeft();}) else ({skip;});
         }
     };
 }

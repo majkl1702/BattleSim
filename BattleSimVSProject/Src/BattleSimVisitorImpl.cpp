@@ -4,6 +4,25 @@
 #include "../Include/Map.h"
 #include "../Include/Unit.h"
 
+namespace
+{
+
+Orientation ParseOrientation(const char orientation)
+{
+  if (orientation == 'N')
+    return Orientation::N;
+  else if (orientation == 'E')
+    return Orientation::E;
+  else if (orientation == 'S')
+    return Orientation::S;
+  else if (orientation == 'W')
+    return Orientation::W;
+  else
+    throw std::runtime_error("Invalid orientation specified.");
+}
+
+} // namespace
+
 std::any BattleSimVisitorImpl::visitBattleSim(BattleSimParser::BattleSimContext* ctx)
 {
   return visitChildren(ctx);
@@ -114,7 +133,7 @@ std::any BattleSimVisitorImpl::visitExp(BattleSimParser::ExpContext* ctx)
   return visitChildren(ctx);
 }
 
-Map BattleSimVisitorImpl::CreateGameMap(BattleSimParser::BattleSimContext* context)
+std::shared_ptr<Map> BattleSimVisitorImpl::CreateGameMap(BattleSimParser::BattleSimContext* context)
 {
   auto* mapCtx = context->map();
   if (!mapCtx)
@@ -132,13 +151,12 @@ Map BattleSimVisitorImpl::CreateGameMap(BattleSimParser::BattleSimContext* conte
   if (width <= 0 || height <= 0)
     throw std::runtime_error("Map dimensions must be positive integers.");
 
-  return Map(width, height);
+  _map = std::make_shared<Map>(width, height);
+  return _map;
 }
 
 std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> 
-BattleSimVisitorImpl::CreateUnits(
-  BattleSimParser::BattleSimContext* context,
-  Map& map)
+BattleSimVisitorImpl::CreateUnits(BattleSimParser::BattleSimContext* context)
 {
   auto teamDefs = context->teamDef();
 
@@ -147,7 +165,7 @@ BattleSimVisitorImpl::CreateUnits(
 
   std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> teams;
 
-  const auto prepareTeam = [this, &map](BattleSimParser::TeamDefContext* teamDefContext, std::vector<std::shared_ptr<Unit>>& team)
+  const auto prepareTeam = [this](BattleSimParser::TeamDefContext* teamDefContext, std::vector<std::shared_ptr<Unit>>& team)
     {
       if (!teamDefContext)
         throw std::runtime_error("Invalid team definition.");
@@ -159,7 +177,7 @@ BattleSimVisitorImpl::CreateUnits(
 
       for (auto* unitDef : unitDefs)
       {
-        team.push_back(CreateUnit(unitDef, map));
+        team.push_back(CreateUnit(unitDef));
       }
 
       team.shrink_to_fit();
@@ -171,7 +189,7 @@ BattleSimVisitorImpl::CreateUnits(
   return teams;
 }
 
-std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context, Map& map)
+std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context)
 {
   if (!context)
     throw std::runtime_error("Invalid unit definition context.");
@@ -188,20 +206,19 @@ std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefC
     health,
     attack,
     context->unitLogicSequence(),
-    map
-  );
+    *_map);
 
   uint32_t x = static_cast<uint32_t>(std::stoi(context->NUMBER(0u)->getText()));
   uint32_t y = static_cast<uint32_t>(std::stoi(context->NUMBER(1u)->getText()));
   unit->SetPosition(x, y);
 
-  if (!map.PlaceUnit(x, y, unit))
+  if (!_map->PlaceUnit(x, y, unit))
     throw std::runtime_error("Failed to place unit on the map at the specified coordinates.");
 
   return unit;
 }
 
-std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit, Map& map)
+std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
 {
   std::vector<std::shared_ptr<Unit>> deadUnits;
 
@@ -210,17 +227,17 @@ std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::s
   // Evaluate each command.
   for (auto* command : commands)
   {
-    ExecuteLogicCommand(command, unit, map);
+    ExecuteLogicCommand(command, unit);
   }
   
   return deadUnits;
 }
 
-void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandContext* command, std::shared_ptr<Unit> unit, Map& map) const
+void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandContext* command, std::shared_ptr<Unit> unit) const
 {
   if (command->moveCmd())
   {
-    ExecuteMoveCommand(unit, map);
+    ExecuteMoveCommand(unit);
   }
   else if (command->turnCmd())
   {
@@ -230,15 +247,17 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   else if (command->ifCondition())
   {
     // Handle if condition.
-    ExecuteIfCondition(unit, command->ifCondition(), map);
+    ExecuteIfCondition(unit, command->ifCondition());
   }
   else if (command->whileCycle())
   {
     // Handle while cycle.
+    ExecuteWhileCycle(unit, command->whileCycle());
   }
   else if (command->attackCmd())
   {
     // Handle attack command.
+    ExecuteAttackCommand(unit, command->attackCmd());
   }
   else if (command->skipCmd())
   {
@@ -250,14 +269,12 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   }
 }
 
-void BattleSimVisitorImpl::ExecuteMoveCommand(
-  std::shared_ptr<Unit> unit, 
-  Map& map) const
+void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const
 {
   const auto unitOrientation = unit->GetOrientation();
 
-  auto x = unit->GetX();
-  auto y = unit->GetY();
+  int x = unit->GetX();
+  int y = unit->GetY();
 
   switch (unitOrientation)
   {
@@ -266,11 +283,11 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(
         y--;
       break;
     case Orientation::E:
-      if (x < map.GetWidth() - 1) // Prevent overflow
+      if (x < _map->GetWidth() - 1) // Prevent overflow
         x++;
       break;
     case Orientation::S:
-      if (y < map.GetHeight() - 1) // Prevent overflow
+      if (y < _map->GetHeight() - 1) // Prevent overflow
         y++;
       break;
     case Orientation::W:
@@ -282,7 +299,7 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(
       break;
   }
   
-  if (map.PlaceUnit(x, y, unit))
+  if (_map->PlaceUnit(x, y, unit))
   {
     unit->SetPosition(x, y);
   }
@@ -294,23 +311,14 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(
 
 void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, BattleSimParser::TurnCmdContext* ctx) const
 {
-  if (ctx->orientation())
+  if (auto* turnOrientationCmd = ctx->turnOrientationCmd())
   {
-    auto orientationText = ctx->orientation()->getText();
-    if (orientationText == "N")
-      unit->SetOrientation(Orientation::N);
-    else if (orientationText == "E")
-      unit->SetOrientation(Orientation::E);
-    else if (orientationText == "S")
-      unit->SetOrientation(Orientation::S);
-    else if (orientationText == "W")
-      unit->SetOrientation(Orientation::W);
-    else
-      throw std::runtime_error("Invalid orientation specified in turn command.");
+    auto orientationText = turnOrientationCmd->getText();
+    unit->SetOrientation(ParseOrientation(orientationText[0]));
     return;
   }
 
-  if (ctx->getText() == "TurnLeft()")
+  if (auto* turnLeftCmd = ctx->turnLeftCmd())
   {
     switch (unit->GetOrientation())
     {
@@ -321,7 +329,7 @@ void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, Battle
       default: break;
     }
   }
-  else if (ctx->getText() == "TurnRight()")
+  else if (auto* turnRightCmd = ctx->turnRightCmd())
   {
     switch (unit->GetOrientation())
     {
@@ -338,7 +346,7 @@ void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, Battle
   }
 }
 
-void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx, Map& map) const
+void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx) const
 {
   // Evaluate the boolean expression.
   // If true, execute the logic commands inside the if condition.
@@ -351,7 +359,7 @@ void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, Battle
   if (unitLogicSequence.size() != 2)
     throw std::runtime_error("If condition missing some sequences.");
 
-  const bool conditionResult = EvaluateBooleanExpression(unit, boolExpCtx, map);
+  const bool conditionResult = EvaluateBooleanExpression(unit, boolExpCtx);
 
   std::vector<BattleSimParser::LogicCommandContext*> commands;
   if (conditionResult)
@@ -367,8 +375,18 @@ void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, Battle
   // Execute the selected commands.
   for (auto* command : commands)
   {
-    ExecuteLogicCommand(command, unit, map);
+    ExecuteLogicCommand(command, unit);
   }
+}
+
+void BattleSimVisitorImpl::ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const
+{
+  //TODO
+}
+
+void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, BattleSimParser::AttackCmdContext* ctx) const
+{
+  //TODO
 }
 
 void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
@@ -377,44 +395,61 @@ void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
   std::cout << "Unit " << unit->GetName() << " skips." << std::endl;
 }
 
-bool BattleSimVisitorImpl::EvaluatePrimaryBoolExpression(std::shared_ptr<Unit> unit, BattleSimParser::PrimaryBoolContext* ctx, Map& map)
+bool BattleSimVisitorImpl::EvaluatePrimaryBoolExpression(std::shared_ptr<Unit> unit, BattleSimParser::PrimaryBoolContext* ctx) const
 {
   if (!ctx)
     throw std::runtime_error("Invalid primary boolean expression context.");
 
-  const auto text = ctx->getText();
-  if (text == "true")
+  if (ctx->true_())
+  {
     return true;
+  }
 
-  if (text == "false")
+  if (ctx->false_())
+  {
     return false;
-
-  if (text.starts_with('(') && text.ends_with(')'))
-    return EvaluateBooleanExpression(unit, ctx->boolexp(), map);
-
-  if (text == "IsEnemyNearby()")
-  {
-    return EvaluateIsEnemyNearby(unit, map);
   }
 
-  if (const auto expressions = ctx->exp();
-    expressions.size() == 2 && ctx->COMPSYMBOL())
+  if (auto* parenthesesBool = ctx->parenthesesBool())
   {
-    EvaluateComparation(expressions, ctx->COMPSYMBOL);
+    return EvaluateBooleanExpression(unit, parenthesesBool->boolexp());
   }
 
-  if (ctx->blockCheck())
+  if (auto* comparisonBool = ctx->comparisonBool())
   {
-    return EvaluateBlockCheck(unit, ctx->blockCheck(), map);
+    if (const auto expressions = comparisonBool->exp();
+      expressions.size() == 2 && comparisonBool->COMPSYMBOL())
+    {
+      return EvaluateComparison(expressions, comparisonBool->COMPSYMBOL()->getText().c_str());
+    }
+
+    throw(std::runtime_error("Invalid comparation boolean expression."));
   }
 
-  if (ctx->orientationCheck())
+  if (auto* visitOrientationEqualityCheck = ctx->orientationEqualityCheck())
   {
-    return EvaluateOrientationCheck(unit, ctx->orientationCheck(), map);
+    return EvaluateOrientationEqualityCheck(unit, visitOrientationEqualityCheck);
   }
+
+  if (auto* blockCheck = ctx->blockCheck())
+  {
+    return EvaluateBlockCheck(unit, blockCheck);
+  }
+
+  if (auto* orientationCheck = ctx->orientationCheck())
+  {
+    return EvaluateOrientationCheck(unit, orientationCheck);
+  }
+
+  if (auto* enemyNearbyCheck = ctx->enemyNearbyCheck())
+  {
+    return EvaluateEnemyNearbyCheck(unit, enemyNearbyCheck);
+  }
+
+  throw(std::runtime_error("Unknown primary boolean expression."));
 }
 
-bool BattleSimVisitorImpl::EvaluateNotAndOperator(std::shared_ptr<Unit> unit, BattleSimParser::NotExprContext* ctx, Map& map)
+bool BattleSimVisitorImpl::EvaluateNotOperator(std::shared_ptr<Unit> unit, BattleSimParser::NotExprContext* ctx) const
 {
   if (!ctx)
     throw std::runtime_error("Invalid NOT expression context.");
@@ -422,31 +457,30 @@ bool BattleSimVisitorImpl::EvaluateNotAndOperator(std::shared_ptr<Unit> unit, Ba
   // Check for NOT operator. If present, evaluate inner expression and negate the result.
   if (ctx->notExpr())
   {
-    const bool innerResult = EvaluateNotAndOperator(unit, ctx->notExpr(), map);
+    const bool innerResult = EvaluateNotOperator(unit, ctx->notExpr());
     return !innerResult;
   }
   else if (ctx->primaryBool())
   {
     // Evaluate the primary boolean expression.
-    return EvaluatePrimaryBoolExpression(unit, ctx->primaryBool(), map);
+    return EvaluatePrimaryBoolExpression(unit, ctx->primaryBool());
   }
 
   throw std::runtime_error("Invalid NOT expression structure.");
 }
 
-bool BattleSimVisitorImpl::EvaluateAndOperator(std::shared_ptr<Unit> unit, BattleSimParser::AndExprContext* ctx, Map& map)
+bool BattleSimVisitorImpl::EvaluateAndOperator(std::shared_ptr<Unit> unit, BattleSimParser::AndExprContext* ctx) const
 {
-  if (!ctx || !ctx->notExpr())
+  if (!ctx || ctx->notExpr().empty())
     throw std::runtime_error("Invalid AND expression context.");
 
-  const auto notOperators = ctx->notExpr();
+  const auto andOperators = ctx->notExpr();
   // Evaluate each not operator of the and expression.
   // If one is false, the whole expression is false.
-  for (const auto& notExpr : notOperators)
+  for (const auto& notExpr : andOperators)
   {
-    //const bool notResult = EvaluatePrimaryBoolExpression(unit, notExpr, map);
-    const bool notResult = EvaluateNotAndOperator(unit, notExpr, map);
-    if (!notResult)
+    const bool andOperatorResult = EvaluateNotOperator(unit, notExpr);
+    if (!andOperatorResult)
     {
       return false;
     }
@@ -454,22 +488,156 @@ bool BattleSimVisitorImpl::EvaluateAndOperator(std::shared_ptr<Unit> unit, Battl
   return true;
 }
 
-bool BattleSimVisitorImpl::EvaluateBooleanExpression(std::shared_ptr<Unit> unit, BattleSimParser::BoolexpContext* ctx, Map& map) const
+bool BattleSimVisitorImpl::EvaluateBooleanExpression(std::shared_ptr<Unit> unit, BattleSimParser::BoolexpContext* ctx) const
 {
   if (!ctx || !ctx->orExpr())
     throw std::runtime_error("Invalid boolean expression context.");
 
-  const auto andOperators = ctx->orExpr()->andExpr();
+  auto orOperators = ctx->orExpr()->andExpr();
  
-  // Evaluate each and operator of the or expression.
+  // Evaluate each or operator of the or expression.
   // If one is true, the whole expression is true.
-  for (const auto& andExpr : andOperators)
+  for (auto* andExpr : orOperators)
   {
-    if (EvaluateAndOperator(unit, andExpr, map))
+    if (EvaluateAndOperator(unit, andExpr))
     {
       return true;
     }
   }
 
   return false;
+}
+
+bool BattleSimVisitorImpl::EvaluateComparison(std::vector<BattleSimParser::ExpContext*> expressions, const char* compSymbol) const
+{
+  if (compSymbol == nullptr || expressions.size() != 2)
+    throw std::runtime_error("Invalid comparison parameters.");
+
+  if (compSymbol == std::string("=="))
+  {
+    return EvaluateExpression(expressions[0]) == EvaluateExpression(expressions[1]);
+  }
+  else if (compSymbol == std::string("!="))
+  {
+    return EvaluateExpression(expressions[0]) != EvaluateExpression(expressions[1]);
+  }
+  else if (compSymbol == std::string("<"))
+  {
+    return EvaluateExpression(expressions[0]) < EvaluateExpression(expressions[1]);
+  }
+  else if (compSymbol == std::string("<="))
+  {
+    return EvaluateExpression(expressions[0]) <= EvaluateExpression(expressions[1]);
+  }
+  else if (compSymbol == std::string(">"))
+  {
+    return EvaluateExpression(expressions[0]) > EvaluateExpression(expressions[1]);
+  }
+  else if (compSymbol == std::string(">="))
+  {
+    return EvaluateExpression(expressions[0]) >= EvaluateExpression(expressions[1]);
+  }
+  else
+  {
+    throw std::runtime_error("Unknown comparison symbol.");
+  }
+}
+
+bool BattleSimVisitorImpl::EvaluateOrientationEqualityCheck(std::shared_ptr<Unit> unit, BattleSimParser::OrientationEqualityCheckContext* ctx) const
+{
+  auto orientations = ctx->orientation();
+
+  if (orientations.size() != 2)
+    throw std::runtime_error("Invalid orientation equality check context.");
+
+  const auto equals = ctx->getText().find("==") != std::string::npos;
+  const auto orientation1 = ParseOrientation(orientations[0]->getText()[0]);
+  const auto orientation2 = ParseOrientation(orientations[1]->getText()[0]);
+
+  return equals
+    ? orientation1 == orientation2
+    : orientation1 != orientation2;
+
+
+}
+
+bool BattleSimVisitorImpl::EvaluateBlockCheck(std::shared_ptr<Unit> unit, BattleSimParser::BlockCheckContext* ctx) const
+{
+  const auto isUnitblocked = unit->IsUnitFrontBlocked();
+
+  return ctx->isFrontBlockedCheck() ? isUnitblocked : !isUnitblocked;
+}
+
+bool BattleSimVisitorImpl::EvaluateOrientationCheck(std::shared_ptr<Unit> unit, BattleSimParser::OrientationCheckContext* ctx) const
+{
+  const auto orientation = unit->GetOrientation();
+
+  if (ctx->facingECheck())
+  {
+    return orientation == Orientation::E;
+  }
+  else if (ctx->facingNCheck())
+  {
+    return orientation == Orientation::N;
+  }
+  else if (ctx->facingSCheck())
+  {
+    return orientation == Orientation::S;
+  }
+  else if (ctx->facingWCheck())
+  {
+    return orientation == Orientation::W;
+  }
+  throw std::runtime_error("Invalid orientation check context.");
+}
+
+bool BattleSimVisitorImpl::EvaluateEnemyNearbyCheck(std::shared_ptr<Unit> unit, BattleSimParser::EnemyNearbyCheckContext* ctx) const
+{
+  //TODO 
+  return false;
+}
+
+int BattleSimVisitorImpl::EvaluateExpression(BattleSimParser::ExpContext* ctx) const
+{
+  if (auto* atomicCtx = ctx->atomicExp())
+  {
+    return std::stoi(atomicCtx->NUMBER()->getText());
+  }
+
+  if (auto* parenthesesCtx = ctx->parenthesesExp())
+  {
+    return EvaluateExpression(parenthesesCtx->exp());
+  }
+
+  if (auto expressions = ctx->exp();
+    expressions.size() == 2 && ctx->MATHSYMBOL())
+  {
+    int leftValue = EvaluateExpression(expressions[0]);
+    int rightValue = EvaluateExpression(expressions[1]);
+    const auto mathSymbol = ctx->MATHSYMBOL()->getText();
+    if (mathSymbol == "+")
+    {
+      return leftValue + rightValue;
+    }
+    else if (mathSymbol == "-")
+    {
+      return leftValue - rightValue;
+    }
+    else if (mathSymbol == "*")
+    {
+      return leftValue * rightValue;
+    }
+    else if (mathSymbol == "/")
+    {
+      if (rightValue == 0)
+        throw std::runtime_error("Division by zero in expression.");
+      return leftValue / rightValue;
+    }
+    else
+    {
+      throw std::runtime_error("Unknown mathematical operator.");
+    }
+  }
+
+  throw std::runtime_error("Invalid expression context.");
 }

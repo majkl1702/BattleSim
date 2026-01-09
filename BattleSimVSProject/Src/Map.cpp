@@ -93,3 +93,12 @@ bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
   _unitPositions[&*unit] = {x, y};
   return true;
 }
+
+const MapPoint* Map::GetMapPoint(uint32_t x, uint32_t y) const
+{
+  if (x >= _width || y >= _height)
+  {
+    return nullptr;
+  }
+  return &_map[y][x];
+}

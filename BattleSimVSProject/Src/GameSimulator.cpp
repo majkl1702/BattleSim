@@ -16,13 +16,13 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   // Prepare map from config.
   _map = _visitor.CreateGameMap(context);
 
-  if (!_map.IsValid())
+  if (!_map->IsValid())
   {
     return -1;
   }
 
   // Create units from config.
-  auto unitsPair = _visitor.CreateUnits(context, _map);
+  auto unitsPair = _visitor.CreateUnits(context);
   _blueUnits = std::move(unitsPair.first);
   _redUnits = std::move(unitsPair.second);
 
@@ -71,13 +71,13 @@ int GameSimulator::SimulateTurn()
     std::this_thread::sleep_for(timespan);
     
     // Simulate unit turn.
-    _visitor.SimulateUnitTurn(*unitIter, _map);
+    _visitor.SimulateUnitTurn(*unitIter);
 
     ++unitIter;
   }
 
   // Show map state.
-  _map.PrintMap();
+  _map->PrintMap(); // TODO Change
 
   return 0;
 }

@@ -39,13 +39,15 @@ public:
   [[nodiscard]] bool IsValid() const;
 
   //! Prints the current state of the map to the console.
-  void PrintMap() const;
+  void PrintMap() const; // TODO Move to view component
 
   //! Places a unit on the map at the specified coordinates.
   bool PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit);
 
   int GetWidth() const { return _width; }
   int GetHeight() const { return _height; }
+
+  const MapPoint* GetMapPoint(uint32_t x, uint32_t y) const;
 
 private:
   //! Map dimensions.

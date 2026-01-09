@@ -24,13 +24,19 @@ logicCommand: moveCmd | turnCmd | ifCondition | whileCycle | attackCmd | skipCmd
 
 moveCmd: 'MoveForward()';
 
-turnCmd: 'TurnLeft()' | 'TurnRight()' | 'Turn(' orientation ')';
+turnCmd: turnLeftCmd | turnRightCmd | turnOrientationCmd;
+turnLeftCmd: 'TurnLeft()';
+turnRightCmd: 'TurnRight()';
+turnOrientationCmd: 'Turn(' orientation ')';
 
 ifCondition: 'if' '(' boolexp ')' 'then' '(' unitLogicSequence ')' 'else' '(' unitLogicSequence ')';
 
 whileCycle: 'while' '(' boolexp ')' 'do' '(' logicCommand ')';
 
-attackCmd: 'AttackAroundSelf()' | 'AttackInFront()' | 'RangeAttack(' exp ')';
+attackCmd: attackAroundSelfCmd | attackInFrontCmd | rangeAttackCmd;
+attackAroundSelfCmd: 'AttackAroundSelf()';
+attackInFrontCmd: 'AttackInFront()';
+rangeAttackCmd: 'RangeAttack(' exp ')';
 
 skipCmd: 'skip';
 
@@ -53,25 +59,42 @@ notExpr
     ;
 
 primaryBool
-    : 'true'
-    | 'false'
-    | '(' boolexp ')'
-    | exp COMPSYMBOL exp
-    | orientation ('==' | '!=') orientation
+    : true
+    | false
+    | parenthesesBool
+    | comparisonBool
+    | orientationEqualityCheck
     | blockCheck
     | orientationCheck
-    | 'IsEnemyNearby()'
-    ;
+    | enemyNearbyCheck;
+
+true: 'true';
+false: 'false';
+parenthesesBool: '(' boolexp ')';
+comparisonBool: exp COMPSYMBOL exp;
+orientationEqualityCheck: orientation ('==' | '!=') orientation;
+enemyNearbyCheck: 'IsEnemyNearby()';
     
 // -------------- Other -------------- //
     	
-blockCheck: 'IsFrontClear()' | 'IsFrontBlocked()';
+blockCheck: isFrontClearCheck | isFrontBlockedCheck;
 
-orientationCheck: 'FacingNorth()' | 'FacingWest()' | 'FacingEast()' | 'FacingSouth()';
+isFrontClearCheck: 'IsFrontClear()';
+isFrontBlockedCheck: 'IsFrontBlocked()';
 
-orientation: ORIENTATION | 'GetNearbyEnemyOrientation()' | 'GetMyOrientation';
+orientationCheck: facingNCheck | facingWCheck | facingECheck | facingSCheck;
+facingNCheck: 'FacingNorth()';
+facingWCheck: 'FacingWest()';
+facingECheck: 'FacingEast()';
+facingSCheck: 'FacingSouth()';
+
+orientation: ORIENTATION | getNearbyEnemyOrientation | getMyOrientation;
+getNearbyEnemyOrientation: 'GetNearbyEnemyOrientation()';
+getMyOrientation: 'GetMyOrientation()';
 	
-exp: NUMBER | exp MATHSYMBOL exp | '(' exp ')';
+exp: atomicExp | exp MATHSYMBOL exp | parenthesesExp;
+atomicExp : NUMBER;
+parenthesesExp: '(' exp ')';
 
 
 // Lexer rules

@@ -87,4 +87,4 @@ WS=48
 'FacingEast()'=39
 'FacingSouth()'=40
 'GetNearbyEnemyOrientation()'=41
-'GetMyOrientation'=42
+'GetMyOrientation()'=42

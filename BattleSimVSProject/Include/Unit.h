@@ -38,6 +38,8 @@ public:
   void SetOrientation(Orientation orientation) { _orientation = orientation; }
   [[nodiscard]] Orientation GetOrientation() const { return _orientation; }
 
+  bool IsUnitFrontBlocked() const;
+
 private:
 
   //! Unit properties.
