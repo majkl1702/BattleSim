@@ -26,6 +26,8 @@ public:
   //! Moves the unit according to its logic and updates the map state.
   void SimulateUnitTurn(std::shared_ptr<Unit> unit);
 
+private:
+
   void AttackAroundUnit(std::shared_ptr<Unit> unit) const;
 
   void AttackInFrontOfUnit(std::shared_ptr<Unit> unit) const;
@@ -74,7 +76,7 @@ public:
   // Expressions
   int EvaluateExpression(BattleSimParser::ExpContext* ctx) const;
 
-private:
+  Orientation EvaluateOrientation(std::shared_ptr<Unit> unit, BattleSimParser::OrientationContext* ctx) const;
 
   std::shared_ptr<Map> _map;
 };

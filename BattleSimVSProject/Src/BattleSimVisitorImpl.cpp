@@ -7,16 +7,24 @@
 namespace
 {
 
-Orientation ParseOrientation(const char orientation)
+Orientation ParseOrientationString(const char* orientation)
 {
-  if (orientation == 'N')
+  if (orientation == "N")
     return Orientation::N;
-  else if (orientation == 'E')
+  else if (orientation == "E")
     return Orientation::E;
-  else if (orientation == 'S')
+  else if (orientation == "S")
     return Orientation::S;
-  else if (orientation == 'W')
+  else if (orientation == "W")
     return Orientation::W;
+  else if (orientation == "NE")
+    return Orientation::NE;
+  else if (orientation == "NW")
+    return Orientation::NW;
+  else if (orientation == "SE")
+    return Orientation::SE;
+  else if (orientation == "SW")
+    return Orientation::SW;
   else
     throw std::runtime_error("Invalid orientation specified.");
 }
@@ -324,7 +332,7 @@ void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, Battle
   if (auto* turnOrientationCmd = ctx->turnOrientationCmd())
   {
     auto orientationText = turnOrientationCmd->getText();
-    unit->SetOrientation(ParseOrientation(orientationText[0]));
+    unit->SetOrientation(EvaluateOrientation(unit, turnOrientationCmd->orientation()));
     return;
   }
 
@@ -590,14 +598,12 @@ bool BattleSimVisitorImpl::EvaluateOrientationEqualityCheck(std::shared_ptr<Unit
     throw std::runtime_error("Invalid orientation equality check context.");
 
   const auto equals = ctx->getText().find("==") != std::string::npos;
-  const auto orientation1 = ParseOrientation(orientations[0]->getText()[0]);
-  const auto orientation2 = ParseOrientation(orientations[1]->getText()[0]);
+  const auto orientation1 = EvaluateOrientation(unit, orientations[0]);
+  const auto orientation2 = EvaluateOrientation(unit, orientations[1]);
 
   return equals
     ? orientation1 == orientation2
     : orientation1 != orientation2;
-
-
 }
 
 bool BattleSimVisitorImpl::EvaluateBlockCheck(std::shared_ptr<Unit> unit, BattleSimParser::BlockCheckContext* ctx) const
@@ -703,4 +709,49 @@ int BattleSimVisitorImpl::EvaluateExpression(BattleSimParser::ExpContext* ctx) c
   }
 
   throw std::runtime_error("Invalid expression context.");
+}
+
+Orientation BattleSimVisitorImpl::EvaluateOrientation(std::shared_ptr<Unit> unit, BattleSimParser::OrientationContext* ctx) const
+{
+  if (ctx->getNearbyEnemyOrientation())
+  {
+    // Try to find a nearby enemy unit.
+    const auto unitX = unit->GetX();
+    const auto unitY = unit->GetY();
+
+    const auto directions = std::vector<std::pair<int, int>>{
+      {-1, -1}, {0, -1}, {1, -1},
+      {-1, 0},           {1, 0},
+      {-1, 1},  {0, 1},  {1, 1}
+    };
+
+    for (const auto& [dx, dy] : directions)
+    {
+      int targetX = static_cast<int>(unitX) + dx;
+      int targetY = static_cast<int>(unitY) + dy;
+      if (!_map->IsWithinBounds(targetX, targetY))
+      {
+        continue;
+      }
+
+      auto mapPoint = _map->GetMapPoint(targetX, targetY);
+      if (mapPoint && mapPoint->unit != nullptr && mapPoint->unit->GetTeam() != unit->GetTeam())
+      {
+        // Return the orientation of the nearby enemy unit.
+        return mapPoint->unit->GetOrientation();
+      }
+    }
+  }
+  else if (ctx->getMyOrientation())
+  {
+    // Return the unit's current orientation.
+    return unit->GetOrientation();
+  }
+  else if (ctx->ORIENTATION())
+  {
+    // Parse and return the specified orientation.
+    return ParseOrientationString(ctx->ORIENTATION()->getText().c_str());
+  }
+
+  return unit->GetOrientation();
 }
