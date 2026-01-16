@@ -63,6 +63,12 @@
     <ClCompile Include="Src\Unit.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="Src\CmdVisualizer.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Visualizer.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Antlr\BattleSim.g4">
@@ -115,8 +121,14 @@
     <ClInclude Include="Include\Unit.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Include\CmdVisualizer.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Common.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Visualizer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

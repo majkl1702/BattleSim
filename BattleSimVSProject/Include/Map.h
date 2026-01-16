@@ -54,6 +54,8 @@ public:
     return x >= 0 && x < static_cast<int>(_width) && y >= 0 && y < static_cast<int>(_height);
   }
 
+  const auto& GetRawMap() const { return _map; }
+
 private:
   //! Map dimensions.
   uint32_t _width = 0;

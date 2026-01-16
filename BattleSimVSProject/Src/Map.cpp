@@ -24,55 +24,6 @@ bool Map::IsValid() const
   return _width > 0 && _height > 0 && _map.size() == _height;
 }
 
-void Map::PrintMap() const
-{
-  std::cout << "Map state:" << std::endl;
-
-  const auto printHorizontalBorder = [this](bool withLegend = false) {
-    if (withLegend)
-    {
-      std::cout << "  ";
-      for (uint32_t i = 0; i < _width; ++i)
-      {
-        std::cout << i << ' ';
-      }
-      std::cout << ' ' << std::endl;
-    }
-
-    std::cout << " +";
-    for (uint32_t i = 0; i < _width; ++i)
-    {
-      std::cout << "--";
-    }
-    std::cout << '+' << std::endl;
-    };
-
-  // Print top border.
-  printHorizontalBorder(true);
-
-  auto counter = 0;
-  for (const auto& row : _map)
-  {
-    std::cout << counter++ << '|';
-    for (const auto& point : row)
-    {
-      if (point.unit)
-      {
-        std::cout << point.unit->GetName()[0] << ' '; // Print unit.
-      }
-      else
-      {
-        std::cout << "  "; // Empty space.
-      }
-    }
-    std::cout << '|';
-    std::cout << std::endl;
-  }
-
-  // Print bottom border.
-  printHorizontalBorder();
-}
-
 bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
 {
   if (!unit || !IsWithinBounds(x, y))

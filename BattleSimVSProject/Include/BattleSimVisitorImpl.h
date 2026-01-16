@@ -5,6 +5,7 @@
 class Map;
 class Unit;
 enum Team : uint8_t;
+enum class Orientation;
 
 class BattleSimVisitorImpl : public BattleSimBaseVisitor
 {
