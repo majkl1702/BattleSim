@@ -28,8 +28,18 @@ void Map::PrintMap() const
 {
   std::cout << "Map state:" << std::endl;
 
-  const auto printHorizontalBorder = [this]() {
-    std::cout << '+';
+  const auto printHorizontalBorder = [this](bool withLegend = false) {
+    if (withLegend)
+    {
+      std::cout << "  ";
+      for (uint32_t i = 0; i < _width; ++i)
+      {
+        std::cout << i << ' ';
+      }
+      std::cout << ' ' << std::endl;
+    }
+
+    std::cout << " +";
     for (uint32_t i = 0; i < _width; ++i)
     {
       std::cout << "--";
@@ -38,11 +48,12 @@ void Map::PrintMap() const
     };
 
   // Print top border.
-  printHorizontalBorder();
+  printHorizontalBorder(true);
 
+  auto counter = 0;
   for (const auto& row : _map)
   {
-    std::cout << '|';
+    std::cout << counter++ << '|';
     for (const auto& point : row)
     {
       if (point.unit)
@@ -64,7 +75,7 @@ void Map::PrintMap() const
 
 bool Map::PlaceUnit(uint32_t x, uint32_t y, std::shared_ptr<Unit> unit)
 {
-  if (!unit || x < 0 || x >= _width || y < 0 || y >= _height)
+  if (!unit || !IsWithinBounds(x, y))
   {
     return false;
   }

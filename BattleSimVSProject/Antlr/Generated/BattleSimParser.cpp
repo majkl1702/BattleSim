@@ -139,7 +139,7 @@ void battlesimParserInitialize() {
   	3,10,5,0,170,171,5,11,0,0,171,172,5,20,0,0,172,173,5,9,0,0,173,174,3,
   	10,5,0,174,175,5,11,0,0,175,25,1,0,0,0,176,177,5,21,0,0,177,178,5,9,0,
   	0,178,179,3,38,19,0,179,180,5,11,0,0,180,181,5,22,0,0,181,182,5,9,0,0,
-  	182,183,3,12,6,0,183,184,5,11,0,0,184,27,1,0,0,0,185,189,3,30,15,0,186,
+  	182,183,3,10,5,0,183,184,5,11,0,0,184,27,1,0,0,0,185,189,3,30,15,0,186,
   	189,3,32,16,0,187,189,3,34,17,0,188,185,1,0,0,0,188,186,1,0,0,0,188,187,
   	1,0,0,0,189,29,1,0,0,0,190,191,5,23,0,0,191,31,1,0,0,0,192,193,5,24,0,
   	0,193,33,1,0,0,0,194,195,5,25,0,0,195,196,3,82,41,0,196,197,5,11,0,0,
@@ -1266,8 +1266,8 @@ BattleSimParser::BoolexpContext* BattleSimParser::WhileCycleContext::boolexp() {
   return getRuleContext<BattleSimParser::BoolexpContext>(0);
 }
 
-BattleSimParser::LogicCommandContext* BattleSimParser::WhileCycleContext::logicCommand() {
-  return getRuleContext<BattleSimParser::LogicCommandContext>(0);
+BattleSimParser::UnitLogicSequenceContext* BattleSimParser::WhileCycleContext::unitLogicSequence() {
+  return getRuleContext<BattleSimParser::UnitLogicSequenceContext>(0);
 }
 
 
@@ -1321,7 +1321,7 @@ BattleSimParser::WhileCycleContext* BattleSimParser::whileCycle() {
     setState(181);
     match(BattleSimParser::T__8);
     setState(182);
-    logicCommand();
+    unitLogicSequence();
     setState(183);
     match(BattleSimParser::T__10);
    

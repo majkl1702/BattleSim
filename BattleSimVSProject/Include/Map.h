@@ -49,12 +49,17 @@ public:
 
   const MapPoint* GetMapPoint(uint32_t x, uint32_t y) const;
 
+  bool IsWithinBounds(int x, int y) const
+  {
+    return x >= 0 && x < static_cast<int>(_width) && y >= 0 && y < static_cast<int>(_height);
+  }
+
 private:
   //! Map dimensions.
   uint32_t _width = 0;
   uint32_t _height = 0;
 
-  //! 2D map representation.
+  //! 2D map representation. 
   std::vector<std::vector<MapPoint>> _map;
 
   //! Track unit positions for quick access.

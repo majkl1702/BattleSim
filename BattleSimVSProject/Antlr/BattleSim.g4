@@ -31,7 +31,7 @@ turnOrientationCmd: 'Turn(' orientation ')';
 
 ifCondition: 'if' '(' boolexp ')' 'then' '(' unitLogicSequence ')' 'else' '(' unitLogicSequence ')';
 
-whileCycle: 'while' '(' boolexp ')' 'do' '(' logicCommand ')';
+whileCycle: 'while' '(' boolexp ')' 'do' '(' unitLogicSequence ')';
 
 attackCmd: attackAroundSelfCmd | attackInFrontCmd | rangeAttackCmd;
 attackAroundSelfCmd: 'AttackAroundSelf()';

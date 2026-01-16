@@ -2,11 +2,12 @@
 
 #include "../Include/Map.h"
 
-Unit::Unit(const std::string& name, int health, int attack, BattleSimParser::UnitLogicSequenceContext* unitLogic, Map& map)
+Unit::Unit(const std::string& name, int health, int attack, Team team, BattleSimParser::UnitLogicSequenceContext* unitLogic, Map& map)
   : _name(name)
   , _health(health)
   , _attack(attack)
   , _unitLogic(unitLogic)
+  , _team(team)
   , _map(map)
 {
 }
@@ -44,4 +45,10 @@ bool Unit::IsUnitFrontBlocked() const
 
   // Unit is blocked when the map point was not found, has another unit, or is not empty.
   return !mapPoint || mapPoint->unit != nullptr || mapPoint->content != ' ';
+}
+
+bool Unit::SetDamage(int damage)
+{
+  _health -= damage;
+  return _health > 0;
 }

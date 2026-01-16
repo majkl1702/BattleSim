@@ -767,8 +767,8 @@ public class BattleSimParser extends Parser {
 		public BoolexpContext boolexp() {
 			return getRuleContext(BoolexpContext.class,0);
 		}
-		public LogicCommandContext logicCommand() {
-			return getRuleContext(LogicCommandContext.class,0);
+		public UnitLogicSequenceContext unitLogicSequence() {
+			return getRuleContext(UnitLogicSequenceContext.class,0);
 		}
 		public WhileCycleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -795,7 +795,7 @@ public class BattleSimParser extends Parser {
 			setState(181);
 			match(T__8);
 			setState(182);
-			logicCommand();
+			unitLogicSequence();
 			setState(183);
 			match(T__10);
 			}
@@ -2207,8 +2207,8 @@ public class BattleSimParser extends Parser {
 		"\u00af\u0005\u000b\u0000\u0000\u00af\u0019\u0001\u0000\u0000\u0000\u00b0"+
 		"\u00b1\u0005\u0015\u0000\u0000\u00b1\u00b2\u0005\t\u0000\u0000\u00b2\u00b3"+
 		"\u0003&\u0013\u0000\u00b3\u00b4\u0005\u000b\u0000\u0000\u00b4\u00b5\u0005"+
-		"\u0016\u0000\u0000\u00b5\u00b6\u0005\t\u0000\u0000\u00b6\u00b7\u0003\f"+
-		"\u0006\u0000\u00b7\u00b8\u0005\u000b\u0000\u0000\u00b8\u001b\u0001\u0000"+
+		"\u0016\u0000\u0000\u00b5\u00b6\u0005\t\u0000\u0000\u00b6\u00b7\u0003\n"+
+		"\u0005\u0000\u00b7\u00b8\u0005\u000b\u0000\u0000\u00b8\u001b\u0001\u0000"+
 		"\u0000\u0000\u00b9\u00bd\u0003\u001e\u000f\u0000\u00ba\u00bd\u0003 \u0010"+
 		"\u0000\u00bb\u00bd\u0003\"\u0011\u0000\u00bc\u00b9\u0001\u0000\u0000\u0000"+
 		"\u00bc\u00ba\u0001\u0000\u0000\u0000\u00bc\u00bb\u0001\u0000\u0000\u0000"+

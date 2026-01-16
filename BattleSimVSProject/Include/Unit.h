@@ -6,6 +6,12 @@
 
 class Map;
 
+enum Team : uint8_t
+{
+  Red,
+  Blue
+};
+
 class Unit
 {
 public:
@@ -17,7 +23,7 @@ public:
   Unit& operator=(Unit&&) = default;
 
   //! Constructor with unit properties.
-  explicit Unit(const std::string& name, int health, int attack, BattleSimParser::UnitLogicSequenceContext* unitLogic, Map& map);
+  explicit Unit(const std::string& name, int health, int attack, Team team, BattleSimParser::UnitLogicSequenceContext* unitLogic, Map& map);
 
   //! Get unit name.
   [[nodiscard]] const std::string& GetName() const { return _name; }
@@ -40,6 +46,13 @@ public:
 
   bool IsUnitFrontBlocked() const;
 
+  bool IsAlive() const { return _health > 0; }
+
+  //! Returns true if damage was applied and unit is still alive, false if unit is dead.
+  bool SetDamage(int damage);
+
+  Team GetTeam() const { return _team;  }
+
 private:
 
   //! Unit properties.
@@ -53,7 +66,9 @@ private:
   uint32_t _y = 0;
   Orientation _orientation = Orientation::N;
 
+  Team _team = Team::Red;
+
   // ! Reference to the game map for unit interactions.
-  Map& _map; //todo remove?
+  Map& _map;
 };
 

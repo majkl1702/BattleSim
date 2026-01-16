@@ -19,7 +19,7 @@ int32_t Application::Run()
 
   // Read the game configuration from file.
   std::ifstream stream;
-  stream.open("Examples/Example1.txt");
+  stream.open("Examples/Example2.txt");
   if (!stream.good())
   {
     std::cerr << "Error opening file. Currently in dir" << system("dir") << std::endl;

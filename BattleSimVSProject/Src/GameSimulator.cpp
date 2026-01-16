@@ -57,7 +57,15 @@ int GameSimulator::SimulateGame()
     }
   }
 
-  // Todo which team won
+  if (_blueUnits.empty())
+  {
+    std::cout << "Red team wins!" << std::endl;
+  }
+  else
+  {
+    std::cout << "Blue team wins!" << std::endl;
+  }
+
   return 0;
 }
 
@@ -72,6 +80,21 @@ int GameSimulator::SimulateTurn()
     
     // Simulate unit turn.
     _visitor.SimulateUnitTurn(*unitIter);
+
+    if (unitIter->get()->GetTeam() == Team::Blue && !(*unitIter)->IsAlive())
+    {
+      // Remove dead blue unit.
+      _blueUnits.erase(std::remove(_blueUnits.begin(), _blueUnits.end(), *unitIter), _blueUnits.end());
+      unitIter = _allUnits.erase(unitIter);
+      continue;
+    }
+    else if (unitIter->get()->GetTeam() == Team::Red && !(*unitIter)->IsAlive())
+    {
+      // Remove dead red unit.
+      _redUnits.erase(std::remove(_redUnits.begin(), _redUnits.end(), *unitIter), _redUnits.end());
+      unitIter = _allUnits.erase(unitIter);
+      continue;
+    }
 
     ++unitIter;
   }

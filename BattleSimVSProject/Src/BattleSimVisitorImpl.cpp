@@ -23,116 +23,6 @@ Orientation ParseOrientation(const char orientation)
 
 } // namespace
 
-std::any BattleSimVisitorImpl::visitBattleSim(BattleSimParser::BattleSimContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitMap(BattleSimParser::MapContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitTeamDef(BattleSimParser::TeamDefContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitUnitDef(BattleSimParser::UnitDefContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitUnitStats(BattleSimParser::UnitStatsContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitUnitLogicSequence(BattleSimParser::UnitLogicSequenceContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitLogicCommand(BattleSimParser::LogicCommandContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitMoveCmd(BattleSimParser::MoveCmdContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitTurnCmd(BattleSimParser::TurnCmdContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitIfCondition(BattleSimParser::IfConditionContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitWhileCycle(BattleSimParser::WhileCycleContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitAttackCmd(BattleSimParser::AttackCmdContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitSkipCmd(BattleSimParser::SkipCmdContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitBoolexp(BattleSimParser::BoolexpContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitOrExpr(BattleSimParser::OrExprContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitAndExpr(BattleSimParser::AndExprContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitNotExpr(BattleSimParser::NotExprContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitPrimaryBool(BattleSimParser::PrimaryBoolContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitBlockCheck(BattleSimParser::BlockCheckContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitOrientationCheck(BattleSimParser::OrientationCheckContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitOrientation(BattleSimParser::OrientationContext* ctx)
-{
-  return visitChildren(ctx);
-}
-
-std::any BattleSimVisitorImpl::visitExp(BattleSimParser::ExpContext* ctx) 
-{
-  return visitChildren(ctx);
-}
-
 std::shared_ptr<Map> BattleSimVisitorImpl::CreateGameMap(BattleSimParser::BattleSimContext* context)
 {
   auto* mapCtx = context->map();
@@ -165,7 +55,7 @@ BattleSimVisitorImpl::CreateUnits(BattleSimParser::BattleSimContext* context)
 
   std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> teams;
 
-  const auto prepareTeam = [this](BattleSimParser::TeamDefContext* teamDefContext, std::vector<std::shared_ptr<Unit>>& team)
+  const auto prepareTeam = [this](BattleSimParser::TeamDefContext* teamDefContext, std::vector<std::shared_ptr<Unit>>& team, Team teamCode)
     {
       if (!teamDefContext)
         throw std::runtime_error("Invalid team definition.");
@@ -177,19 +67,19 @@ BattleSimVisitorImpl::CreateUnits(BattleSimParser::BattleSimContext* context)
 
       for (auto* unitDef : unitDefs)
       {
-        team.push_back(CreateUnit(unitDef));
+        team.push_back(CreateUnit(unitDef, teamCode));
       }
 
       team.shrink_to_fit();
     };
 
   // Prepare both teams.
-  prepareTeam(teamDefs[0], teams.first);
-  prepareTeam(teamDefs[1], teams.second);
+  prepareTeam(teamDefs[0], teams.first, Team::Blue);
+  prepareTeam(teamDefs[1], teams.second, Team::Red);
   return teams;
 }
 
-std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context)
+std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefContext* context, Team team)
 {
   if (!context)
     throw std::runtime_error("Invalid unit definition context.");
@@ -205,6 +95,7 @@ std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefC
     context->NAME()->getText(),
     health,
     attack,
+    team,
     context->unitLogicSequence(),
     *_map);
 
@@ -218,7 +109,7 @@ std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefC
   return unit;
 }
 
-std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
+void BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
 {
   std::vector<std::shared_ptr<Unit>> deadUnits;
 
@@ -229,8 +120,127 @@ std::vector<std::shared_ptr<Unit>> BattleSimVisitorImpl::SimulateUnitTurn(std::s
   {
     ExecuteLogicCommand(command, unit);
   }
-  
-  return deadUnits;
+}
+
+void BattleSimVisitorImpl::AttackAroundUnit(std::shared_ptr<Unit> unit) const
+{
+  const auto attack = unit->GetAttack();
+  const auto unitX = unit->GetX();
+  const auto unitY = unit->GetY();
+
+  const auto directions = std::vector<std::pair<int, int>>{
+    {-1, -1}, {0, -1}, {1, -1},
+    {-1, 0},           {1, 0},
+    {-1, 1},  {0, 1},  {1, 1}
+  };
+
+  for (const auto& [dx, dy] : directions)
+  {
+    int targetX = static_cast<int>(unitX) + dx;
+    int targetY = static_cast<int>(unitY) + dy;
+    if (!_map->IsWithinBounds(targetX, targetY))
+    {
+      continue;
+    }
+
+    auto mapPoint = _map->GetMapPoint(targetX, targetY);
+    if (mapPoint && mapPoint->unit != nullptr)
+    {
+      const auto targetUnit = mapPoint->unit;
+      bool stillAlive = targetUnit->SetDamage(attack);
+      if (!stillAlive)
+      {
+        std::cout << "Unit " << targetUnit->GetName() << " has been destroyed!" << std::endl;
+      }
+      else
+      {
+        std::cout << "Unit " << targetUnit->GetName() << " took " << attack << " damage, remaining health: " << targetUnit->GetHealth() << std::endl;
+      }
+    }
+  }
+}
+
+void BattleSimVisitorImpl::AttackInFrontOfUnit(std::shared_ptr<Unit> unit) const
+{
+  const auto attack = unit->GetAttack();
+  const auto unitX = unit->GetX();
+  const auto unitY = unit->GetY();
+
+  // Find the direction vector based on orientation.
+  int dx = 0;
+  int dy = 0;
+  switch (unit->GetOrientation())
+  {
+    case Orientation::N: dy = -1; break;
+    case Orientation::E: dx = 1; break;
+    case Orientation::S: dy = 1; break;
+    case Orientation::W: dx = -1; break;
+    default: break;
+  }
+
+  int targetX = static_cast<int>(unitX) + dx;
+  int targetY = static_cast<int>(unitY) + dy;
+  AttackAt(targetX, targetY, attack);
+}
+
+void BattleSimVisitorImpl::RangeAttackFromUnit(std::shared_ptr<Unit> unit) const
+{
+  const auto attack = unit->GetAttack();
+  const auto unitX = unit->GetX();
+  const auto unitY = unit->GetY();
+
+  // Attack in a straight line in the direction the unit is facing.
+  int dx = 0;
+  int dy = 0;
+  switch (unit->GetOrientation())
+  {
+    case Orientation::N: dy = -1; break;
+    case Orientation::E: dx = 1; break;
+    case Orientation::S: dy = 1; break;
+    case Orientation::W: dx = -1; break;
+    default: break;
+  }
+  int targetX = static_cast<int>(unitX) + dx;
+  int targetY = static_cast<int>(unitY) + dy;
+  while (_map->IsWithinBounds(targetX, targetY))
+  {
+    const auto& mapPoint = _map->GetMapPoint(targetX, targetY);
+    AttackAt(targetX, targetY, attack);
+    targetX += dx;
+    targetY += dy;
+
+    if (mapPoint && mapPoint->unit != nullptr)
+    {
+
+      // There was a unit at this position, stop the ranged attack.
+      break;
+    }
+  }
+}
+
+void BattleSimVisitorImpl::AttackAt(const int targetX, const int targetY, const int damage) const
+{
+  if (!_map->IsWithinBounds(targetX, targetY))
+  {
+    return;
+  }
+
+  auto mapPoint = _map->GetMapPoint(targetX, targetY);
+  if (!mapPoint || mapPoint->unit == nullptr)
+  {
+    return;
+  }
+
+  const auto& targetUnit = mapPoint->unit;
+  bool stillAlive = targetUnit->SetDamage(damage);
+  if (!stillAlive)
+  {
+    std::cout << "Unit " << targetUnit->GetName() << " has been destroyed!" << std::endl;
+  }
+  else
+  {
+    std::cout << "Unit " << targetUnit->GetName() << " took " << damage << " damage, remaining health: " << targetUnit->GetHealth() << std::endl;
+  }
 }
 
 void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandContext* command, std::shared_ptr<Unit> unit) const
@@ -381,12 +391,41 @@ void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, Battle
 
 void BattleSimVisitorImpl::ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const
 {
-  //TODO
+  // Evaluate the boolean expression.
+  const auto boolExpCtx = ctx->boolexp();
+  const auto unitLogicSequence = ctx->unitLogicSequence();
+
+  if (!boolExpCtx || !unitLogicSequence)
+    throw std::runtime_error("While cycle missing boolean expression or logic sequence.");
+
+  while (EvaluateBooleanExpression(unit, boolExpCtx))
+  {
+    // Evaluate each command.
+    for (auto* command : unitLogicSequence->logicCommand())
+    {
+      ExecuteLogicCommand(command, unit);
+    }
+  }
 }
 
 void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, BattleSimParser::AttackCmdContext* ctx) const
 {
-  //TODO
+  if (ctx->attackAroundSelfCmd())
+  {
+    AttackAroundUnit(unit);
+  }
+  else if (ctx->attackInFrontCmd())
+  {
+    AttackInFrontOfUnit(unit);
+  }
+  else if (ctx->rangeAttackCmd())
+  {
+    RangeAttackFromUnit(unit);
+  }
+  else
+  {
+    throw std::runtime_error("Invalid attack command.");
+  }
 }
 
 void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
@@ -593,7 +632,31 @@ bool BattleSimVisitorImpl::EvaluateOrientationCheck(std::shared_ptr<Unit> unit, 
 
 bool BattleSimVisitorImpl::EvaluateEnemyNearbyCheck(std::shared_ptr<Unit> unit, BattleSimParser::EnemyNearbyCheckContext* ctx) const
 {
-  //TODO 
+  const auto unitX = unit->GetX();
+  const auto unitY = unit->GetY();
+
+  const auto directions = std::vector<std::pair<int, int>>{
+    {-1, -1}, {0, -1}, {1, -1},
+    {-1, 0},           {1, 0},
+    {-1, 1},  {0, 1},  {1, 1}
+  };
+
+  for (const auto& [dx, dy] : directions)
+  {
+    int targetX = static_cast<int>(unitX) + dx;
+    int targetY = static_cast<int>(unitY) + dy;
+    if (!_map->IsWithinBounds(targetX, targetY))
+    {
+      continue;
+    }
+
+    auto mapPoint = _map->GetMapPoint(targetX, targetY);
+    if (mapPoint && mapPoint->unit != nullptr && mapPoint->unit->GetTeam() != unit->GetTeam())
+    {
+      return true;
+    }
+  }
+
   return false;
 }
 
