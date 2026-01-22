@@ -4,6 +4,8 @@
 #include "../Include/Map.h"
 #include "../Include/Unit.h"
 
+#include "format"
+
 namespace
 {
 
@@ -158,11 +160,12 @@ void BattleSimVisitorImpl::AttackAroundUnit(std::shared_ptr<Unit> unit) const
       bool stillAlive = targetUnit->SetDamage(attack);
       if (!stillAlive)
       {
-        std::cout << "Unit " << targetUnit->GetName() << " has been destroyed!" << std::endl;
+        _visualizer->ParseEvent("Unit " + targetUnit->GetName() + " has been destroyed!");
+        _visualizer->ParseEvent(std::format("Unit  {} has been destroyed!", targetUnit->GetName()));
       }
       else
       {
-        std::cout << "Unit " << targetUnit->GetName() << " took " << attack << " damage, remaining health: " << targetUnit->GetHealth() << std::endl;
+        _visualizer->ParseEvent(std::format("Unit  {} took {} damage, remaining health: {}", targetUnit->GetName(), attack, targetUnit->GetHealth()));
       }
     }
   }
@@ -243,11 +246,11 @@ void BattleSimVisitorImpl::AttackAt(const int targetX, const int targetY, const 
   bool stillAlive = targetUnit->SetDamage(damage);
   if (!stillAlive)
   {
-    std::cout << "Unit " << targetUnit->GetName() << " has been destroyed!" << std::endl;
+    _visualizer->ParseEvent(std::format("Unit {} has been destroyed!", targetUnit->GetName()));
   }
   else
   {
-    std::cout << "Unit " << targetUnit->GetName() << " took " << damage << " damage, remaining health: " << targetUnit->GetHealth() << std::endl;
+    _visualizer->ParseEvent(std::format("Unit {} took {} damage, remaining health: {}", targetUnit->GetName(), damage, targetUnit->GetHealth()));
   }
 }
 
@@ -323,7 +326,7 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const
   }
   else
   {
-    std::cout << "Unit " << unit->GetName() << " failed to move to (" << x << ", " << y << ")." << std::endl;
+    _visualizer->ParseEvent(std::format("Unit {} failed to move to ({}, {}).", unit->GetName(), x, y));
   }
 }
 
@@ -439,7 +442,7 @@ void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, Batt
 void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
 {
   // Info log.
-  std::cout << "Unit " << unit->GetName() << " skips." << std::endl;
+  _visualizer->ParseEvent(std::format("Unit {} skips its turn.", unit->GetName()));
 }
 
 bool BattleSimVisitorImpl::EvaluatePrimaryBoolExpression(std::shared_ptr<Unit> unit, BattleSimParser::PrimaryBoolContext* ctx) const

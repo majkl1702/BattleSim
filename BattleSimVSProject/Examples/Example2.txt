@@ -1,7 +1,7 @@
 5x5
 TeamBlue {
     unit Alpha at (1,2) {
-        health: 100;
+        health: 50;
         attack: 20;
         {
             MoveForward();

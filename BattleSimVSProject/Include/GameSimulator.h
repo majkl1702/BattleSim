@@ -41,7 +41,7 @@ private:
   //! Visitor instance to process the parse tree.
   BattleSimVisitorImpl _visitor = {};
 
-  std::unique_ptr<Visualizer> _visualizer;
+  std::shared_ptr<Visualizer> _visualizer;
 
   // Game state data.
   //! Map of the game.

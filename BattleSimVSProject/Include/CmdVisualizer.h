@@ -9,8 +9,16 @@ public:
   {
   }
 
-  virtual void DisplayMap() const override;
+  virtual void DisplayLoop(const std::list<std::shared_ptr<Unit>>& units) override;
+
+  virtual void ParseEvent(const std::string& event) override;
+
+  virtual void EndGame(Team team) override;
 
 private:
   void PrintMap() const;
+
+  void PrintStats(const std::list<std::shared_ptr<Unit>>& units) const;
+
+  std::string _events;
 };

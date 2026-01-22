@@ -9,8 +9,9 @@ public:
   {}
 
   virtual ~Visualizer() = default;
-  virtual void DisplayMap() const = 0;
-
+  virtual void DisplayLoop(const std::list<std::shared_ptr<Unit>>& units) = 0;
+  virtual void ParseEvent(const std::string& event) = 0;
+  virtual void EndGame(Team team) = 0;
 
 protected:
   std::shared_ptr<Map> _map;

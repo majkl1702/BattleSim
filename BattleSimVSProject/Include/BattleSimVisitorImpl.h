@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Antlr/Generated/BattleSimBaseVisitor.h"
+#include "Visualizer.h"
 
 class Map;
 class Unit;
@@ -26,6 +27,9 @@ public:
   //! Simulates a single turn for a unit on the map.
   //! Moves the unit according to its logic and updates the map state.
   void SimulateUnitTurn(std::shared_ptr<Unit> unit);
+
+  //! Sets the visualizer for displaying game events.
+  void SetVisualizer(auto visualizer) { _visualizer = visualizer; }
 
 private:
 
@@ -80,5 +84,7 @@ private:
   Orientation EvaluateOrientation(std::shared_ptr<Unit> unit, BattleSimParser::OrientationContext* ctx) const;
 
   std::shared_ptr<Map> _map;
+
+  std::shared_ptr<Visualizer> _visualizer = nullptr;
 };
 

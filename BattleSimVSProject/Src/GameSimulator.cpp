@@ -17,7 +17,8 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   _map = _visitor.CreateGameMap(context);
 
   // Prepare visualizer.
-  _visualizer = std::make_unique<CmdVisualizer>(_map);
+  _visualizer = std::make_shared<CmdVisualizer>(_map);
+  _visitor.SetVisualizer(_visualizer);
 
   if (!_map->IsValid())
   {
@@ -60,49 +61,41 @@ int GameSimulator::SimulateGame()
     }
   }
 
-  if (_blueUnits.empty())
-  {
-    std::cout << "Red team wins!" << std::endl;
-  }
-  else
-  {
-    std::cout << "Blue team wins!" << std::endl;
-  }
-
+  // Show end game state.
+  _blueUnits.empty() ? _visualizer->EndGame(Team::Red) : _visualizer->EndGame(Team::Blue);
   return 0;
 }
 
 int GameSimulator::SimulateTurn()
 {
   // Simulate a turn for all units.
-  for (auto unitIter = _allUnits.begin(); unitIter != _allUnits.end();)
+  for (auto unitIter = _allUnits.begin(); unitIter != _allUnits.end(); ++unitIter)
   {
-    // Locked FPS for better visibility.
-    std::chrono::milliseconds timespan(DELAY);
-    std::this_thread::sleep_for(timespan);
-    
-    // Simulate unit turn.
-    _visitor.SimulateUnitTurn(*unitIter);
+    if ((*unitIter)->IsAlive())
+    {
+      // Locked FPS for better visibility.
+      std::chrono::milliseconds timespan(DELAY);
+      std::this_thread::sleep_for(timespan);
 
-    // Show map state.
-    _visualizer->DisplayMap();
+      // Simulate unit turn.
+      _visitor.SimulateUnitTurn(*unitIter);
+
+      // Show map state after unit's turn.
+      _visualizer->DisplayLoop(_allUnits);
+    }
 
     if (unitIter->get()->GetTeam() == Team::Blue && !(*unitIter)->IsAlive())
     {
       // Remove dead blue unit.
       _blueUnits.erase(std::remove(_blueUnits.begin(), _blueUnits.end(), *unitIter), _blueUnits.end());
-      unitIter = _allUnits.erase(unitIter);
       continue;
     }
     else if (unitIter->get()->GetTeam() == Team::Red && !(*unitIter)->IsAlive())
     {
       // Remove dead red unit.
       _redUnits.erase(std::remove(_redUnits.begin(), _redUnits.end(), *unitIter), _redUnits.end());
-      unitIter = _allUnits.erase(unitIter);
       continue;
     }
-
-    ++unitIter;
   }
 
   return 0;

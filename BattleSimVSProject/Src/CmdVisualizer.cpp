@@ -2,13 +2,28 @@
 
 #include <iostream>
 
-void CmdVisualizer::DisplayMap() const
+void CmdVisualizer::DisplayLoop(const std::list<std::shared_ptr<Unit>>& units)
 {
+  _events.clear();
   PrintMap();
+  PrintStats(units);
+
+  std::cout << _events << std::endl;
+}
+
+void CmdVisualizer::ParseEvent(const std::string& event) 
+{
+  _events += event + '\n';
+}
+
+void CmdVisualizer::EndGame(const Team team)
+{
+  std::cout << "Game Over! " << ((team == Team::Red) ? "Red" : "Blue") << " team wins!" << std::endl;
 }
 
 void CmdVisualizer::PrintMap() const
 {
+  std::cout << "\033[2J\033[H";
   std::cout << "Map state:" << std::endl;
 
   const auto& map = _map->GetRawMap();
@@ -59,4 +74,31 @@ void CmdVisualizer::PrintMap() const
 
   // Print bottom border.
   printHorizontalBorder();
+}
+
+void CmdVisualizer::PrintStats(const std::list<std::shared_ptr<Unit>>& units) const
+{
+  std::stringstream blueStats, redStats;
+
+  for (const auto& unit : units)
+  {
+    std::stringstream* targetStream = nullptr;
+    if (unit->GetTeam() == Team::Blue)
+    {
+      targetStream = &blueStats;
+    }
+    else if (unit->GetTeam() == Team::Red)
+    {
+      targetStream = &redStats;
+    }
+
+    *targetStream << " - " << unit->GetName()
+              << " [Health: " << unit->GetHealth() << "]"
+              << " [Attack: " << unit->GetAttack() << "]"
+              << " [Position: (" << unit->GetX() << ", " << unit->GetY() << ")]"
+              << std::endl;
+  }
+
+  std::cout << " Blue Team Units:\n" << blueStats.str();
+  std::cout << "\n Red Team Units:\n" << redStats.str();
 }
