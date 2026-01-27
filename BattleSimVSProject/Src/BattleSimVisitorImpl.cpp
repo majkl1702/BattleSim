@@ -662,7 +662,7 @@ bool BattleSimVisitorImpl::EvaluateEnemyNearbyCheck(std::shared_ptr<Unit> unit, 
     }
 
     auto mapPoint = _map->GetMapPoint(targetX, targetY);
-    if (mapPoint && mapPoint->unit != nullptr && mapPoint->unit->GetTeam() != unit->GetTeam())
+    if (mapPoint && mapPoint->unit != nullptr && mapPoint->unit->GetTeam() != unit->GetTeam() && mapPoint->unit->IsAlive())
     {
       return true;
     }
