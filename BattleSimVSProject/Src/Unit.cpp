@@ -49,6 +49,14 @@ bool Unit::IsUnitFrontBlocked() const
 
 bool Unit::SetDamage(int damage)
 {
-  _health -= damage;
+  if (_health > damage)
+  {
+    _health -= damage;
+  }
+  else
+  {
+    _health = 0;
+  }
+  
   return _health > 0;
 }

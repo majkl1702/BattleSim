@@ -7,7 +7,7 @@
 class Application
 {
 public:
-  int32_t Run();
+  int32_t Run(const char* filePath);
 
 private:
 };

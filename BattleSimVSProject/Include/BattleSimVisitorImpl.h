@@ -37,7 +37,7 @@ private:
 
   void AttackInFrontOfUnit(std::shared_ptr<Unit> unit) const;
 
-  void RangeAttackFromUnit(std::shared_ptr<Unit> unit) const;
+  void RangeAttackFromUnit(std::shared_ptr<Unit> unit, BattleSimParser::ExpContext* rangeExpCtx) const;
 
   void AttackAt(int targetX, int targetY, int damage) const;
 

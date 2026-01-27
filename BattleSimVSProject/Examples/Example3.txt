@@ -1,0 +1,124 @@
+12x8
+TeamBlue {
+    unit Alpha at (1,1) {
+        health: 60;
+        attack: 10;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+
+    unit Beta at (2,3) {
+        health: 100;
+        attack: 15;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+
+    unit Gamma at (3,6) {
+        health: 150;
+        attack: 12;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+}
+
+TeamRed {
+    unit Delta at (10,1) {
+        health: 80;
+        attack: 18;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+
+    unit Epsilon at (9,4) {
+        health: 70;
+        attack: 20;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+
+    unit Omega at (11,6) {
+        health: 200;
+        attack: 25;
+        {
+            while (IsFrontClear() && !IsEnemyNearby()) do (
+            {
+                MoveForward();
+            });
+
+            if (IsEnemyNearby()) then (
+            {
+                AttackAroundSelf();
+            }) 
+            else (
+            {
+                TurnRight();
+            });
+        }
+    };
+}

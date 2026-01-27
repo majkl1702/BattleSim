@@ -4,9 +4,15 @@
 
 #include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
-    Application app;
+  if (argc != 2)
+  {
+    std::cerr << "Invalid number of arguments" << std::endl;
+    return 1;
+  }
 
-    return app.Run();
+  Application app;
+
+  return app.Run(argv[1]);
 }

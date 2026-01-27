@@ -9,7 +9,7 @@
 namespace
 {
 
-Orientation ParseOrientationString(const char* orientation)
+Orientation ParseOrientationString(std::string orientation)
 {
   if (orientation == "N")
     return Orientation::N;
@@ -121,8 +121,6 @@ std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefC
 
 void BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
 {
-  std::vector<std::shared_ptr<Unit>> deadUnits;
-
   const auto commands = unit->GetUnitLogic()->logicCommand();
 
   // Evaluate each command.
@@ -194,11 +192,13 @@ void BattleSimVisitorImpl::AttackInFrontOfUnit(std::shared_ptr<Unit> unit) const
   AttackAt(targetX, targetY, attack);
 }
 
-void BattleSimVisitorImpl::RangeAttackFromUnit(std::shared_ptr<Unit> unit) const
+void BattleSimVisitorImpl::RangeAttackFromUnit(std::shared_ptr<Unit> unit, BattleSimParser::ExpContext* rangeExpCtx) const
 {
   const auto attack = unit->GetAttack();
   const auto unitX = unit->GetX();
   const auto unitY = unit->GetY();
+
+  int range = EvaluateExpression(rangeExpCtx);
 
   // Attack in a straight line in the direction the unit is facing.
   int dx = 0;
@@ -211,14 +211,16 @@ void BattleSimVisitorImpl::RangeAttackFromUnit(std::shared_ptr<Unit> unit) const
     case Orientation::W: dx = -1; break;
     default: break;
   }
+
   int targetX = static_cast<int>(unitX) + dx;
   int targetY = static_cast<int>(unitY) + dy;
-  while (_map->IsWithinBounds(targetX, targetY))
+  while (_map->IsWithinBounds(targetX, targetY) && range > 0)
   {
     const auto& mapPoint = _map->GetMapPoint(targetX, targetY);
     AttackAt(targetX, targetY, attack);
     targetX += dx;
     targetY += dy;
+    range--; // Decrease remaining range.
 
     if (mapPoint && mapPoint->unit != nullptr)
     {
@@ -431,7 +433,7 @@ void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, Batt
   }
   else if (ctx->rangeAttackCmd())
   {
-    RangeAttackFromUnit(unit);
+    RangeAttackFromUnit(unit, ctx->rangeAttackCmd()->exp());
   }
   else
   {
@@ -722,13 +724,13 @@ Orientation BattleSimVisitorImpl::EvaluateOrientation(std::shared_ptr<Unit> unit
     const auto unitX = unit->GetX();
     const auto unitY = unit->GetY();
 
-    const auto directions = std::vector<std::pair<int, int>>{
-      {-1, -1}, {0, -1}, {1, -1},
-      {-1, 0},           {1, 0},
-      {-1, 1},  {0, 1},  {1, 1}
+    const auto directions = std::vector<std::tuple<int, int, Orientation>>{
+      {-1, -1, Orientation::NW}, {0, -1, Orientation::N}, {1, -1, Orientation::NE},
+      {-1, 0, Orientation::W},                            {1, 0, Orientation::E},
+      {-1, 1, Orientation::SW},  {0, 1, Orientation::S},  {1, 1, Orientation::SE}
     };
 
-    for (const auto& [dx, dy] : directions)
+    for (const auto& [dx, dy, orientation] : directions)
     {
       int targetX = static_cast<int>(unitX) + dx;
       int targetY = static_cast<int>(unitY) + dy;
@@ -741,7 +743,7 @@ Orientation BattleSimVisitorImpl::EvaluateOrientation(std::shared_ptr<Unit> unit
       if (mapPoint && mapPoint->unit != nullptr && mapPoint->unit->GetTeam() != unit->GetTeam())
       {
         // Return the orientation of the nearby enemy unit.
-        return mapPoint->unit->GetOrientation();
+        return orientation;
       }
     }
   }

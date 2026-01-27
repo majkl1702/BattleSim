@@ -13,13 +13,14 @@
 #include <fstream>
 #include <iostream>
 
-int32_t Application::Run()
+int32_t Application::Run(const char* filePath)
 {
   std::cout << "Application::Run()" << std::endl;
 
   // Read the game configuration from file.
   std::ifstream stream;
-  stream.open("Examples/Example2.txt");
+  //stream.open("Examples/Example2.txt");
+  stream.open(filePath);
   if (!stream.good())
   {
     std::cerr << "Error opening file. Currently in dir" << system("dir") << std::endl;

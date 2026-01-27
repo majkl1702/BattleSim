@@ -1,0 +1,34 @@
+12x4
+TeamBlue {
+    unit Alpha at (5,1) {
+        health: 80;
+        attack: 20;
+        {
+            if (FacingEast()) then (
+            {
+                RangeAttack(5 + 3);
+            }) 
+            else (
+            {
+                Turn(E);
+            });
+        }
+    };
+}
+TeamRed {
+    unit Beta at (10,3) {
+        health: 90;
+        attack: 18;
+        {
+            if (!IsFrontBlocked()) then (
+            {
+                MoveForward();
+            })
+            else (
+            {
+                TurnLeft();
+                TurnLeft();
+            });
+        }
+    };
+}

@@ -1,4 +1,4 @@
-// Generated from d:/BattleSim/Antlr/BattleSim.g4 by ANTLR 4.13.1
+// Generated from d:/BattleSim/BattleSimVSProject/Antlr/BattleSim.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -124,6 +124,42 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTurnLeftCmd(BattleSimParser.TurnLeftCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTurnLeftCmd(BattleSimParser.TurnLeftCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTurnRightCmd(BattleSimParser.TurnRightCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTurnRightCmd(BattleSimParser.TurnRightCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTurnOrientationCmd(BattleSimParser.TurnOrientationCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTurnOrientationCmd(BattleSimParser.TurnOrientationCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfCondition(BattleSimParser.IfConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,6 +191,54 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAttackCmd(BattleSimParser.AttackCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAttackAroundSelfCmd(BattleSimParser.AttackAroundSelfCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttackAroundSelfCmd(BattleSimParser.AttackAroundSelfCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAttackInFrontCmd(BattleSimParser.AttackInFrontCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttackInFrontCmd(BattleSimParser.AttackInFrontCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRangeAttackCmd(BattleSimParser.RangeAttackCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRangeAttackCmd(BattleSimParser.RangeAttackCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSkipCmd(BattleSimParser.SkipCmdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSkipCmd(BattleSimParser.SkipCmdContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -220,6 +304,78 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTrue(BattleSimParser.TrueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTrue(BattleSimParser.TrueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFalse(BattleSimParser.FalseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFalse(BattleSimParser.FalseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParenthesesBool(BattleSimParser.ParenthesesBoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParenthesesBool(BattleSimParser.ParenthesesBoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComparisonBool(BattleSimParser.ComparisonBoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComparisonBool(BattleSimParser.ComparisonBoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrientationEqualityCheck(BattleSimParser.OrientationEqualityCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrientationEqualityCheck(BattleSimParser.OrientationEqualityCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEnemyNearbyCheck(BattleSimParser.EnemyNearbyCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEnemyNearbyCheck(BattleSimParser.EnemyNearbyCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlockCheck(BattleSimParser.BlockCheckContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -227,6 +383,30 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBlockCheck(BattleSimParser.BlockCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIsFrontClearCheck(BattleSimParser.IsFrontClearCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIsFrontClearCheck(BattleSimParser.IsFrontClearCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIsFrontBlockedCheck(BattleSimParser.IsFrontBlockedCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIsFrontBlockedCheck(BattleSimParser.IsFrontBlockedCheckContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -244,6 +424,54 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFacingNCheck(BattleSimParser.FacingNCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFacingNCheck(BattleSimParser.FacingNCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFacingWCheck(BattleSimParser.FacingWCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFacingWCheck(BattleSimParser.FacingWCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFacingECheck(BattleSimParser.FacingECheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFacingECheck(BattleSimParser.FacingECheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFacingSCheck(BattleSimParser.FacingSCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFacingSCheck(BattleSimParser.FacingSCheckContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOrientation(BattleSimParser.OrientationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -256,6 +484,30 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGetNearbyEnemyOrientation(BattleSimParser.GetNearbyEnemyOrientationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGetNearbyEnemyOrientation(BattleSimParser.GetNearbyEnemyOrientationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGetMyOrientation(BattleSimParser.GetMyOrientationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGetMyOrientation(BattleSimParser.GetMyOrientationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExp(BattleSimParser.ExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -263,6 +515,30 @@ public class BattleSimBaseListener implements BattleSimListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExp(BattleSimParser.ExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAtomicExp(BattleSimParser.AtomicExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAtomicExp(BattleSimParser.AtomicExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParenthesesExp(BattleSimParser.ParenthesesExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParenthesesExp(BattleSimParser.ParenthesesExpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

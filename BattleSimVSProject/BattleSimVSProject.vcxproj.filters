@@ -138,5 +138,14 @@
     <Text Include="Examples\Example2.txt">
       <Filter>Resource Files\Examples</Filter>
     </Text>
+    <Text Include="Examples\Example3.txt">
+      <Filter>Resource Files\Examples</Filter>
+    </Text>
+    <Text Include="Examples\Example4.txt">
+      <Filter>Resource Files\Examples</Filter>
+    </Text>
+    <Text Include="Examples\Example5.txt">
+      <Filter>Resource Files\Examples</Filter>
+    </Text>
   </ItemGroup>
 </Project>

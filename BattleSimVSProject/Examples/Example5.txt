@@ -1,0 +1,53 @@
+7x7
+TeamBlue {
+    unit Soldier at (2,3) {
+        health: 100;
+        attack: 15;
+        {
+            if (IsEnemyNearby()) then (
+            {
+                Turn(GetNearbyEnemyOrientation());
+                AttackInFront();
+            })
+            else (
+            {
+                if (IsFrontClear()) then (
+                {
+                    MoveForward();
+                    MoveForward();
+                    MoveForward();
+                })
+                else (
+                {
+                    TurnRight();
+                });
+            });
+        }
+    };
+}
+TeamRed {
+    unit Guard at (4,3) {
+        health: 120;
+        attack: 10;
+        {
+            if (IsEnemyNearby()) then (
+            {
+                Turn(GetNearbyEnemyOrientation());
+                AttackInFront();
+            })
+            else (
+            {
+                if (IsFrontClear()) then (
+                {
+                    MoveForward();
+                    MoveForward();
+                    MoveForward();
+                })
+                else (
+                {
+                    TurnRight();
+                });
+            });
+        }
+    };
+}
