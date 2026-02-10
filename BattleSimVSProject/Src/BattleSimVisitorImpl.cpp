@@ -290,6 +290,9 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   {
     throw std::runtime_error("Unknown command in unit logic.");
   }
+
+  // Show game state after executing the command.
+  _visualizer->DisplayLoop();
 }
 
 void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const

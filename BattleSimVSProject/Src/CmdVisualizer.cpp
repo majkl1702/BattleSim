@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-void CmdVisualizer::DisplayLoop(const std::list<std::shared_ptr<Unit>>& units)
+void CmdVisualizer::DisplayLoop()
 {
   _events.clear();
   PrintMap();
-  PrintStats(units);
+  PrintStats();
 
   std::cout << _events << std::endl;
 }
@@ -76,11 +76,11 @@ void CmdVisualizer::PrintMap() const
   printHorizontalBorder();
 }
 
-void CmdVisualizer::PrintStats(const std::list<std::shared_ptr<Unit>>& units) const
+void CmdVisualizer::PrintStats() const
 {
   std::stringstream blueStats, redStats;
 
-  for (const auto& unit : units)
+  for (const auto& unit : _allUnits)
   {
     std::stringstream* targetStream = nullptr;
     if (unit->GetTeam() == Team::Blue)

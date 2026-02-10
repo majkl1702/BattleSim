@@ -16,10 +16,6 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   // Prepare map from config.
   _map = _visitor.CreateGameMap(context);
 
-  // Prepare visualizer.
-  _visualizer = std::make_shared<CmdVisualizer>(_map);
-  _visitor.SetVisualizer(_visualizer);
-
   if (!_map->IsValid())
   {
     return -1;
@@ -45,6 +41,10 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
       _allUnits.push_back(_redUnits[i]);
     }
   }
+
+  // Prepare visualizer.
+  _visualizer = std::make_shared<CmdVisualizer>(_map, _allUnits);
+  _visitor.SetVisualizer(_visualizer);
 
   return 0;
 }
@@ -81,7 +81,7 @@ int GameSimulator::SimulateTurn()
       _visitor.SimulateUnitTurn(*unitIter);
 
       // Show map state after unit's turn.
-      _visualizer->DisplayLoop(_allUnits);
+      _visualizer->DisplayLoop();
     }
 
     if (unitIter->get()->GetTeam() == Team::Blue && !(*unitIter)->IsAlive())
