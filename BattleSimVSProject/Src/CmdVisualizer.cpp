@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#define DELAY 500
+
 void CmdVisualizer::DisplayLoop()
 {
   _events.clear();
@@ -9,6 +11,10 @@ void CmdVisualizer::DisplayLoop()
   PrintStats();
 
   std::cout << _events << std::endl;
+
+  // Locked FPS for better visibility.
+  std::chrono::milliseconds timespan(DELAY);
+  std::this_thread::sleep_for(timespan);
 }
 
 void CmdVisualizer::ParseEvent(const std::string& event) 

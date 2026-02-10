@@ -73,10 +73,6 @@ int GameSimulator::SimulateTurn()
   {
     if ((*unitIter)->IsAlive())
     {
-      // Locked FPS for better visibility.
-      std::chrono::milliseconds timespan(DELAY);
-      std::this_thread::sleep_for(timespan);
-
       // Simulate unit turn.
       _visitor.SimulateUnitTurn(*unitIter);
 

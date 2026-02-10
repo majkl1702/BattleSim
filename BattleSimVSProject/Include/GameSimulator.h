@@ -10,8 +10,6 @@
 #include "../Include/Unit.h"
 #include "../Include/CmdVisualizer.h"
 
-#define DELAY 500
-
 class GameSimulator
 {
 public:
