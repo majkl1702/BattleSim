@@ -107,6 +107,8 @@ ORIENTATION : 'N' | 'W' | 'E' | 'S' | 'SW' | 'SE' | 'NW' | 'NE';
 
 NAME: [a-zA-Z]+;
 
-NUMBER: [0-9]+ ('.' [0-9]+)?;
+NUMBER: [0-9]+;
+
+// FLOAT: [0-9]+ ('.' [0-9]+)?;
 
 WS: [ \t\r\n]+ -> skip;

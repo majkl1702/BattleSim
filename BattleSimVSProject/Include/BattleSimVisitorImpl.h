@@ -33,6 +33,7 @@ public:
 
 private:
 
+  //! Attack functions.
   void AttackAroundUnit(std::shared_ptr<Unit> unit) const;
 
   void AttackInFrontOfUnit(std::shared_ptr<Unit> unit) const;
