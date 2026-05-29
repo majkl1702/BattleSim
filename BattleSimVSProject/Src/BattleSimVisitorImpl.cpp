@@ -158,12 +158,11 @@ void BattleSimVisitorImpl::AttackAroundUnit(std::shared_ptr<Unit> unit) const
       bool stillAlive = targetUnit->SetDamage(attack);
       if (!stillAlive)
       {
-        _visualizer->ParseEvent("Unit " + targetUnit->GetName() + " has been destroyed!");
-        _visualizer->ParseEvent(std::format("Unit  {} has been destroyed!", targetUnit->GetName()));
+        _visualizer->ParseEvent(std::format("Unit {} has been destroyed!", targetUnit->GetName()));
       }
       else
       {
-        _visualizer->ParseEvent(std::format("Unit  {} took {} damage, remaining health: {}", targetUnit->GetName(), attack, targetUnit->GetHealth()));
+        _visualizer->ParseEvent(std::format("Unit {} took {} damage, remaining health: {}", targetUnit->GetName(), attack, targetUnit->GetHealth()));
       }
     }
   }
@@ -261,6 +260,10 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   if (command->moveCmd())
   {
     ExecuteMoveCommand(unit);
+
+    // Show game state after executing the move command.
+    _visualizer->ParseEvent(std::format("Unit {} moved.", unit->GetName()).c_str());
+    _visualizer->DisplayLoop();
   }
   else if (command->turnCmd())
   {
@@ -281,6 +284,10 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   {
     // Handle attack command.
     ExecuteAttackCommand(unit, command->attackCmd());
+
+    // Show game state after executing the attack command.
+    _visualizer->ParseEvent(std::format("Unit {} attacked.", unit->GetName()).c_str());
+    _visualizer->DisplayLoop();
   }
   else if (command->skipCmd())
   {
@@ -290,9 +297,6 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   {
     throw std::runtime_error("Unknown command in unit logic.");
   }
-
-  // Show game state after executing the command.
-  _visualizer->DisplayLoop();
 }
 
 void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const

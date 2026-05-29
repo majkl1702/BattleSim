@@ -6,11 +6,11 @@
 
 void CmdVisualizer::DisplayLoop()
 {
-  _events.clear();
   PrintMap();
   PrintStats();
 
-  std::cout << _events << std::endl;
+  std::cout << std::endl << _events << std::endl;
+  _events.clear();
 
   // Locked FPS for better visibility.
   std::chrono::milliseconds timespan(DELAY);
