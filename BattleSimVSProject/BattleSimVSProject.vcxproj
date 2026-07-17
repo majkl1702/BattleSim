@@ -179,6 +179,7 @@
     <ClInclude Include="Include\GameSimulator.h" />
     <ClInclude Include="Include\Map.h" />
     <ClInclude Include="Include\Unit.h" />
+    <ClInclude Include="Include\UnitTask.h" />
     <ClInclude Include="Include\Visualizer.h" />
   </ItemGroup>
   <ItemGroup>

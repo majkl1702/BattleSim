@@ -55,7 +55,7 @@ std::shared_ptr<Map> BattleSimVisitorImpl::CreateGameMap(BattleSimParser::Battle
   return _map;
 }
 
-std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>> 
+std::pair<std::vector<std::shared_ptr<Unit>>, std::vector<std::shared_ptr<Unit>>>
 BattleSimVisitorImpl::CreateUnits(BattleSimParser::BattleSimContext* context)
 {
   auto teamDefs = context->teamDef();
@@ -121,12 +121,31 @@ std::shared_ptr<Unit> BattleSimVisitorImpl::CreateUnit(BattleSimParser::UnitDefC
 
 void BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
 {
-  const auto commands = unit->GetUnitLogic()->logicCommand();
+  auto& taskCoroutine = unit->GetLogicTask();
 
-  // Evaluate each command.
-  for (auto* command : commands)
+  while (unit->GetTokens() > 0)
   {
-    ExecuteLogicCommand(command, unit);
+    if (taskCoroutine && taskCoroutine->IsDone())
+    {
+      // Coroutine has finished executing, reset it.
+      taskCoroutine.reset();
+    }
+
+    // Unit has tokents available.
+    // If the coroutine is not initialized, create it.
+    if (!taskCoroutine.has_value())
+    {
+      // Create new coroutine frame and start executing it.
+      unit->SetLogicTask(CreateUnitLogicCoroutine(unit));
+    }
+
+    if (taskCoroutine)
+    {
+      // If the coroutine is not done, resume it.
+      // If it is done, it won't do anything and we will create
+      // a new one in the next iteration.
+      taskCoroutine->Resume();
+    }
   }
 }
 
@@ -328,7 +347,7 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const
       // Cannot move diagonally or have diagonal orientation.
       break;
   }
-  
+
   if (_map->PlaceUnit(x, y, unit))
   {
     unit->SetPosition(x, y);
@@ -337,6 +356,9 @@ void BattleSimVisitorImpl::ExecuteMoveCommand(std::shared_ptr<Unit> unit) const
   {
     _visualizer->ParseEvent(std::format("Unit {} failed to move to ({}, {}).", unit->GetName(), x, y));
   }
+
+  // Use up one token for one move.
+  unit->ConsumeToken();
 }
 
 void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, BattleSimParser::TurnCmdContext* ctx) const
@@ -395,7 +417,7 @@ void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, Battle
   if (conditionResult)
   {
     commands = unitLogicSequence[0]->logicCommand();
-    
+
   }
   else
   {
@@ -423,6 +445,11 @@ void BattleSimVisitorImpl::ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleS
     // Evaluate each command.
     for (auto* command : unitLogicSequence->logicCommand())
     {
+      if (unit->GetTokens() <= 0)
+      {
+        return;
+      }
+
       ExecuteLogicCommand(command, unit);
     }
   }
@@ -446,6 +473,9 @@ void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, Batt
   {
     throw std::runtime_error("Invalid attack command.");
   }
+
+  // Attack uses up one token.
+  unit->ConsumeToken();
 }
 
 void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
@@ -553,7 +583,7 @@ bool BattleSimVisitorImpl::EvaluateBooleanExpression(std::shared_ptr<Unit> unit,
     throw std::runtime_error("Invalid boolean expression context.");
 
   auto orOperators = ctx->orExpr()->andExpr();
- 
+
   // Evaluate each or operator of the or expression.
   // If one is true, the whole expression is true.
   for (auto* andExpr : orOperators)
@@ -766,4 +796,22 @@ Orientation BattleSimVisitorImpl::EvaluateOrientation(std::shared_ptr<Unit> unit
   }
 
   return unit->GetOrientation();
+}
+
+UnitTask BattleSimVisitorImpl::CreateUnitLogicCoroutine(std::shared_ptr<Unit> unit)
+{
+  const auto commands = unit->GetUnitLogic()->logicCommand();
+
+  for (auto* command : commands)
+  {
+    // Spustíme vykonanie príkazu
+    ExecuteLogicCommand(command, unit);
+
+    // PRED prechodom na ïalší príkaz skontrolujeme, èi má jednotka tokeny.
+    // Ak nemá, pozastavíme coroutinu (co_yield) dovtedy, kým jej v ïalšom ahu nepridelíme nové.
+    while (unit->GetTokens() <= 0)
+    {
+      co_yield{};
+    }
+  }
 }

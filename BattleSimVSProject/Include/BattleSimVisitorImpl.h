@@ -84,6 +84,9 @@ private:
 
   Orientation EvaluateOrientation(std::shared_ptr<Unit> unit, BattleSimParser::OrientationContext* ctx) const;
 
+  // Coroutine for unit logic execution.
+  UnitTask CreateUnitLogicCoroutine(std::shared_ptr<Unit> unit);
+
   std::shared_ptr<Map> _map;
 
   std::shared_ptr<Visualizer> _visualizer = nullptr;

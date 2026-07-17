@@ -73,6 +73,8 @@ int GameSimulator::SimulateTurn()
   {
     if ((*unitIter)->IsAlive())
     {
+      (*unitIter)->ResetTokens(3);
+
       // Simulate unit turn.
       _visitor.SimulateUnitTurn(*unitIter);
 

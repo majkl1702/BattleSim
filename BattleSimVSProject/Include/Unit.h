@@ -1,8 +1,10 @@
 #pragma once
 #include "../Common.h"
 #include "../Antlr/Generated/BattleSimParser.h"
+#include "UnitTask.h"
 
 #include <string>
+#include <optional>
 
 class Map;
 
@@ -53,6 +55,25 @@ public:
 
   Team GetTeam() const { return _team;  }
 
+  //! Coroutines
+  void ResetTokens(int amount = 6) { _tokens = amount; }
+
+  int GetTokens() const { return _tokens; }
+
+  bool ConsumeToken()
+  {
+    if (_tokens <= 0) return false;
+    _tokens--;
+    return true;
+  }
+
+  //! Coroutine management.
+  std::optional<UnitTask>& GetLogicTask() { return _logicTask; }
+  void SetLogicTask(UnitTask&& task)
+  {
+    _logicTask.emplace(std::move(task));
+  }
+
 private:
 
   //! Unit properties.
@@ -70,5 +91,11 @@ private:
 
   // ! Reference to the game map for unit interactions.
   Map& _map;
+
+  //! Tokens for unit logic execution, can be used to limit the number of actions a unit can perform in a turn.
+  int _tokens = 0;
+
+  //! Current task for the unit, represented as a coroutine. This allows us to pause and resume unit actions across turns.
+  std::optional<UnitTask> _logicTask;
 };
 

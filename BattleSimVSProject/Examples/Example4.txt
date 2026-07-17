@@ -7,7 +7,7 @@ TeamBlue {
             if (FacingEast()) then (
             {
                 RangeAttack(5 + 3);
-            }) 
+            })
             else (
             {
                 Turn(E);

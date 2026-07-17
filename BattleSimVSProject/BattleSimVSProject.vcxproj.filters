@@ -130,6 +130,9 @@
     <ClInclude Include="Include\Visualizer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Include\UnitTask.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Examples\Example1.txt">
