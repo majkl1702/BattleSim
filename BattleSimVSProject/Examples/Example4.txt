@@ -1,4 +1,4 @@
-12x4
+12x5
 TeamBlue {
     unit Alpha at (5,1) {
         health: 80;
@@ -28,6 +28,7 @@ TeamRed {
             {
                 TurnLeft();
                 TurnLeft();
+                skip();
             });
         }
     };

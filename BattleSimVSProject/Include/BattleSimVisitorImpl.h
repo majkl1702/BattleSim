@@ -85,10 +85,12 @@ private:
   Orientation EvaluateOrientation(std::shared_ptr<Unit> unit, BattleSimParser::OrientationContext* ctx) const;
 
   // Coroutine for unit logic execution.
+  // Note that calling this function will actualy not start the coroutine, it will just create it becuase
+  // suspend on start is set to true. This is done to allow the game loop to control when the unit logic is executed.
+  // The coroutine will be started by calling the resume() method on the returned UnitTask.
   UnitTask CreateUnitLogicCoroutine(std::shared_ptr<Unit> unit);
 
   std::shared_ptr<Map> _map;
 
   std::shared_ptr<Visualizer> _visualizer = nullptr;
 };
-

@@ -482,6 +482,12 @@ void BattleSimVisitorImpl::ExecuteSkipCommand(std::shared_ptr<Unit> unit) const
 {
   // Info log.
   _visualizer->ParseEvent(std::format("Unit {} skips its turn.", unit->GetName()));
+
+  // Consume all remaining tokens for the unit, effectively ending its turn.
+  while (unit->GetTokens() > 0)
+  {
+    unit->ConsumeToken();
+  }
 }
 
 bool BattleSimVisitorImpl::EvaluatePrimaryBoolExpression(std::shared_ptr<Unit> unit, BattleSimParser::PrimaryBoolContext* ctx) const
@@ -804,11 +810,9 @@ UnitTask BattleSimVisitorImpl::CreateUnitLogicCoroutine(std::shared_ptr<Unit> un
 
   for (auto* command : commands)
   {
-    // Spustíme vykonanie príkazu
     ExecuteLogicCommand(command, unit);
 
-    // PRED prechodom na ïalší príkaz skontrolujeme, èi má jednotka tokeny.
-    // Ak nemá, pozastavíme coroutinu (co_yield) dovtedy, kým jej v ïalšom ahu nepridelíme nové.
+    // If unit doesn't have tokens, we yield control back to the main loop and wait for the next turn.
     while (unit->GetTokens() <= 0)
     {
       co_yield{};
