@@ -8,7 +8,6 @@
 #include "../Include/BattleSimVisitorImpl.h";
 #include "../Include/Map.h"
 #include "../Include/Unit.h"
-#include "../Include/CmdVisualizer.h"
 
 class GameSimulator
 {

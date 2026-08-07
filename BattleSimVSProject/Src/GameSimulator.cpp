@@ -1,5 +1,8 @@
 #include "../Include/GameSimulator.h"
 
+#include "../Include/CmdVisualizer.h"
+#include "../Include/QtVisualizer.h"
+
 #include <chrono>
 #include <thread>
 
@@ -43,7 +46,8 @@ int GameSimulator::PrepareGame(BattleSimParser::BattleSimContext* context)
   }
 
   // Prepare visualizer.
-  _visualizer = std::make_shared<CmdVisualizer>(_map, _allUnits);
+  ///_visualizer = std::make_shared<CmdVisualizer>(_map, _allUnits);
+  _visualizer = std::make_shared<QtVisualizer>(_map, _allUnits);
   _visitor.SetVisualizer(_visualizer);
 
   return 0;

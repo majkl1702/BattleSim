@@ -66,7 +66,7 @@
     <ClCompile Include="Src\CmdVisualizer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Visualizer.cpp">
+    <ClCompile Include="Src\QtVisualizer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,6 +131,9 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Include\UnitTask.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\QtVisualizer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
