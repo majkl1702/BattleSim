@@ -125,6 +125,7 @@ void BattleSimVisitorImpl::SimulateUnitTurn(std::shared_ptr<Unit> unit)
 
   while (unit->GetTokens() > 0)
   {
+    // TODO co ak jednotka neminula ziaden token pocas tahu
     if (taskCoroutine && taskCoroutine->IsDone())
     {
       // Coroutine has finished executing, reset it.
@@ -292,12 +293,14 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   else if (command->ifCondition())
   {
     // Handle if condition.
-    ExecuteIfCondition(unit, command->ifCondition());
+    // Push new execution frame to the execution stack according to the boolean expression result.
+    PushIfFrame(unit, command->ifCondition());
   }
   else if (command->whileCycle())
   {
     // Handle while cycle.
-    ExecuteWhileCycle(unit, command->whileCycle());
+    // Add new while execution frame to the execution stack.
+    PushWhileFrame(unit, command->whileCycle());
   }
   else if (command->attackCmd())
   {
@@ -311,6 +314,8 @@ void BattleSimVisitorImpl::ExecuteLogicCommand(BattleSimParser::LogicCommandCont
   else if (command->skipCmd())
   {
     ExecuteSkipCommand(unit);
+    unit->GetExecutionStack().clear(); // Clear the execution stack after skipping so it starts from beggining.
+    return;
   }
   else
   {
@@ -398,61 +403,43 @@ void BattleSimVisitorImpl::ExecuteTurnCommand(std::shared_ptr<Unit> unit, Battle
   }
 }
 
-void BattleSimVisitorImpl::ExecuteIfCondition(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx) const
+void BattleSimVisitorImpl::PushIfFrame(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx) const
 {
-  // Evaluate the boolean expression.
-  // If true, execute the logic commands inside the if condition.
   const auto boolExpCtx = ctx->boolexp();
   if (!boolExpCtx)
     throw std::runtime_error("If condition missing boolean expression.");
 
-  const auto unitLogicSequence = ctx->unitLogicSequence();
-
-  if (unitLogicSequence.size() != 2)
+  const auto sequences = ctx->unitLogicSequence();
+  if (sequences.size() != 2)
     throw std::runtime_error("If condition missing some sequences.");
 
-  const bool conditionResult = EvaluateBooleanExpression(unit, boolExpCtx);
+  const bool condition = EvaluateBooleanExpression(unit, boolExpCtx);
+  auto* selectedSequence = condition ? sequences[0] : sequences[1];
 
-  std::vector<BattleSimParser::LogicCommandContext*> commands;
-  if (conditionResult)
-  {
-    commands = unitLogicSequence[0]->logicCommand();
+  auto frame = ExecutionFrame{
+    .type = ExecutionFrame::Type::Sequence,
+    .sequence = selectedSequence,
+    .instructionPointer = 0
+  };
 
-  }
-  else
-  {
-    commands = unitLogicSequence[1]->logicCommand();
-  }
-
-  // Execute the selected commands.
-  for (auto* command : commands)
-  {
-    ExecuteLogicCommand(command, unit);
-  }
+  unit->GetExecutionStack().push_back(frame);
 }
 
-void BattleSimVisitorImpl::ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const
+void BattleSimVisitorImpl::PushWhileFrame(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const
 {
-  // Evaluate the boolean expression.
   const auto boolExpCtx = ctx->boolexp();
   const auto unitLogicSequence = ctx->unitLogicSequence();
 
   if (!boolExpCtx || !unitLogicSequence)
     throw std::runtime_error("While cycle missing boolean expression or logic sequence.");
 
-  while (EvaluateBooleanExpression(unit, boolExpCtx))
-  {
-    // Evaluate each command.
-    for (auto* command : unitLogicSequence->logicCommand())
-    {
-      if (unit->GetTokens() <= 0)
-      {
-        return;
-      }
+  auto frame = ExecutionFrame{
+      .type = ExecutionFrame::Type::While,
+      .whileCtx = ctx,
+      .instructionPointer = 0
+  };
 
-      ExecuteLogicCommand(command, unit);
-    }
-  }
+  unit->GetExecutionStack().push_back(frame);
 }
 
 void BattleSimVisitorImpl::ExecuteAttackCommand(std::shared_ptr<Unit> unit, BattleSimParser::AttackCmdContext* ctx) const
@@ -806,15 +793,48 @@ Orientation BattleSimVisitorImpl::EvaluateOrientation(std::shared_ptr<Unit> unit
 
 UnitTask BattleSimVisitorImpl::CreateUnitLogicCoroutine(std::shared_ptr<Unit> unit)
 {
-  const auto commands = unit->GetUnitLogic()->logicCommand();
+  auto& stack = unit->GetExecutionStack();
 
-  for (auto* command : commands)
+  if (stack.empty())
   {
+    stack.push_back({
+      ExecutionFrame::Type::Sequence,
+      unit->GetUnitLogic(),
+      nullptr,
+      0
+    });
+  }
+
+  while (!stack.empty())
+  {
+    auto& frame = stack.back();
+
+    // Check if current frame is finished with executing its commands.
+    if (frame.IsFrameFinished())
+    {
+      if (frame.type == ExecutionFrame::Type::While)
+      {
+        // Check if while loop should be repeated.
+        if (EvaluateBooleanExpression(unit, frame.whileCtx->boolexp()))
+        {
+          // Reset the while frame.
+          frame.instructionPointer = 0;
+          continue;
+        }
+      }
+
+      // Sequence finished.
+      unit->GetExecutionStack().pop_back();
+      continue;
+    }
+
+    auto* command = frame.GetNextCommand();
+
     ExecuteLogicCommand(command, unit);
 
-    // If unit doesn't have tokens, we yield control back to the main loop and wait for the next turn.
-    while (unit->GetTokens() <= 0)
+    if (unit->GetTokens() <= 0)
     {
+      // If the unit has no more tokens, yield here.
       co_yield{};
     }
   }

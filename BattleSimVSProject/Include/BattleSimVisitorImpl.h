@@ -52,9 +52,9 @@ private:
 
   void ExecuteTurnCommand(std::shared_ptr<Unit> unit, BattleSimParser::TurnCmdContext* ctx) const;
 
-  void ExecuteIfCondition(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx) const;
+  void PushIfFrame(std::shared_ptr<Unit> unit, BattleSimParser::IfConditionContext* ctx) const;
 
-  void ExecuteWhileCycle(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const;
+  void PushWhileFrame(std::shared_ptr<Unit> unit, BattleSimParser::WhileCycleContext* ctx) const;
 
   void ExecuteAttackCommand(std::shared_ptr<Unit> unit, BattleSimParser::AttackCmdContext* ctx) const;
 

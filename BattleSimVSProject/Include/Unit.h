@@ -8,6 +8,54 @@
 
 class Map;
 
+struct ExecutionFrame
+{
+  enum class Type
+  {
+    Sequence,
+    While
+  };
+
+  Type type;
+
+  BattleSimParser::UnitLogicSequenceContext* sequence = nullptr;
+  BattleSimParser::WhileCycleContext* whileCtx = nullptr;
+
+  std::size_t instructionPointer = 0;
+
+  BattleSimParser::LogicCommandContext* GetNextCommand()
+  {
+    if (type == Type::Sequence)
+    {
+      if (instructionPointer < sequence->logicCommand().size())
+      {
+        return sequence->logicCommand()[instructionPointer++];
+      }
+    }
+    else if (type == Type::While)
+    {
+      if (instructionPointer < whileCtx->unitLogicSequence()->logicCommand().size())
+      {
+        return whileCtx->unitLogicSequence()->logicCommand()[instructionPointer++];
+      }
+    }
+    return nullptr;
+  }
+
+  bool IsFrameFinished() const
+  {
+    if (type == Type::Sequence)
+    {
+      return instructionPointer >= sequence->logicCommand().size();
+    }
+    else if (type == Type::While)
+    {
+      return instructionPointer >= whileCtx->unitLogicSequence()->logicCommand().size();
+    }
+    return true;
+  }
+};
+
 enum Team : uint8_t
 {
   Red,
@@ -74,6 +122,11 @@ public:
     _logicTask.emplace(std::move(task));
   }
 
+  std::vector<ExecutionFrame>& GetExecutionStack()
+  {
+    return _executionStack;
+  }
+
 private:
 
   //! Unit properties.
@@ -97,5 +150,10 @@ private:
 
   //! Current task for the unit, represented as a coroutine. This allows us to pause and resume unit actions across turns.
   std::optional<UnitTask> _logicTask;
+
+  //! Execution stack for managing the execution state of unit logic.
+  //! Each frame represents a point in the unit's logic sequence or while loop,
+  //! allowing for nested execution and proper resumption of tasks.
+  std::vector<ExecutionFrame> _executionStack;
 };
 
