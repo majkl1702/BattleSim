@@ -4,7 +4,7 @@ grammar BattleSim;
 // Parser rules
 battleSim: map 'TeamBlue' '{' teamDef '}' 'TeamRed' '{' teamDef '}';
 
-// Todo extend to add walls, traps, etc...
+// TODO extend to add walls, traps, etc...
 map: NUMBER 'x' NUMBER;
 
 teamDef: (unitDef ';')+;
@@ -12,7 +12,7 @@ teamDef: (unitDef ';')+;
 // Units - name, position, config
 unitDef: 'unit' NAME 'at' '(' NUMBER ',' NUMBER ')' '{' unitStats unitLogicSequence '}';
 
-// Todo add more stats
+// TODO add more stats
 unitStats: 'health:' NUMBER ';' 'attack:' NUMBER ';';
 
 //-------------------------------UNIT-LOGIC-LANGUAGE-------------------------------//
@@ -95,7 +95,6 @@ getMyOrientation: 'GetMyOrientation()';
 exp: atomicExp | exp MATHSYMBOL exp | parenthesesExp;
 atomicExp : NUMBER;
 parenthesesExp: '(' exp ')';
-
 
 // Lexer rules
 
